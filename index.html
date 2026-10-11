@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>Clariti Scaworld Tracker - Doctor Call Log</title>
-  <meta name="description" content="Clariti Scaworld Tracker: Time logs of when field executives reached and left doctor clinics with geo-tagged doctor call reporting." />
-  <meta property="og:title" content="Clariti Scaworld Tracker - Doctor Call Log" />
-  <meta property="og:description" content="Clariti Scaworld Tracker: Time logs of when field executives reached and left doctor clinics with geo-tagged doctor call reporting." />
+  <title>Clariti Scanworld Tracker - Doctor Call Log</title>
+  <meta name="description" content="Clariti Scanworld Tracker: Time logs of when field executives reached and left doctor clinics with geo-tagged doctor call reporting." />
+  <meta property="og:title" content="Clariti Scanworld Tracker - Doctor Call Log" />
+  <meta property="og:description" content="Clariti Scanworld Tracker: Time logs of when field executives reached and left doctor clinics with geo-tagged doctor call reporting." />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="theme-color" content="#0f172a" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-15 -15 130 130'%3E%3Cpath d='M 35.355 0 A 35.355 35.355 0 0 1 0 35.355 L 0 70.711 A 70.711 70.711 0 0 0 70.711 0 Z' fill='%2321d07c'/%3E%3Cpath d='M 64.645 100 A 35.355 35.355 0 0 1 100 64.645 L 100 29.289 A 70.711 70.711 0 0 0 29.289 100 Z' fill='%2321d07c'/%3E%3C/svg%3E" />
   <style>
     /* Reset & Base Variables */
     *, *::before, *::after {
@@ -109,14 +110,17 @@
     .brand-icon {
       width: 42px;
       height: 42px;
-      background: linear-gradient(135deg, #f59e0b, #ea580c);
+      background: #ffffff;
+      border: 1.5px solid rgba(80, 184, 115, 0.35);
       border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
-      box-shadow: 0 3px 8px rgba(234, 88, 12, 0.45);
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(80, 184, 115, 0.15);
       flex-shrink: 0;
+      padding: 2px;
+      box-sizing: border-box;
+      overflow: hidden;
     }
 
     .brand-title-wrap {
@@ -261,6 +265,57 @@
       0% { opacity: 1; transform: scale(1); }
       50% { opacity: 0.4; transform: scale(0.85); }
       100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* Top Right Corner GPS Status Pill */
+    .gps-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 11px;
+      height: 32px;
+      box-sizing: border-box;
+      border-radius: var(--radius-pill);
+      font-size: 0.74rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1.5px solid rgba(255, 255, 255, 0.35);
+      transition: all 0.2s ease;
+      background-color: rgba(255, 255, 255, 0.14);
+      color: #ffffff;
+      white-space: nowrap;
+      touch-action: manipulation;
+    }
+    .gps-status-pill:hover {
+      background-color: rgba(255, 255, 255, 0.24);
+      border-color: rgba(255, 255, 255, 0.55);
+    }
+    .gps-status-pill:active {
+      transform: scale(0.96);
+    }
+    .gps-status-pill.locked {
+      background-color: rgba(16, 185, 129, 0.28);
+      border-color: #22c55e;
+      color: #86efac;
+    }
+    .gps-status-pill.acquiring {
+      background-color: rgba(217, 119, 6, 0.32);
+      border-color: #f59e0b;
+      color: #fde68a;
+    }
+    .gps-status-pill.error {
+      background-color: rgba(220, 38, 38, 0.35);
+      border-color: #ef4444;
+      color: #fca5a5;
+    }
+    .gps-status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: currentColor;
+    }
+    .gps-status-dot.pulse {
+      animation: pulse-dot 1.5s infinite;
     }
 
     /* Settings Button in Header Row */
@@ -1948,27 +2003,95 @@
       display: flex;
       border-bottom: 2px solid var(--slate-200);
       margin-bottom: 12px;
-      gap: 4px;
+      gap: 6px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      align-items: center;
     }
 
     .modal-tab-btn {
-      flex: 1;
-      padding: 8px 6px;
+      padding: 8px 10px;
       background: none;
       border: none;
       border-bottom: 3px solid transparent;
       margin-bottom: -2px;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 700;
       color: var(--slate-500);
       cursor: pointer;
       text-align: center;
       transition: all 0.15s ease;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
     }
 
     .modal-tab-btn.active {
       color: var(--brand-orange);
       border-bottom-color: var(--brand-orange);
+    }
+
+    .modal-tab-btn.tab-action {
+      color: #0369a1;
+      border-bottom: 3px solid transparent;
+      background: none;
+      border: none;
+      border-radius: 0;
+      padding: 9px 12px;
+      margin-bottom: -2px;
+      font-weight: 700;
+    }
+
+    .modal-tab-btn.tab-action:hover {
+      color: #0284c7;
+      background: rgba(2, 132, 199, 0.08);
+      border-bottom-color: #0284c7;
+    }
+
+    .modal-tab-btn.tab-action-danger {
+      color: #dc2626;
+      border-bottom: 3px solid transparent;
+      background: none;
+      border: none;
+      border-radius: 0;
+      padding: 9px 12px;
+      margin-bottom: -2px;
+      font-weight: 700;
+    }
+
+    .modal-tab-btn.tab-action-danger:hover {
+      color: #b91c1c;
+      background: rgba(220, 38, 38, 0.08);
+      border-bottom-color: #dc2626;
+    }
+
+    .pill-btn-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      font-size: 0.70rem;
+      font-weight: 700;
+      padding: 3px 12px;
+      border-radius: 9999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1.5px solid #93c5fd;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      box-shadow: 0 1px 2px rgba(29, 78, 216, 0.06);
+    }
+    .pill-btn-action:hover {
+      background: #dbeafe;
+      border-color: #60a5fa;
+      color: #1e40af;
+    }
+    .pill-btn-action:active {
+      transform: scale(0.96);
     }
 
     .tab-content-panel {
@@ -2044,6 +2167,90 @@
       font-size: 0.74rem;
       color: var(--slate-600);
       font-weight: 600;
+    }
+
+    .action-pill-btn {
+      background: #eff6ff;
+      border: 1.5px solid #93c5fd;
+      border-radius: var(--radius-pill);
+      padding: 3px 9px;
+      font-size: 0.70rem;
+      font-weight: 700;
+      color: #1d4ed8;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+    }
+    .action-pill-btn:hover {
+      background: #dbeafe;
+      border-color: #60a5fa;
+      color: #1e40af;
+    }
+    .action-pill-btn:active {
+      transform: scale(0.96);
+    }
+
+    .tab-pill-btn {
+      background: #f8fafc;
+      border: 1px solid var(--slate-300);
+      border-radius: var(--radius-pill);
+      padding: 3px 8px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--slate-700);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+      white-space: nowrap;
+    }
+    .tab-pill-btn:hover {
+      background: #f1f5f9;
+      border-color: var(--slate-400);
+    }
+    .tab-pill-btn.sync {
+      background: #e0f2fe;
+      border-color: #7dd3fc;
+      color: #0369a1;
+    }
+    .tab-pill-btn.danger {
+      background: #fff1f2;
+      border-color: #fca5a5;
+      color: #dc2626;
+    }
+
+    .dir-op-timing-toggle {
+      background: none;
+      border: none;
+      padding: 2px 0;
+      color: var(--brand-orange);
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      touch-action: manipulation;
+      text-decoration: underline;
+    }
+    .dir-op-timing-toggle:hover {
+      color: #c2410c;
+    }
+    .dir-op-timing-box {
+      margin-top: 4px;
+      padding: 6px 9px;
+      background: #f8fafc;
+      border: 1px solid var(--slate-200);
+      border-radius: 6px;
+      font-size: 0.73rem;
+      color: var(--slate-700);
+      line-height: 1.4;
+      display: none;
     }
 
     .dir-items-container {
@@ -2329,28 +2536,31 @@
     
     <!-- Top Header Bar -->
     <header class="top-header">
-      <!-- Top Row: App Brand & Name -->
+      <!-- Top Row: App Brand & Name + Top Right Corner GPS Pill -->
       <div class="header-brand-row">
         <div class="brand-group">
-          <div class="brand-icon">
-            <!-- Sun / Diagnostic Flare Icon -->
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="5"/>
-              <line x1="12" y1="1" x2="12" y2="3"/>
-              <line x1="12" y1="21" x2="12" y2="23"/>
-              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-              <line x1="1" y1="12" x2="3" y2="12"/>
-              <line x1="21" y1="12" x2="23" y2="12"/>
-              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          <div class="brand-icon" title="Clariti Scanworld">
+            <!-- Clariti Full Logo -->
+            <svg width="36" height="36" viewBox="-15 -15 130 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M 35.355 0 A 35.355 35.355 0 0 1 0 35.355 L 0 70.711 A 70.711 70.711 0 0 0 70.711 0 Z" fill="#21d07c"/>
+              <path d="M 64.645 100 A 35.355 35.355 0 0 1 100 64.645 L 100 29.289 A 70.711 70.711 0 0 0 29.289 100 Z" fill="#21d07c"/>
             </svg>
           </div>
           <div class="brand-title-wrap">
-            <h1 class="app-title">Clariti Scaworld Tracker</h1>
+            <h1 class="app-title">Clariti Scanworld Tracker</h1>
             <span class="app-subtitle">Doctor Call Log</span>
           </div>
         </div>
+
+        <!-- Top Right GPS Status Pill (Shifted from banner, indicates status like Sync Pill) -->
+        <button type="button" id="headerGpsPill" class="gps-status-pill acquiring" title="GPS Status: Tap to view details, refresh or retry">
+          <span id="headerGpsDot" class="gps-status-dot pulse"></span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+          </svg>
+          <span id="headerGpsLabel">GPS...</span>
+        </button>
       </div>
 
       <!-- Second Row: Doctors, Rep, Sync & Settings Pills -->
@@ -2398,33 +2608,18 @@
     <!-- Main Content Container -->
     <main class="content-area">
 
-      <!-- GPS Status Banner (High Sunlight Readability) -->
-      <section class="gps-banner" aria-label="GPS Status">
-        <div class="gps-info-left">
-          <div class="gps-status-row">
-            <span id="gpsBadge" class="gps-badge acquiring">
-              <!-- Location Icon -->
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <circle cx="12" cy="12" r="3" />
-                <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
-              </svg>
-              <span id="gpsStatusLabel">Acquiring GPS...</span>
-            </span>
-            <span id="gpsAccuracyText" class="gps-accuracy">High accuracy mode</span>
-          </div>
-          <div id="gpsCoordsDisplay" class="gps-coords">Searching satellite signal...</div>
+      <!-- Hidden Legacy GPS Elements Container (Preserves references for backward compatibility) -->
+      <div id="legacyGpsElements" style="display: none;" aria-hidden="true">
+        <span id="gpsBadge" class="gps-badge acquiring">
+          <span id="gpsStatusLabel">Acquiring GPS...</span>
+          <span id="gpsAccuracyText">High accuracy mode</span>
+        </span>
+        <div id="gpsCoordsDisplay">Searching satellite signal...</div>
+        <div id="gpsOffBannerStrip" style="display: none;">
+          <button type="button" id="gpsOffStripRetryBtn">Retry GPS</button>
         </div>
-
-        <button id="refreshGpsBtn" class="gps-refresh-btn" type="button" title="Refresh GPS Location">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-            <path d="M3 3v5h5"/>
-            <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
-            <path d="M16 16h5v5"/>
-          </svg>
-          <span>Refresh</span>
-        </button>
-      </section>
+        <button id="refreshGpsBtn" type="button">Refresh</button>
+      </div>
 
       <!-- Clinic Visit Time Tracking Card (Reached Clinic) -->
       <section class="clinic-timer-card" aria-label="Clinic Time Logs">
@@ -2451,7 +2646,7 @@
             </div>
             <div class="btn-stamp-text">
               <span id="quickReachedTitle" class="time-stamp-title">📍 Reached Doctor Clinic</span>
-              <span id="quickReachedSub" class="time-stamp-sub">Tap once upon arrival • Submitting call auto-logs departure</span>
+              <span id="quickReachedSub" class="time-stamp-sub">Tap once upon arrival • Reveals visit details &amp; doctor call log</span>
             </div>
           </button>
         </div>
@@ -2469,8 +2664,8 @@
           </div>
         </div>
 
-        <!-- Visit Location Details: Shifted right below arrival log -->
-        <div class="clinic-location-details">
+        <!-- Visit Location Details: Revealed only after pressing Reached Doctor Clinic -->
+        <div class="clinic-location-details" id="clinicLocationDetails" style="display: none;">
           <!-- Visit Location Type -->
           <div class="form-group" style="margin-bottom: 0;">
             <label class="form-label" style="font-size: 0.78rem; margin-bottom: 5px;">Visit Location Type</label>
@@ -2501,8 +2696,8 @@
         </div>
       </section>
 
-      <!-- Doctor Visit Card / Form -->
-      <section class="form-card" aria-label="Doctor Call Reporting">
+      <!-- Doctor Visit Card / Form (Revealed only after pressing Reached Doctor Clinic) -->
+      <section class="form-card" id="doctorCallCard" aria-label="Doctor Call Reporting" style="display: none;">
         <div class="form-card-header">
           <div class="form-title">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -2525,9 +2720,10 @@
           <div class="form-group">
             <div class="form-label-row">
               <label class="form-label" for="doctorNameInput">Doctor Name *</label>
-              <div class="doctor-quick-actions">
+              <div class="doctor-quick-actions" style="display: flex; align-items: center; gap: 6px;">
                 <span id="doctorLocationFilterTag" class="filter-indicator-tag" style="display: none;"></span>
-                <button type="button" id="openDirectoryBtn" class="link-btn-text" title="View & Manage 400+ doctors master list">Directory (400+)</button>
+                <button type="button" id="openDirectoryBtn" class="action-pill-btn" title="View &amp; Manage doctors master list">📋 Doctors Directory (400)</button>
+                <button type="button" id="addNewDocQuickPillBtn" class="action-pill-btn" title="Register New Doctor or Clinic">➕ New Doctor / Clinic</button>
               </div>
             </div>
             <div class="search-combobox-wrap" id="doctorComboboxWrap">
@@ -2546,177 +2742,166 @@
             </div>
           </div>
 
-          <!-- Doctor Department / Specialty Field (User specified addon field) -->
-          <div class="form-group">
-            <div class="form-label-row">
-              <label class="form-label" for="doctorDepartmentInput">Doctor Department / Specialty</label>
-              <span class="form-sublabel">Auto-filled from Master</span>
-            </div>
-            <div class="department-input-wrap">
-              <input type="text" id="doctorDepartmentInput" class="text-input" placeholder="e.g. General Medicine, Cardiology, Orthopedics..." />
-              <div class="quick-dept-chips" id="quickDeptChips">
-                <button type="button" class="dept-chip" data-dept="General Medicine">Gen Medicine</button>
-                <button type="button" class="dept-chip" data-dept="Cardiology">Cardiology</button>
-                <button type="button" class="dept-chip" data-dept="Orthopedics">Ortho</button>
-                <button type="button" class="dept-chip" data-dept="Pediatrics">Pediatrics</button>
-                <button type="button" class="dept-chip" data-dept="Gynecology">Gynecology</button>
-                <button type="button" class="dept-chip" data-dept="Diabetology">Diabetology</button>
-              </div>
-            </div>
-          </div>
+          <!-- Doctor Department (Auto-fetched from Master Directory upon doctor selection) -->
+          <input type="hidden" id="doctorDepartmentInput" />
 
           <!-- Selected Doctor Profile & OP Schedule Card (Dynamic) -->
           <div id="selectedDoctorCard" class="selected-doctor-profile-card" style="display: none;"></div>
 
-          <!-- Doctor Met Status: Segmented Toggle with 2 Large Pills -->
-          <div class="form-group">
-            <label class="form-label">Doctor Met Status *</label>
-            <div class="segmented-toggle">
-              <button type="button" id="metDoctorBtn" class="toggle-pill met active">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="20 6 9 17 4 12"/>
-                </svg>
-                <span>Met Doctor</span>
-              </button>
-
-              <button type="button" id="notMetDoctorBtn" class="toggle-pill not-met">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="18" y1="6" x2="6" y2="18"/>
-                  <line x1="6" y1="6" x2="18" y2="18"/>
-                </svg>
-                <span>Doctor Not Met</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Dynamic Container 1: When "Met Doctor" is Selected -->
-          <div id="metDoctorFields">
+          <!-- Doctor Call Details Section: Revealed ONLY after a doctor is selected -->
+          <div id="doctorCallDetailsSection" style="display: none;">
             
-            <!-- Discussion Notes & The 4 User Specified Quick Pills -->
+            <!-- Doctor Met Status: Segmented Toggle with 2 Large Pills -->
             <div class="form-group">
-              <div class="form-label-row">
-                <label class="form-label" for="discussionNotes">Discussion / Product Pitch Notes</label>
-                <span class="form-sublabel">Tap pills to add/toggle</span>
+              <label class="form-label">Doctor Met Status *</label>
+              <div class="segmented-toggle">
+                <button type="button" id="metDoctorBtn" class="toggle-pill met active">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  <span>Met Doctor</span>
+                </button>
+
+                <button type="button" id="notMetDoctorBtn" class="toggle-pill not-met">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                  </svg>
+                  <span>Doctor Not Met</span>
+                </button>
               </div>
-              <textarea id="discussionNotes" class="textarea-input" rows="3" placeholder="Enter key discussion points, test referrals, doctor feedback..."></textarea>
+            </div>
+
+            <!-- Dynamic Container 1: When "Met Doctor" is Selected -->
+            <div id="metDoctorFields">
               
-              <!-- 4 Specified Quick Pills: Routine Visit, Case List, Good Feedback, Bad Feedback -->
-              <div class="discussion-pills-wrap" id="discussionPillsWrap">
-                <button type="button" class="disc-chip" data-pill="Routine Visit">
-                  <span>📋 Routine Visit</span>
-                </button>
-                <button type="button" class="disc-chip" data-pill="Case List">
-                  <span>📑 Case List</span>
-                </button>
-                <button type="button" class="disc-chip" data-pill="Good Feedback">
-                  <span>👍 Good Feedback</span>
-                </button>
-                <button type="button" class="disc-chip" data-pill="Bad Feedback">
-                  <span>👎 Bad Feedback</span>
-                </button>
+              <!-- Discussion Notes & The 4 User Specified Quick Pills -->
+              <div class="form-group">
+                <div class="form-label-row">
+                  <label class="form-label" for="discussionNotes">Discussion / Product Pitch Notes</label>
+                  <span class="form-sublabel">Tap pills to add/toggle</span>
+                </div>
+                <textarea id="discussionNotes" class="textarea-input" rows="3" placeholder="Enter key discussion points, test referrals, doctor feedback..."></textarea>
+                
+                <!-- 4 Specified Quick Pills: Routine Visit, Case List, Good Feedback, Bad Feedback -->
+                <div class="discussion-pills-wrap" id="discussionPillsWrap">
+                  <button type="button" class="disc-chip" data-pill="Routine Visit">
+                    <span>📋 Routine Visit</span>
+                  </button>
+                  <button type="button" class="disc-chip" data-pill="Case List">
+                    <span>📑 Case List</span>
+                  </button>
+                  <button type="button" class="disc-chip" data-pill="Good Feedback">
+                    <span>👍 Good Feedback</span>
+                  </button>
+                  <button type="button" class="disc-chip" data-pill="Bad Feedback">
+                    <span>👎 Bad Feedback</span>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Dynamic Container 2: When "Doctor Not Met" is Selected -->
+            <div id="notMetDoctorFields" style="display: none;">
+              <div class="form-group">
+                <div class="form-label-row">
+                  <label class="form-label">Reason for Not Meeting *</label>
+                  <span class="form-sublabel">Select primary reason</span>
+                </div>
+                
+                <div class="quick-chips-wrap" style="display: flex; flex-direction: column; gap: 8px;">
+                  <button type="button" class="reason-chip selected" data-reason="In OT / Surgery">
+                    <span>In OT / Surgery</span>
+                    <span class="check-circle">&#10003;</span>
+                  </button>
+                  <button type="button" class="reason-chip" data-reason="Clinic Closed / Doctor on Leave">
+                    <span>Clinic Closed / Doctor on Leave</span>
+                    <span class="check-circle"></span>
+                  </button>
+                  <button type="button" class="reason-chip" data-reason="Token Exhausted / Heavy Rush">
+                    <span>Token Exhausted / Heavy Rush</span>
+                    <span class="check-circle"></span>
+                  </button>
+                  <button type="button" class="reason-chip" data-reason="Emergency Call">
+                    <span>Emergency Call</span>
+                    <span class="check-circle"></span>
+                  </button>
+                  <button type="button" class="reason-chip" data-reason="Doctor Refused">
+                    <span>Doctor Refused</span>
+                    <span class="check-circle"></span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Optional Additional Remarks when not met -->
+              <div class="form-group">
+                <label class="form-label" for="notMetRemarks">Additional Remarks (Optional)</label>
+                <input type="text" id="notMetRemarks" class="text-input" placeholder="e.g. Next visit planned Thursday morning" />
               </div>
             </div>
 
-          </div>
+            <!-- Submit Actions (Single Doctor vs Multi-Doctor Polyclinic) -->
+            <div class="submit-actions-group">
+              <!-- Secondary Action: Save Doctor & Stay at Clinic to Detail Another Doctor -->
+              <button type="button" id="submitAndAddAnotherBtn" class="submit-secondary-btn" title="Save this doctor call and stay at this clinic to log another doctor">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="8" x2="12" y2="16" />
+                  <line x1="8" y1="12" x2="16" y2="12" />
+                </svg>
+                <span>Submit & Add Another Doctor Here</span>
+              </button>
 
-          <!-- Dynamic Container 2: When "Doctor Not Met" is Selected -->
-          <div id="notMetDoctorFields" style="display: none;">
-            <div class="form-group">
-              <div class="form-label-row">
-                <label class="form-label">Reason for Not Meeting *</label>
-                <span class="form-sublabel">Select primary reason</span>
-              </div>
-              
-              <div class="quick-chips-wrap" style="display: flex; flex-direction: column; gap: 8px;">
-                <button type="button" class="reason-chip selected" data-reason="In OT / Surgery">
-                  <span>In OT / Surgery</span>
-                  <span class="check-circle">&#10003;</span>
-                </button>
-                <button type="button" class="reason-chip" data-reason="Clinic Closed / Doctor on Leave">
-                  <span>Clinic Closed / Doctor on Leave</span>
-                  <span class="check-circle"></span>
-                </button>
-                <button type="button" class="reason-chip" data-reason="Token Exhausted / Heavy Rush">
-                  <span>Token Exhausted / Heavy Rush</span>
-                  <span class="check-circle"></span>
-                </button>
-                <button type="button" class="reason-chip" data-reason="Emergency Call">
-                  <span>Emergency Call</span>
-                  <span class="check-circle"></span>
-                </button>
-                <button type="button" class="reason-chip" data-reason="Doctor Refused">
-                  <span>Doctor Refused</span>
-                  <span class="check-circle"></span>
-                </button>
-              </div>
+              <!-- Primary Action: Submit Doctor Call & Conclude Clinic Visit -->
+              <button type="button" id="submitCallBtn" class="submit-btn" title="Save this doctor call and conclude this clinic visit">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                  <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+                <span>Submit Call & Conclude Clinic Visit</span>
+              </button>
             </div>
-
-            <!-- Optional Additional Remarks when not met -->
-            <div class="form-group">
-              <label class="form-label" for="notMetRemarks">Additional Remarks (Optional)</label>
-              <input type="text" id="notMetRemarks" class="text-input" placeholder="e.g. Next visit planned Thursday morning" />
-            </div>
-          </div>
-
-          <!-- Submit Actions (Single Doctor vs Multi-Doctor Polyclinic) -->
-          <div class="submit-actions-group">
-            <!-- Secondary Action: Save Doctor & Stay at Clinic to Detail Another Doctor -->
-            <button type="button" id="submitAndAddAnotherBtn" class="submit-secondary-btn" title="Save this doctor call and stay at this clinic to log another doctor">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <div class="submit-sub-hint">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10" />
-                <line x1="12" y1="8" x2="12" y2="16" />
-                <line x1="8" y1="12" x2="16" y2="12" />
+                <polyline points="12 6 12 12 16 14" />
               </svg>
-              <span>Submit & Add Another Doctor Here</span>
-            </button>
+              <span>"Conclude Visit" auto-logs departure time • "Add Another" keeps clinic arrival & timer active</span>
+            </div>
 
-            <!-- Primary Action: Submit Doctor Call & Conclude Clinic Visit -->
-            <button type="button" id="submitCallBtn" class="submit-btn" title="Save this doctor call and conclude this clinic visit">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                <polyline points="22 4 12 14.01 9 11.01"/>
-              </svg>
-              <span>Submit Call & Conclude Clinic Visit</span>
-            </button>
-          </div>
-          <div class="submit-sub-hint">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10" />
-              <polyline points="12 6 12 12 16 14" />
-            </svg>
-            <span>"Conclude Visit" auto-logs departure time • "Add Another" keeps clinic arrival & timer active</span>
-          </div>
+            <!-- Clinic Visit Time Status Strip: Shifted below the Conclude Clinic Visit Button -->
+            <div class="clinic-time-summary-strip" id="clinicTimeSummaryBox" style="margin-top: 14px; margin-bottom: 0;">
+              <div class="time-summary-content">
+                <span class="time-summary-label">Clinic Visit Time</span>
+                <div class="time-summary-badges">
+                  <span>🟢 In: <strong id="summaryReachedTime">Not stamped</strong></span>
+                  <span style="color: var(--slate-400);">➔</span>
+                  <span>🔴 Out: <strong id="summaryLeftTime">Pending</strong></span>
+                  <span id="summaryDurationBadge" class="time-summary-duration">0 mins</span>
+                </div>
+              </div>
+              <button type="button" id="adjustTimeToggleBtn" class="edit-time-link" title="Manually adjust times if required">Adjust</button>
+            </div>
 
-          <!-- Clinic Visit Time Status Strip: Shifted below the Conclude Clinic Visit Button -->
-          <div class="clinic-time-summary-strip" id="clinicTimeSummaryBox" style="margin-top: 14px; margin-bottom: 0;">
-            <div class="time-summary-content">
-              <span class="time-summary-label">Clinic Visit Time</span>
-              <div class="time-summary-badges">
-                <span>🟢 In: <strong id="summaryReachedTime">Not stamped</strong></span>
-                <span style="color: var(--slate-400);">➔</span>
-                <span>🔴 Out: <strong id="summaryLeftTime">Pending</strong></span>
-                <span id="summaryDurationBadge" class="time-summary-duration">0 mins</span>
+            <!-- Collapsible Drawer for Manual Adjustments (Hidden by default) -->
+            <div id="manualTimeDrawer" class="manual-time-drawer">
+              <div class="time-col">
+                <span class="time-col-label">Reached Time (In)</span>
+                <input type="time" id="reachedTimeInput" class="time-input-field" />
+              </div>
+              <div class="time-col">
+                <span class="time-col-label">Left Time (Out)</span>
+                <input type="time" id="leftTimeInput" class="time-input-field" />
               </div>
             </div>
-            <button type="button" id="adjustTimeToggleBtn" class="edit-time-link" title="Manually adjust times if required">Adjust</button>
-          </div>
 
-          <!-- Collapsible Drawer for Manual Adjustments (Hidden by default) -->
-          <div id="manualTimeDrawer" class="manual-time-drawer">
-            <div class="time-col">
-              <span class="time-col-label">Reached Time (In)</span>
-              <input type="time" id="reachedTimeInput" class="time-input-field" />
-            </div>
-            <div class="time-col">
-              <span class="time-col-label">Left Time (Out)</span>
-              <input type="time" id="leftTimeInput" class="time-input-field" />
-            </div>
           </div>
         </form>
       </section>
 
-      <!-- Today's Activity Timeline / History Section (Exclusively Doctor Calls & Clinic Logs) -->
-      <section class="timeline-section" aria-label="Today's Doctor Call Logs">
+      <!-- Today's Activity Timeline / History Section (Exclusively Doctor Calls & Clinic Logs - ALWAYS VISIBLE) -->
+      <section class="timeline-section" id="historyCard" aria-label="Today's Doctor Call Logs">
         <div class="timeline-header-row">
           <h2 class="timeline-title">Today's Call & Time Logs</h2>
           <span id="todayDateLabel" style="font-size: 0.75rem; font-weight: 700; color: var(--slate-500);">Today</span>
@@ -2752,7 +2937,7 @@
             </svg>
             <span>Export DCR (CSV)</span>
           </button>
-          <button type="button" id="clearHistoryBtn" class="secondary-btn" style="color: var(--danger); border-color: var(--danger-border);">
+          <button type="button" id="clearHistoryBtn" class="secondary-btn" style="color: var(--danger); border-color: var(--danger-border);" title="Clear today's doctor calls and reset active visit">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="3 6 5 6 21 6"/>
               <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
@@ -2760,9 +2945,37 @@
             <span>Clear Today</span>
           </button>
         </div>
+        <div style="text-align: center; margin-top: 6px; font-size: 0.70rem; color: var(--slate-500);">
+          ⏰ Call logs automatically reset at midnight (12:00 AM) • Tap "Clear Today" anytime to reset manually
+        </div>
       </section>
 
     </main>
+
+    <!-- Clear Today Confirmation Modal (Replaces blocked window.confirm) -->
+    <div id="clearHistoryModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="clearModalTitle">
+      <div class="modal-sheet" style="max-width: 440px; padding: 22px 20px 20px; border-radius: 20px 20px 0 0; text-align: center;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #fee2e2; color: #dc2626; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6"/>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+            <line x1="10" y1="11" x2="10" y2="17"/>
+            <line x1="14" y1="11" x2="14" y2="17"/>
+          </svg>
+        </div>
+        <h3 id="clearModalTitle" style="font-size: 1.15rem; font-weight: 800; color: var(--slate-900); margin: 0 0 6px;">Clear Today's Doctor Calls?</h3>
+        <p style="font-size: 0.82rem; color: var(--slate-600); margin: 0 0 16px; line-height: 1.45;">
+          This will clear all doctor visit entries logged today and reset any ongoing clinic timer. Records already synced to Google Sheets remain safely stored.
+        </p>
+        <div style="background: #f8fafc; border: 1px solid var(--slate-200); border-radius: 8px; padding: 9px 12px; margin-bottom: 18px; font-size: 0.74rem; color: var(--slate-600); text-align: left; line-height: 1.4;">
+          ⏰ <strong>Daily auto-reset:</strong> Calls reset automatically every night at <strong>12:00 AM midnight</strong> for the new day. Tap "Yes, Clear Today" whenever you need to manually restart today's session.
+        </div>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+          <button type="button" id="cancelClearTodayBtn" class="secondary-btn" style="flex: 1; padding: 11px; font-weight: 700; font-size: 0.86rem;">Cancel</button>
+          <button type="button" id="confirmClearTodayBtn" class="primary-btn" style="flex: 1; padding: 11px; background: #dc2626; border-color: #dc2626; font-weight: 800; font-size: 0.86rem; color: #ffffff;">Yes, Clear Today</button>
+        </div>
+      </div>
+    </div>
 
     <!-- Settings Modal Drawer -->
     <div id="settingsModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
@@ -2773,36 +2986,26 @@
               <circle cx="12" cy="12" r="3"/>
               <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
             </svg>
-            <span>Clariti Scaworld Sync</span>
+            <span id="settingsModalTitleText">Clariti Scanworld Sync</span>
           </h3>
           <button type="button" id="closeSettingsBtn" class="close-btn" aria-label="Close settings">&times;</button>
         </div>
 
-        <!-- Google Apps Script URL Input -->
+        <!-- Default Rep Profile Info (Protected with Edit Pill) -->
         <div class="form-group">
-          <label class="form-label" for="webhookUrlInput">Google Apps Script Web App URL</label>
-          <input type="url" id="webhookUrlInput" class="text-input" placeholder="https://script.google.com/macros/s/.../exec" />
-          <p style="font-size: 0.70rem; color: var(--slate-500); margin-top: 4px;">
-            Leave blank for offline / local-only operation.
-          </p>
-        </div>
-
-        <button type="button" id="testWebhookBtn" class="secondary-btn" style="width: 100%;">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-          </svg>
-          <span>Test Webhook Connection</span>
-        </button>
-
-        <!-- Default Rep Profile Info -->
-        <div class="form-group">
-          <label class="form-label" for="settingsRepName">Default Executive Name</label>
-          <input type="text" id="settingsRepName" class="text-input" placeholder="e.g. Rahul Sharma" />
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+            <label class="form-label" for="settingsRepName" style="margin-bottom: 0;">Default Executive Name</label>
+            <button type="button" id="editRepNameBtn" class="pill-btn-action">✏️ Edit</button>
+          </div>
+          <input type="text" id="settingsRepName" class="text-input" placeholder="e.g. Rahul Sharma" readonly style="background: #f1f5f9; cursor: not-allowed;" />
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="settingsRepId">Employee ID / Territory</label>
-          <input type="text" id="settingsRepId" class="text-input" placeholder="e.g. SD-8802 / Central Hub" />
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+            <label class="form-label" for="settingsRepId" style="margin-bottom: 0;">Employee ID / Territory</label>
+            <button type="button" id="editRepIdBtn" class="pill-btn-action">✏️ Edit</button>
+          </div>
+          <input type="text" id="settingsRepId" class="text-input" placeholder="e.g. SD-8802 / Central Hub" readonly style="background: #f1f5f9; cursor: not-allowed;" />
         </div>
 
         <!-- Doctors Master Directory Link inside Settings -->
@@ -3248,12 +3451,39 @@ function jsonResponse(obj) {
             <p style="margin-top: 6px;">3. Click <strong>Deploy &gt; Manage deployments</strong> (or <strong>New deployment</strong>)</p>
             <p style="margin-top: 2px;">4. Click <strong>Edit (pencil icon) &gt; Version: New version &gt; Deploy</strong> so Google Sheets runs the updated script (Doctor Name strictly in <strong>Column B</strong>).</p>
             <p style="margin-top: 2px;">5. Ensure <em>Execute as:</em> <strong>Me</strong> and <em>Who has access:</em> <strong>Anyone</strong>.</p>
-            <p style="margin-top: 2px;">6. Copy Web app URL and paste into the Webhook URL field above.</p>
+            <p style="margin-top: 2px;">6. Copy Web app URL and paste into the Webhook URL field below.</p>
+          </div>
+        </details>
+
+        <!-- Google Apps Script Web App URL & Test in Collapsible Dropdown (Locked by default) -->
+        <details class="script-guide" id="webhookSettingsAccordion" style="margin-top: 10px;">
+          <summary style="font-weight: 700; cursor: pointer; color: var(--brand-orange); display: flex; align-items: center; justify-content: space-between;">
+            <span>🔗 Google Apps Script Web App URL &amp; Test</span>
+            <span style="font-size: 0.70rem; color: var(--slate-500); font-weight: normal;">Tap to configure ▾</span>
+          </summary>
+          <div style="margin-top: 10px;">
+            <div class="form-group">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                <label class="form-label" for="webhookUrlInput" style="margin-bottom: 0;">Web App URL</label>
+                <button type="button" id="editWebhookUrlBtn" class="pill-btn-action" style="font-size: 0.68rem; padding: 2px 7px; font-weight: 700;">✏️ Change URL</button>
+              </div>
+              <input type="url" id="webhookUrlInput" class="text-input" placeholder="https://script.google.com/macros/s/.../exec" readonly style="background: #f1f5f9; cursor: not-allowed;" />
+              <p style="font-size: 0.70rem; color: var(--slate-500); margin-top: 4px;">
+                Protected against accidental changes. Tap "Change URL" to edit. Leave blank for offline / local-only.
+              </p>
+            </div>
+
+            <button type="button" id="testWebhookBtn" class="secondary-btn" style="width: 100%; margin-top: 6px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+              <span>Test Webhook Connection</span>
+            </button>
           </div>
         </details>
 
         <!-- Save Button -->
-        <button type="button" id="saveSettingsBtn" class="submit-btn" style="margin-top: 6px;">
+        <button type="button" id="saveSettingsBtn" class="submit-btn" style="margin-top: 10px;">
           <span>Save Settings</span>
         </button>
       </div>
@@ -3275,10 +3505,12 @@ function jsonResponse(obj) {
           <button type="button" id="closeDocDirBtn" class="close-btn" aria-label="Close directory">&times;</button>
         </div>
 
-        <!-- Modal Tab Bar -->
+        <!-- Modal Tab Bar with Tabs in one row -->
         <div class="modal-tab-bar">
           <button type="button" class="modal-tab-btn active" data-tab="tab-all-docs" id="tabBtnAllDocs">All Doctors (<span id="tabDocsCount">0</span>)</button>
           <button type="button" class="modal-tab-btn" data-tab="tab-add" id="tabBtnAdd">➕ Add Doctor</button>
+          <button type="button" id="dirSyncGsheetBtn" class="modal-tab-btn tab-action" title="Sync doctors list from Google Sheet">🔄 Sync Doctors</button>
+          <button type="button" id="dirClearAndSyncBtn" class="modal-tab-btn tab-action tab-action-danger" title="Clear local doctors and re-sync from Google Sheet">🗑️ Clear &amp; Resync</button>
         </div>
 
         <!-- Tab 1: All Doctors (Search, filter, view details, tag GPS, edit) -->
@@ -3289,10 +3521,6 @@ function jsonResponse(obj) {
 
           <div class="dir-stats-row" style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
             <span id="dirFilteredCountText">Showing all doctors</span>
-            <div style="display: flex; gap: 6px;">
-              <button type="button" id="dirClearAndSyncBtn" class="secondary-btn" style="padding: 4px 8px; font-size: 0.72rem; color: #dc2626; border-color: #fca5a5; background: #fff1f2; font-weight: 700;" title="Clear local doctors and re-sync from Google Sheet">🗑️ Clear & Re-Sync</button>
-              <button type="button" id="dirSyncGsheetBtn" class="sync-gsheet-btn" title="Sync doctors list from Google Sheet">🔄 Sync Doctors</button>
-            </div>
           </div>
 
           <div id="dirDoctorsList" class="dir-items-container">
@@ -3307,7 +3535,7 @@ function jsonResponse(obj) {
               ➕ Add New Doctor
             </div>
             <div class="form-group">
-              <label class="form-label" for="newDocName">Doctor Name *</label>
+              <label class="form-label" for="newDocName">Doctor Name and Degree *</label>
               <div class="doc-input-prefix-group">
                 <span class="doc-name-fixed-prefix" aria-hidden="true">DR.</span>
                 <input type="text" id="newDocName" class="text-input" placeholder="e.g. K. VENKATARAMAN, MD" required style="text-transform: uppercase;" />
@@ -3320,13 +3548,44 @@ function jsonResponse(obj) {
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="newDocDept">Specialty / Department</label>
-              <input type="text" id="newDocDept" class="text-input" placeholder="e.g. Pediatrics, Cardiology, Orthopedics..." style="text-transform: uppercase;" />
+              <label class="form-label" for="newDocDeptSelect">Specialty / Department</label>
+              <select id="newDocDeptSelect" class="text-input" style="font-weight: 700;">
+                <option value="">-- SELECT SPECIALTY / DEPARTMENT --</option>
+                <option value="GENERAL MEDICINE">GENERAL MEDICINE</option>
+                <option value="CARDIOLOGY">CARDIOLOGY</option>
+                <option value="ORTHOPEDICS">ORTHOPEDICS</option>
+                <option value="PEDIATRICS">PEDIATRICS</option>
+                <option value="GYNECOLOGY &amp; OBSTETRICS">GYNECOLOGY &amp; OBSTETRICS</option>
+                <option value="DIABETOLOGY">DIABETOLOGY</option>
+                <option value="DERMATOLOGY">DERMATOLOGY</option>
+                <option value="NEUROLOGY">NEUROLOGY</option>
+                <option value="GASTROENTEROLOGY">GASTROENTEROLOGY</option>
+                <option value="GENERAL SURGERY">GENERAL SURGERY</option>
+                <option value="PULMONOLOGY / CHEST MEDICINE">PULMONOLOGY / CHEST MEDICINE</option>
+                <option value="ENT (EAR, NOSE, THROAT)">ENT (EAR, NOSE, THROAT)</option>
+                <option value="OPHTHALMOLOGY">OPHTHALMOLOGY</option>
+                <option value="NEPHROLOGY">NEPHROLOGY</option>
+                <option value="UROLOGY">UROLOGY</option>
+                <option value="PSYCHIATRY">PSYCHIATRY</option>
+                <option value="ONCOLOGY">ONCOLOGY</option>
+                <option value="RADIOLOGY">RADIOLOGY</option>
+                <option value="BAMS">BAMS</option>
+                <option value="BHMS">BHMS</option>
+                <option value="OTHERS">OTHERS (SPECIFY)</option>
+              </select>
+              <div id="newDocDeptOtherWrap" style="display: none; margin-top: 6px;">
+                <input type="text" id="newDocDeptOther" class="text-input" placeholder="TYPE SPECIALTY HERE (ALL CAPS)..." style="text-transform: uppercase;" />
+              </div>
+              <input type="hidden" id="newDocDept" />
             </div>
 
             <div class="form-group">
               <label class="form-label" for="newDocPhone">Doctor Contact Number</label>
-              <input type="tel" id="newDocPhone" class="text-input" placeholder="e.g. +91 98400 12345 (Phone / WhatsApp)" style="text-transform: uppercase;" />
+              <div class="doc-input-prefix-group">
+                <span class="doc-name-fixed-prefix" aria-hidden="true">+91</span>
+                <input type="tel" id="newDocPhone" class="text-input" placeholder="9840012345" maxlength="10" inputmode="numeric" pattern="[0-9]{10}" autocomplete="tel-national" />
+              </div>
+              <div style="font-size: 0.68rem; color: var(--slate-500); margin-top: 3px;">10-digit mobile number without spaces</div>
             </div>
 
             <!-- OP Timings by Day (24-Hour Format) -->
@@ -3538,9 +3797,15 @@ function jsonResponse(obj) {
               </div>
             </div>
 
-            <div class="form-group">
-              <label class="form-label" for="newDocBestTime">Best Time to Meet</label>
-              <input type="text" id="newDocBestTime" class="text-input" placeholder="e.g. 13:15 - 14:00" style="text-transform: uppercase;" />
+            <div class="form-group" style="margin-bottom: 12px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                <label class="form-label" style="margin-bottom: 0;">Best Time to Meet</label>
+                <button type="button" id="addBestTimeSlotBtn" class="pill-btn-action" style="font-size: 0.68rem; padding: 2px 8px; font-weight: 700; background: #fef3c7; color: #b45309; border-color: #fcd34d;">➕ Add Day / Time</button>
+              </div>
+              <div id="bestTimeSlotsContainer" style="display: flex; flex-direction: column; gap: 6px; background: #f8fafc; border: 1px solid var(--slate-200); border-radius: 8px; padding: 8px;">
+                <!-- Populated dynamically via JS -->
+              </div>
+              <input type="hidden" id="newDocBestTime" />
             </div>
 
             <div class="form-group">
@@ -3563,6 +3828,91 @@ function jsonResponse(obj) {
               </button>
             </div>
           </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dedicated GPS Status & Refresh Popup Modal (Tapped from Top-Right GPS Pill) -->
+    <div id="gpsInfoModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="gpsModalTitle" style="display: none;">
+      <div class="modal-sheet" style="max-width: 420px; padding: 22px; border-radius: 20px 20px 0 0;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="width: 36px; height: 36px; border-radius: 10px; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <circle cx="12" cy="12" r="3" />
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+              </svg>
+            </div>
+            <div>
+              <h3 id="gpsModalTitle" style="font-size: 1.1rem; font-weight: 800; color: var(--slate-900); margin: 0; line-height: 1.2;">Phone GPS Status</h3>
+              <span style="font-size: 0.72rem; color: var(--slate-500); font-weight: 600;">Field executive location services</span>
+            </div>
+          </div>
+          <button type="button" id="closeGpsInfoModalBtn" class="close-btn" aria-label="Close">&times;</button>
+        </div>
+
+        <!-- Live Status Card -->
+        <div id="gpsModalStatusCard" style="background: #f8fafc; border: 1.5px solid var(--slate-200); border-radius: 12px; padding: 14px; margin-bottom: 16px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+            <span style="font-size: 0.74rem; font-weight: 700; color: var(--slate-600); text-transform: uppercase; letter-spacing: 0.04em;">Satellite Signal</span>
+            <span id="gpsModalStatusBadge" style="font-size: 0.76rem; font-weight: 800; padding: 3px 9px; border-radius: var(--radius-pill); display: inline-flex; align-items: center; gap: 5px; background: #fef3c7; color: #b45309; border: 1px solid #fcd34d;">
+              <span id="gpsModalStatusDot" class="status-dot pulse"></span>
+              <span id="gpsModalStatusText">Acquiring satellite...</span>
+            </span>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 6px; font-size: 0.82rem; color: var(--slate-700);">
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--slate-500);">Coordinates:</span>
+              <strong id="gpsModalCoordsText" style="font-family: monospace; font-size: 0.84rem;">Locating...</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--slate-500);">Precision:</span>
+              <strong id="gpsModalAccuracyText">--</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--slate-500);">Status:</span>
+              <span id="gpsModalTimestampText" style="font-size: 0.78rem;">Updating...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <button type="button" id="gpsModalRefreshBtn" class="submit-btn" style="justify-content: center; font-weight: 800; background: #0284c7;">
+            🔄 Refresh / Retry Satellite GPS Lock
+          </button>
+          <a id="gpsModalMapsLink" href="#" target="_blank" rel="noopener noreferrer" class="secondary-btn" style="display: none; justify-content: center; text-decoration: none; font-weight: 700; color: #047857; background: #ecfdf5; border-color: #a7f3d0;">
+            📍 View My Location on Google Maps
+          </a>
+          <button type="button" id="gpsModalDismissBtn" class="secondary-btn" style="justify-content: center;">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- GPS Off Prompt Modal -->
+    <div id="gpsOffModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="gpsOffTitle" style="display: none;">
+      <div class="modal-sheet" style="max-width: 400px; padding: 20px; border-radius: 20px 20px 0 0; text-align: center;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #fee2e2; color: #dc2626; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
+        </div>
+        <h3 id="gpsOffTitle" style="font-size: 1.15rem; font-weight: 800; color: var(--slate-900); margin: 0 0 6px;">Phone GPS Is Turned Off</h3>
+        <p style="font-size: 0.82rem; color: var(--slate-600); margin: 0 0 16px; line-height: 1.45;">
+          Device GPS / Location Services are currently disabled or unavailable on your phone. Please <strong>turn ON GPS</strong> in your phone's quick settings or settings, then tap <strong>Retry GPS</strong> below.
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <button type="button" id="retryGpsFromModalBtn" class="submit-btn" style="background: #dc2626; justify-content: center; font-weight: 800;">
+            🔄 Turn GPS On &amp; Retry
+          </button>
+          <button type="button" id="dismissGpsOffModalBtn" class="secondary-btn" style="justify-content: center;">
+            Dismiss
+          </button>
         </div>
       </div>
     </div>
@@ -3630,11 +3980,31 @@ function jsonResponse(obj) {
       let selectedPillTags = new Set(); // Routine Visit, Case List, Good Feedback, Bad Feedback
 
       // DOM Elements
+      const headerGpsPill = document.getElementById('headerGpsPill');
+      const headerGpsDot = document.getElementById('headerGpsDot');
+      const headerGpsLabel = document.getElementById('headerGpsLabel');
+      const gpsInfoModal = document.getElementById('gpsInfoModal');
+      const closeGpsInfoModalBtn = document.getElementById('closeGpsInfoModalBtn');
+      const gpsModalDismissBtn = document.getElementById('gpsModalDismissBtn');
+      const gpsModalRefreshBtn = document.getElementById('gpsModalRefreshBtn');
+      const gpsModalMapsLink = document.getElementById('gpsModalMapsLink');
+      const gpsModalStatusCard = document.getElementById('gpsModalStatusCard');
+      const gpsModalStatusBadge = document.getElementById('gpsModalStatusBadge');
+      const gpsModalStatusDot = document.getElementById('gpsModalStatusDot');
+      const gpsModalStatusText = document.getElementById('gpsModalStatusText');
+      const gpsModalCoordsText = document.getElementById('gpsModalCoordsText');
+      const gpsModalAccuracyText = document.getElementById('gpsModalAccuracyText');
+      const gpsModalTimestampText = document.getElementById('gpsModalTimestampText');
+
       const gpsBadge = document.getElementById('gpsBadge');
       const gpsStatusLabel = document.getElementById('gpsStatusLabel');
       const gpsAccuracyText = document.getElementById('gpsAccuracyText');
       const gpsCoordsDisplay = document.getElementById('gpsCoordsDisplay');
       const refreshGpsBtn = document.getElementById('refreshGpsBtn');
+
+      const clinicLocationDetails = document.getElementById('clinicLocationDetails');
+      const doctorCallCard = document.getElementById('doctorCallCard');
+      const doctorCallDetailsSection = document.getElementById('doctorCallDetailsSection');
 
       const syncStatusPill = document.getElementById('syncStatusPill');
       const syncStatusText = document.getElementById('syncStatusText');
@@ -3671,6 +4041,7 @@ function jsonResponse(obj) {
       const clearDoctorBtn = document.getElementById('clearDoctorBtn');
       const doctorLocationFilterTag = document.getElementById('doctorLocationFilterTag');
       const openDirectoryBtn = document.getElementById('openDirectoryBtn');
+      const addNewDocQuickPillBtn = document.getElementById('addNewDocQuickPillBtn');
 
       // Department & Selected Profile Card Elements
       const doctorDepartmentInput = document.getElementById('doctorDepartmentInput');
@@ -3709,11 +4080,21 @@ function jsonResponse(obj) {
       const webhookUrlInput = document.getElementById('webhookUrlInput');
       const settingsRepName = document.getElementById('settingsRepName');
       const settingsRepId = document.getElementById('settingsRepId');
+      const editRepNameBtn = document.getElementById('editRepNameBtn');
+      const editRepIdBtn = document.getElementById('editRepIdBtn');
+      const editWebhookUrlBtn = document.getElementById('editWebhookUrlBtn');
       const saveSettingsBtn = document.getElementById('saveSettingsBtn');
       const testWebhookBtn = document.getElementById('testWebhookBtn');
       const copyScriptBtn = document.getElementById('copyScriptBtn');
       const settingsDocCountBadge = document.getElementById('settingsDocCountBadge');
       const openDirFromSettingsBtn = document.getElementById('openDirFromSettingsBtn');
+
+      // GPS Off Elements
+      const gpsOffModal = document.getElementById('gpsOffModal');
+      const retryGpsFromModalBtn = document.getElementById('retryGpsFromModalBtn');
+      const dismissGpsOffModalBtn = document.getElementById('dismissGpsOffModalBtn');
+      const gpsOffBannerStrip = document.getElementById('gpsOffBannerStrip');
+      const gpsOffStripRetryBtn = document.getElementById('gpsOffStripRetryBtn');
 
       // Doctors Directory Modal Elements
       const doctorsDirectoryModal = document.getElementById('doctorsDirectoryModal');
@@ -3734,9 +4115,14 @@ function jsonResponse(obj) {
       const addDocFormHeader = document.getElementById('addDocFormHeader');
       const newDocName = document.getElementById('newDocName');
       const newDocClinic = document.getElementById('newDocClinic');
+      const newDocDeptSelect = document.getElementById('newDocDeptSelect');
+      const newDocDeptOtherWrap = document.getElementById('newDocDeptOtherWrap');
+      const newDocDeptOther = document.getElementById('newDocDeptOther');
       const newDocDept = document.getElementById('newDocDept');
       const newDocPhone = document.getElementById('newDocPhone');
       const newDocBestTime = document.getElementById('newDocBestTime');
+      const addBestTimeSlotBtn = document.getElementById('addBestTimeSlotBtn');
+      const bestTimeSlotsContainer = document.getElementById('bestTimeSlotsContainer');
       const newDocLat = document.getElementById('newDocLat');
       const newDocLng = document.getElementById('newDocLng');
       const newDocLockGpsBtn = document.getElementById('newDocLockGpsBtn');
@@ -3756,6 +4142,9 @@ function jsonResponse(obj) {
 
       const exportDcrBtn = document.getElementById('exportDcrBtn');
       const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+      const clearHistoryModal = document.getElementById('clearHistoryModal');
+      const cancelClearTodayBtn = document.getElementById('cancelClearTodayBtn');
+      const confirmClearTodayBtn = document.getElementById('confirmClearTodayBtn');
       const toastNotification = document.getElementById('toastNotification');
       const toastMessage = document.getElementById('toastMessage');
 
@@ -3898,9 +4287,27 @@ function jsonResponse(obj) {
         }
         if (repNameInput) repNameInput.value = settings.repName || 'Field Executive';
         if (headerRepDisplay) headerRepDisplay.textContent = settings.repName || 'Field Executive';
-        webhookUrlInput.value = settings.webhookUrl || '';
-        settingsRepName.value = settings.repName || 'Field Executive';
-        settingsRepId.value = settings.repId || 'SD-101';
+        if (webhookUrlInput) {
+          webhookUrlInput.value = settings.webhookUrl || '';
+          webhookUrlInput.readOnly = true;
+          webhookUrlInput.style.background = '#f1f5f9';
+          webhookUrlInput.style.cursor = 'not-allowed';
+        }
+        if (settingsRepName) {
+          settingsRepName.value = settings.repName || 'Field Executive';
+          settingsRepName.readOnly = true;
+          settingsRepName.style.background = '#f1f5f9';
+          settingsRepName.style.cursor = 'not-allowed';
+        }
+        if (settingsRepId) {
+          settingsRepId.value = settings.repId || 'SD-101';
+          settingsRepId.readOnly = true;
+          settingsRepId.style.background = '#f1f5f9';
+          settingsRepId.style.cursor = 'not-allowed';
+        }
+        if (editRepNameBtn) editRepNameBtn.textContent = '✏️ Edit';
+        if (editRepIdBtn) editRepIdBtn.textContent = '✏️ Edit';
+        if (editWebhookUrlBtn) editWebhookUrlBtn.textContent = '✏️ Change URL';
         updateSyncPill();
       }
 
@@ -3910,6 +4317,26 @@ function jsonResponse(obj) {
         settings.repId = settingsRepId.value.trim();
         if (repNameInput) repNameInput.value = settings.repName;
         if (headerRepDisplay) headerRepDisplay.textContent = settings.repName;
+
+        // Re-lock fields
+        if (settingsRepName) {
+          settingsRepName.readOnly = true;
+          settingsRepName.style.background = '#f1f5f9';
+          settingsRepName.style.cursor = 'not-allowed';
+          if (editRepNameBtn) editRepNameBtn.textContent = '✏️ Edit';
+        }
+        if (settingsRepId) {
+          settingsRepId.readOnly = true;
+          settingsRepId.style.background = '#f1f5f9';
+          settingsRepId.style.cursor = 'not-allowed';
+          if (editRepIdBtn) editRepIdBtn.textContent = '✏️ Edit';
+        }
+        if (webhookUrlInput) {
+          webhookUrlInput.readOnly = true;
+          webhookUrlInput.style.background = '#f1f5f9';
+          webhookUrlInput.style.cursor = 'not-allowed';
+          if (editWebhookUrlBtn) editWebhookUrlBtn.textContent = '✏️ Change URL';
+        }
 
         try {
           localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
@@ -3937,16 +4364,21 @@ function jsonResponse(obj) {
         return Math.round(R * c);
       }
 
-      // Load Doctors Master List from LocalStorage (Purging any old sample doctors)
+      // Load Doctors Master List from LocalStorage (Purging any old sample doctors and undefined clinics)
       function loadDoctors() {
         try {
           const stored = localStorage.getItem(STORAGE_KEYS.DOCTORS) || localStorage.getItem('clariti_doctors_master_v2') || localStorage.getItem('soorya_doctors_master_v2');
           if (stored) {
             doctors = JSON.parse(stored);
-            // Purge any previously cached dummy demo doctors
+            // Purge dummy demo doctors and sanitize 'undefined'
             doctors = doctors.filter(d => {
               if (d.clinic && d.clinic.toLowerCase().includes('city care polyclinic')) return false;
               return true;
+            }).map(d => {
+              if (d.clinic && (d.clinic.toLowerCase() === 'undefined' || d.clinic.toLowerCase() === 'null')) {
+                d.clinic = '';
+              }
+              return d;
             });
             saveDoctors();
           } else {
@@ -3972,6 +4404,9 @@ function jsonResponse(obj) {
         const count = doctors.length;
         if (headerDocCountDisplay) {
           headerDocCountDisplay.textContent = `Doctors (${count})`;
+        }
+        if (openDirectoryBtn) {
+          openDirectoryBtn.textContent = `Doctors Directory (${count})`;
         }
         if (tabDocsCount) {
           tabDocsCount.textContent = count;
@@ -4008,20 +4443,21 @@ function jsonResponse(obj) {
         await syncDoctorsFromSheet(silent);
       }
 
-      // Unique Clinics derived from Doctor Directory
+      // Unique Clinics derived from Doctor Directory (strictly excluding undefined or null)
       function getUniqueClinics() {
         const map = new Map();
         doctors.forEach(doc => {
-          const clinic = (doc.clinic || '').trim();
-          if (!clinic) return;
+          let clinic = (doc.clinic || '').trim();
+          if (!clinic || clinic.toLowerCase() === 'undefined' || clinic.toLowerCase() === 'null') return;
           const key = clinic.toLowerCase();
           if (!map.has(key)) {
             map.set(key, {
               name: clinic,
-              location_type: doc.location_type || (clinic.toLowerCase().includes('hospital') ? 'Hospital' : 'Clinic'),
+              location_type: (doc.location_type && doc.location_type.toLowerCase() !== 'undefined') ? doc.location_type : (clinic.toLowerCase().includes('hospital') ? 'Hospital' : 'Clinic'),
               count: 0,
               latitude: doc.latitude || null,
-              longitude: doc.longitude || null
+              longitude: doc.longitude || null,
+              distance: null
             });
           }
           const item = map.get(key);
@@ -4052,20 +4488,21 @@ function jsonResponse(obj) {
           filtered = clinics.filter(c => c.name.toLowerCase().includes(trimmed));
         }
 
-        // Distance sorting if GPS locked
-        if (currentGps.locked && currentGps.lat) {
-          filtered.forEach(c => {
-            c.distance = getDistanceMeters(currentGps.lat, currentGps.lng, c.latitude, c.longitude);
-          });
-          filtered.sort((a, b) => {
-            if (a.distance !== null && b.distance !== null) return a.distance - b.distance;
-            if (a.distance !== null) return -1;
-            if (b.distance !== null) return 1;
-            return a.name.localeCompare(b.name);
-          });
-        } else {
-          filtered.sort((a, b) => a.name.localeCompare(b.name));
-        }
+        // Distance calculation & sorting if GPS locked
+        filtered.forEach(c => {
+          c.distance = (currentGps.locked && currentGps.lat && c.latitude && c.longitude)
+            ? getDistanceMeters(currentGps.lat, currentGps.lng, c.latitude, c.longitude)
+            : null;
+        });
+
+        filtered.sort((a, b) => {
+          const aHasDist = typeof a.distance === 'number';
+          const bHasDist = typeof b.distance === 'number';
+          if (aHasDist && bHasDist) return a.distance - b.distance;
+          if (aHasDist) return -1;
+          if (bHasDist) return 1;
+          return a.name.localeCompare(b.name);
+        });
 
         if (filtered.length === 0) {
           if (trimmed) {
@@ -4090,8 +4527,8 @@ function jsonResponse(obj) {
         }
 
         let html = '';
-        const nearbyClinics = filtered.filter(c => c.distance !== null && c.distance <= 500);
-        const otherClinics = filtered.filter(c => !(c.distance !== null && c.distance <= 500));
+        const nearbyClinics = filtered.filter(c => typeof c.distance === 'number' && c.distance <= 500);
+        const otherClinics = filtered.filter(c => !(typeof c.distance === 'number' && c.distance <= 500));
 
         if (nearbyClinics.length > 0) {
           html += `<div class="dropdown-group-header nearby">📍 Nearby Clinics (${nearbyClinics.length})</div>`;
@@ -4116,7 +4553,8 @@ function jsonResponse(obj) {
             html += `<div class="dropdown-group-header">All Clinics (${otherClinics.length})</div>`;
           }
           otherClinics.forEach(c => {
-            const distTag = c.distance !== null ? `<span style="font-size: 0.68rem; color: var(--slate-500);">${c.distance > 1000 ? (c.distance/1000).toFixed(1) + 'km' : c.distance + 'm'}</span>` : '';
+            const hasDist = typeof c.distance === 'number' && !isNaN(c.distance);
+            const distTag = hasDist ? `<span style="font-size: 0.68rem; color: var(--slate-500); font-weight: 600;">📍 ${c.distance > 1000 ? (c.distance/1000).toFixed(1) + 'km' : c.distance + 'm'}</span>` : '';
             html += `
               <div class="dropdown-item" data-clinic="${escapeHtml(c.name)}">
                 <div class="dropdown-item-top">
@@ -4343,7 +4781,7 @@ function jsonResponse(obj) {
           addBtn.addEventListener('click', () => {
             newDocName.value = (query || '').replace(/^(DR\.?|DR)\s+/i, '').trim().toUpperCase();
             newDocClinic.value = (facilityNameInput.value.trim() || '').toUpperCase();
-            newDocDept.value = (doctorDepartmentInput.value.trim() || '').toUpperCase();
+            setAddDocDeptValue('');
             openDoctorDirectoryModal('tab-add');
             closeDoctorDropdown();
           });
@@ -4355,8 +4793,9 @@ function jsonResponse(obj) {
       }
 
       function renderDoctorDropdownItem(d, isNearby) {
-        const deptTag = d.department ? `<span class="dept-badge">${escapeHtml(d.department)}</span>` : '';
-        const clinicTag = d.clinic ? `<span>🏥 ${escapeHtml(d.clinic)}</span>` : '';
+        const deptTag = (d.department && d.department.toLowerCase() !== 'undefined') ? `<span class="dept-badge">${escapeHtml(d.department)}</span>` : '';
+        const clinicClean = (d.clinic && d.clinic.toLowerCase() !== 'undefined' && d.clinic.toLowerCase() !== 'null') ? d.clinic : '';
+        const clinicTag = clinicClean ? `<span>🏥 ${escapeHtml(clinicClean)}</span>` : '';
         const opTag = d.op_timings ? `<span class="timings-preview">⏰ ${escapeHtml(d.op_timings)}</span>` : '';
         const bestTag = d.best_time_to_meet ? `<span style="color: #92400e; font-weight: 700;">⭐ Best: ${escapeHtml(d.best_time_to_meet)}</span>` : '';
         const proxTag = isNearby && d.distance !== null ? `<span class="proximity-badge">📍 ${d.distance}m</span>` : '';
@@ -4386,12 +4825,11 @@ function jsonResponse(obj) {
         doctorNameInput.value = doc.name;
         clearDoctorBtn.style.display = 'flex';
 
-        if (doctorDepartmentInput && doc.department) {
-          doctorDepartmentInput.value = doc.department;
-          highlightDeptChip(doc.department);
+        if (doctorDepartmentInput) {
+          doctorDepartmentInput.value = doc.department || '';
         }
 
-        if (doc.clinic) {
+        if (doc.clinic && doc.clinic.toLowerCase() !== 'undefined' && doc.clinic.toLowerCase() !== 'null') {
           if (!facilityNameInput.value.trim() || facilityNameInput.value.trim().toLowerCase() !== doc.clinic.toLowerCase()) {
             facilityNameInput.value = doc.clinic;
             clearClinicBtn.style.display = 'flex';
@@ -4400,12 +4838,17 @@ function jsonResponse(obj) {
               saveActiveVisit();
             }
           }
-          if (doc.location_type) {
+          if (doc.location_type && doc.location_type.toLowerCase() !== 'undefined') {
             setLocationType(doc.location_type);
           }
         }
 
         renderSelectedDoctorCard(doc);
+
+        // Reveal doctor met status, discussion, and call submission once doctor is selected
+        if (doctorCallDetailsSection) {
+          doctorCallDetailsSection.style.display = 'block';
+        }
       }
 
       function clearSelectedDoctor() {
@@ -4418,6 +4861,9 @@ function jsonResponse(obj) {
         if (clearDoctorBtn) {
           clearDoctorBtn.style.display = 'none';
         }
+        if (doctorCallDetailsSection) {
+          doctorCallDetailsSection.style.display = 'none';
+        }
       }
       const clearDoctorSelection = clearSelectedDoctor;
 
@@ -4427,6 +4873,32 @@ function jsonResponse(obj) {
         const digits = phone.toString().replace(/\D/g, '');
         if (digits.length === 10) return '91' + digits;
         return digits;
+      }
+
+      // Helper to sanitize phone to strictly 10 digits without spaces or country code (+91)
+      function sanitize10DigitPhone(val) {
+        if (!val) return '';
+        let str = val.toString().trim();
+        const hasPlus91 = /^\+?\s*91\D*/.test(str);
+        let digits = str.replace(/\D/g, '');
+        if (hasPlus91 && digits.startsWith('91')) {
+          digits = digits.substring(2);
+        } else if (digits.length === 12 && digits.startsWith('91')) {
+          digits = digits.substring(2);
+        } else if (digits.length === 11 && digits.startsWith('0')) {
+          digits = digits.substring(1);
+        } else if (digits.length > 10 && digits.startsWith('91')) {
+          digits = digits.substring(2);
+        }
+        return digits.slice(0, 10);
+      }
+
+      // Helper to format phone for clean display (e.g. +91 9840012345)
+      function formatPhoneDisplay(phone) {
+        if (!phone) return '';
+        const ten = sanitize10DigitPhone(phone);
+        if (ten.length === 10) return `+91 ${ten}`;
+        return phone;
       }
 
       function renderSelectedDoctorCard(doc) {
@@ -4458,6 +4930,8 @@ function jsonResponse(obj) {
         `;
 
         const cleanPh = doc.phone ? cleanPhone(doc.phone) : '';
+        const phoneTen = doc.phone ? sanitize10DigitPhone(doc.phone) : '';
+        const displayPhone = formatPhoneDisplay(doc.phone);
 
         selectedDoctorCard.innerHTML = `
           <div class="doc-profile-header">
@@ -4478,7 +4952,7 @@ function jsonResponse(obj) {
             ${doc.phone ? `
               <div class="doc-info-row">
                 <span class="doc-info-label">📞 Contact Number:</span>
-                <span class="doc-info-val"><strong style="color: #1d4ed8;">${escapeHtml(doc.phone)}</strong></span>
+                <span class="doc-info-val"><strong style="color: #1d4ed8;">${escapeHtml(displayPhone)}</strong></span>
               </div>
             ` : ''}
             <div class="doc-info-row">
@@ -4495,7 +4969,7 @@ function jsonResponse(obj) {
 
           <div class="doc-contact-actions">
             ${doc.phone ? `
-              <a href="tel:${escapeHtml(doc.phone)}" class="doc-contact-btn phone-btn">📞 Call ${escapeHtml(doc.phone)}</a>
+              <a href="tel:+91${escapeHtml(phoneTen || doc.phone)}" class="doc-contact-btn phone-btn">📞 Call ${escapeHtml(displayPhone)}</a>
               <a href="https://wa.me/${cleanPh}" target="_blank" rel="noopener" class="doc-contact-btn wa-btn">💬 WhatsApp</a>
             ` : `
               <button type="button" id="cardAddPhoneBtn" class="link-btn-text" style="font-size: 0.70rem; color: #0284c7;">➕ Add Contact Number</button>
@@ -4546,6 +5020,160 @@ function jsonResponse(obj) {
         Sat: 'Saturday',
         Sun: 'Sunday'
       };
+
+      // Best Time to Meet Dynamic Slot Helpers
+      const BEST_TIME_DAYS = [
+        'MON - SAT',
+        'MON - FRI',
+        'MON',
+        'TUE',
+        'WED',
+        'THU',
+        'FRI',
+        'SAT',
+        'SUN',
+        'ANY DAY'
+      ];
+
+      function createBestTimeSlotRow(day = 'MON - SAT', start = '13:30', end = '14:30') {
+        const row = document.createElement('div');
+        row.className = 'best-time-slot-row';
+        row.style.cssText = 'display: flex; align-items: center; gap: 6px; background: #ffffff; border: 1px solid var(--slate-200); border-radius: 6px; padding: 6px 8px; flex-wrap: wrap;';
+
+        const dayUpper = (day || 'MON - SAT').toUpperCase();
+        let optionsHtml = '';
+        BEST_TIME_DAYS.forEach(d => {
+          const sel = (d === dayUpper) ? 'selected' : '';
+          optionsHtml += `<option value="${d}" ${sel}>${d}</option>`;
+        });
+
+        row.innerHTML = `
+          <select class="best-time-day-select text-input" style="padding: 4px 6px; font-size: 0.78rem; font-weight: 700; width: auto; flex-grow: 1; min-width: 120px;">
+            ${optionsHtml}
+          </select>
+          <div style="display: flex; align-items: center; gap: 4px;">
+            <input type="time" class="best-time-start text-input" value="${start || '13:30'}" style="padding: 4px 6px; font-size: 0.78rem; width: 88px;" />
+            <span style="font-size: 0.72rem; color: var(--slate-500);">-</span>
+            <input type="time" class="best-time-end text-input" value="${end || '14:30'}" style="padding: 4px 6px; font-size: 0.78rem; width: 88px;" />
+            <button type="button" class="best-time-remove-btn link-btn-text" style="font-size: 0.78rem; color: #dc2626; padding: 2px 4px; font-weight: bold;" title="Remove this slot">✕</button>
+          </div>
+        `;
+
+        const removeBtn = row.querySelector('.best-time-remove-btn');
+        removeBtn.addEventListener('click', () => {
+          vibrate(15);
+          const container = document.getElementById('bestTimeSlotsContainer');
+          if (container && container.children.length > 1) {
+            row.remove();
+            syncBestTimeHiddenInput();
+          } else {
+            showToast('At least one Best Time slot should remain', 'normal');
+          }
+        });
+
+        const daySel = row.querySelector('.best-time-day-select');
+        const startInput = row.querySelector('.best-time-start');
+        const endInput = row.querySelector('.best-time-end');
+        [daySel, startInput, endInput].forEach(el => {
+          el.addEventListener('change', syncBestTimeHiddenInput);
+        });
+
+        return row;
+      }
+
+      function syncBestTimeHiddenInput() {
+        const container = document.getElementById('bestTimeSlotsContainer');
+        if (!container) return '';
+        const rows = container.querySelectorAll('.best-time-slot-row');
+        const parts = [];
+        rows.forEach(r => {
+          const day = r.querySelector('.best-time-day-select').value;
+          const s = r.querySelector('.best-time-start').value;
+          const e = r.querySelector('.best-time-end').value;
+          if (s && e) {
+            parts.push(`${day} ${s} - ${e}`);
+          }
+        });
+        const str = parts.join(', ');
+        if (newDocBestTime) newDocBestTime.value = str;
+        return str;
+      }
+
+      function setBestTimeSlotsFromString(str) {
+        const container = document.getElementById('bestTimeSlotsContainer');
+        if (!container) return;
+        container.innerHTML = '';
+        if (!str || typeof str !== 'string' || !str.trim()) {
+          container.appendChild(createBestTimeSlotRow('MON - SAT', '13:30', '14:30'));
+          syncBestTimeHiddenInput();
+          return;
+        }
+
+        const parts = str.split(',').map(p => p.trim()).filter(Boolean);
+        let added = 0;
+        parts.forEach(p => {
+          const match = p.match(/(?:([A-Za-z\s\-]+)\s+)?(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})/);
+          if (match) {
+            let rawDay = (match[1] || 'MON - SAT').trim().toUpperCase();
+            if (!BEST_TIME_DAYS.includes(rawDay)) rawDay = 'MON - SAT';
+            const s = match[2].padStart(5, '0');
+            const e = match[3].padStart(5, '0');
+            container.appendChild(createBestTimeSlotRow(rawDay, s, e));
+            added++;
+          }
+        });
+        if (added === 0) {
+          container.appendChild(createBestTimeSlotRow('MON - SAT', '13:30', '14:30'));
+        }
+        syncBestTimeHiddenInput();
+      }
+
+      // Add Doctor Department Dropdown Helper
+      function getAddDocDeptValue() {
+        const select = document.getElementById('newDocDeptSelect');
+        const otherInput = document.getElementById('newDocDeptOther');
+        if (!select) return '';
+        if (select.value === 'OTHERS') {
+          return (otherInput ? otherInput.value.trim().toUpperCase() : '') || 'OTHERS';
+        }
+        return select.value.trim().toUpperCase();
+      }
+
+      function setAddDocDeptValue(dept) {
+        const select = document.getElementById('newDocDeptSelect');
+        const otherWrap = document.getElementById('newDocDeptOtherWrap');
+        const otherInput = document.getElementById('newDocDeptOther');
+        const hidden = document.getElementById('newDocDept');
+        if (!select) return;
+
+        const val = (dept || '').trim().toUpperCase();
+        if (!val) {
+          select.value = '';
+          if (otherWrap) otherWrap.style.display = 'none';
+          if (otherInput) otherInput.value = '';
+          if (hidden) hidden.value = '';
+          return;
+        }
+
+        let match = false;
+        for (let i = 0; i < select.options.length; i++) {
+          if (select.options[i].value === val) {
+            select.selectedIndex = i;
+            match = true;
+            break;
+          }
+        }
+
+        if (match) {
+          if (otherWrap) otherWrap.style.display = 'none';
+          if (otherInput) otherInput.value = '';
+        } else {
+          select.value = 'OTHERS';
+          if (otherWrap) otherWrap.style.display = 'block';
+          if (otherInput) otherInput.value = val;
+        }
+        if (hidden) hidden.value = val;
+      }
 
       function getOpScheduleString() {
         const scheduleParts = [];
@@ -4944,11 +5572,11 @@ function jsonResponse(obj) {
         if (!doc) return;
         const cleanName = (doc.name || '').replace(/^(DR\.?|DR)\s+/i, '').trim().toUpperCase();
         newDocName.value = cleanName;
-        newDocClinic.value = (doc.clinic || '').toUpperCase();
-        newDocDept.value = (doc.department || '').toUpperCase();
-        if (newDocPhone) newDocPhone.value = (doc.phone || '').toUpperCase();
+        newDocClinic.value = (doc.clinic && doc.clinic.toLowerCase() !== 'undefined' ? doc.clinic : '').toUpperCase();
+        setAddDocDeptValue(doc.department || '');
+        if (newDocPhone) newDocPhone.value = sanitize10DigitPhone(doc.phone || '');
         setOpScheduleFromString(doc.op_timings || '');
-        newDocBestTime.value = (doc.best_time_to_meet || '').toUpperCase();
+        setBestTimeSlotsFromString(doc.best_time_to_meet || '');
         newDocLat.value = doc.latitude || '';
         newDocLng.value = doc.longitude || '';
 
@@ -4967,6 +5595,8 @@ function jsonResponse(obj) {
           addDoctorForm.removeAttribute('data-original-name');
         }
         setOpScheduleFromString('');
+        setBestTimeSlotsFromString('');
+        setAddDocDeptValue('');
         if (newDocName) newDocName.value = '';
         if (commonOpSlot) commonOpSlot.style.display = 'none';
         if (addDocFormHeader) addDocFormHeader.textContent = '➕ Add New Doctor';
@@ -4984,17 +5614,16 @@ function jsonResponse(obj) {
                 performGpsTagging(docId, pos.coords.latitude, pos.coords.longitude);
               },
               (err) => {
-                showToast('Could not acquire GPS: ' + (err.message || 'Timeout'), 'error');
+                onGpsError(err);
               },
-              { enableHighAccuracy: true, timeout: 6000 }
+              { enableHighAccuracy: true, timeout: 8000 }
             );
             return;
           } else {
-            showToast('GPS not available on this device', 'error');
+            openGpsOffModal();
             return;
           }
         }
-
         performGpsTagging(docId, currentGps.lat, currentGps.lng);
       }
 
@@ -5046,7 +5675,7 @@ function jsonResponse(obj) {
             (d.name && d.name.toLowerCase().includes(trimmed)) ||
             (d.clinic && d.clinic.toLowerCase().includes(trimmed)) ||
             (d.department && d.department.toLowerCase().includes(trimmed)) ||
-            (d.phone && d.phone.toLowerCase().includes(trimmed)) ||
+            (d.phone && (d.phone.toLowerCase().includes(trimmed) || (trimmed.replace(/\D/g, '') && sanitize10DigitPhone(d.phone).includes(trimmed.replace(/\D/g, ''))))) ||
             (d.op_timings && d.op_timings.toLowerCase().includes(trimmed)) ||
             (d.best_time_to_meet && d.best_time_to_meet.toLowerCase().includes(trimmed))
           );
@@ -5075,12 +5704,19 @@ function jsonResponse(obj) {
           const hasGps = !!(d.latitude && d.longitude);
           const gpsIconClass = hasGps ? 'mini-icon-btn gps-active' : 'mini-icon-btn';
           const gpsTitle = hasGps ? `GPS: ${d.latitude.toFixed(4)}, ${d.longitude.toFixed(4)}` : 'Tap to tag current GPS';
-          const opDisplay = d.op_timings ? `<span>⏰ ${escapeHtml(d.op_timings)}</span>` : '';
+          const opToggleBtn = d.op_timings ? `
+            <div style="margin-top: 3px;">
+              <button type="button" class="dir-op-timing-toggle" data-toggle-op="${escapeHtml(d.id)}">⏰ OP Timings ▾</button>
+              <div id="dir-op-box-${escapeHtml(d.id)}" class="dir-op-timing-box">⏰ <strong>OP Schedule:</strong> ${escapeHtml(d.op_timings)}</div>
+            </div>
+          ` : '';
           const bestDisplay = d.best_time_to_meet ? `<span style="color:#92400e; font-weight:700;">⭐ Best: ${escapeHtml(d.best_time_to_meet)}</span>` : '';
           const cleanPh = d.phone ? cleanPhone(d.phone) : '';
+          const phoneTen = d.phone ? sanitize10DigitPhone(d.phone) : '';
+          const displayPhone = formatPhoneDisplay(d.phone);
           const phoneDisplay = d.phone ? `
             <div style="display: flex; gap: 4px; align-items: center; margin-top: 3px;">
-              <a href="tel:${escapeHtml(d.phone)}" class="doc-phone-chip" title="Call Doctor">📞 ${escapeHtml(d.phone)}</a>
+              <a href="tel:+91${escapeHtml(phoneTen || d.phone)}" class="doc-phone-chip" title="Call Doctor">📞 ${escapeHtml(displayPhone)}</a>
               <a href="https://wa.me/${cleanPh}" target="_blank" rel="noopener" class="doc-wa-chip" title="Chat on WhatsApp">💬 WA</a>
             </div>
           ` : '';
@@ -5088,20 +5724,22 @@ function jsonResponse(obj) {
             <a href="${escapeHtml(d.location_link)}" target="_blank" rel="noopener" class="doc-link-chip" title="Open Google Maps link" style="margin-top: 2px;">🗺️ Map Link</a>
           ` : '';
 
+          const clinicNameClean = (d.clinic && d.clinic.toLowerCase() !== 'undefined' && d.clinic.toLowerCase() !== 'null') ? d.clinic : 'Clinic';
+
           return `
             <div class="dir-doctor-card" data-doc-id="${escapeHtml(d.id)}">
               <div class="dir-doc-main">
                 <div class="dir-doc-name">${escapeHtml(d.name)}</div>
                 <div class="dir-doc-details">
                   ${d.department ? `<span class="dept-badge">${escapeHtml(d.department)}</span>` : ''}
-                  <span>🏥 ${escapeHtml(d.clinic || 'Clinic')}</span>
+                  <span>🏥 ${escapeHtml(clinicNameClean)}</span>
                 </div>
-                ${opDisplay || bestDisplay ? `
+                ${bestDisplay ? `
                   <div class="dir-doc-details" style="margin-top: 2px;">
-                    ${opDisplay}
                     ${bestDisplay}
                   </div>
                 ` : ''}
+                ${opToggleBtn}
                 ${phoneDisplay}
                 ${linkDisplay}
               </div>
@@ -5137,6 +5775,19 @@ function jsonResponse(obj) {
               startEditDoctor(doc);
             });
           }
+        });
+
+        dirDoctorsList.querySelectorAll('[data-toggle-op]').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const id = btn.getAttribute('data-toggle-op');
+            const box = document.getElementById(`dir-op-box-${id}`);
+            if (box) {
+              const isHidden = box.style.display === 'none' || !box.style.display;
+              box.style.display = isHidden ? 'block' : 'none';
+              btn.textContent = isHidden ? '⏰ OP Timings ▴' : '⏰ OP Timings ▾';
+            }
+          });
         });
       }
 
@@ -5256,10 +5907,15 @@ function jsonResponse(obj) {
           if (Array.isArray(fetched)) {
             const previousCount = doctors.length;
             // Mirror Google Sheet list: Map fetched doctors
-            doctors = fetched.map(sheetDoc => ({
-              ...sheetDoc,
-              id: sheetDoc.id || ('doc_row_' + sheetDoc.sheet_row) || ('doc_' + Date.now())
-            }));
+            doctors = fetched.map(sheetDoc => {
+              let clinic = (sheetDoc.clinic || '').trim();
+              if (clinic.toLowerCase() === 'undefined' || clinic.toLowerCase() === 'null') clinic = '';
+              return {
+                ...sheetDoc,
+                clinic: clinic,
+                id: sheetDoc.id || ('doc_row_' + sheetDoc.sheet_row) || ('doc_' + Date.now())
+              };
+            });
 
             saveDoctors();
             updateHeaderDocCount();
@@ -5434,14 +6090,29 @@ function jsonResponse(obj) {
             }
           }
           updateActiveSessionTicker();
+
+          // REVEAL Visit Location & Doctor Call Form
+          if (clinicLocationDetails) clinicLocationDetails.style.display = 'block';
+          if (doctorCallCard) doctorCallCard.style.display = 'block';
+
+          // Doctor call details (met status, notes, submission) only revealed if doctor is selected or typed
+          if (doctorCallDetailsSection) {
+            const hasDoctor = !!(selectedDoctor || (doctorNameInput && doctorNameInput.value.trim().length > 0));
+            doctorCallDetailsSection.style.display = hasDoctor ? 'block' : 'none';
+          }
         } else {
           activeVisitPill.textContent = 'Ready for Next Call';
           activeVisitPill.className = 'active-visit-pill';
           if (quickReachedBtn) quickReachedBtn.classList.remove('arrived-state');
           if (quickReachedTitle) quickReachedTitle.textContent = '📍 Reached Doctor Clinic';
-          if (quickReachedSub) quickReachedSub.textContent = 'Tap once upon arrival • Submitting call auto-logs departure';
+          if (quickReachedSub) quickReachedSub.textContent = 'Tap once upon arrival • Reveals visit details & doctor call log';
           if (activeSessionDocsCount) activeSessionDocsCount.style.display = 'none';
           activeSessionBanner.className = 'active-session-banner';
+
+          // INITIALLY HIDE Visit Location & Doctor Call card (Only Arrival Button & Today's Logs visible)
+          if (clinicLocationDetails) clinicLocationDetails.style.display = 'none';
+          if (doctorCallCard) doctorCallCard.style.display = 'none';
+          if (doctorCallDetailsSection) doctorCallDetailsSection.style.display = 'none';
         }
       }
 
@@ -5458,12 +6129,82 @@ function jsonResponse(obj) {
         todayDateLabel.textContent = today.toLocaleDateString(undefined, options);
       }
 
+      // GPS UI Synchronizer for Header Pill & Popup Modal
+      function updateGpsUI() {
+        if (headerGpsPill) {
+          if (currentGps.locked) {
+            headerGpsPill.className = 'gps-status-pill locked';
+            if (headerGpsLabel) headerGpsLabel.textContent = currentGps.accuracy ? `GPS ±${currentGps.accuracy}m` : 'GPS ON';
+            if (headerGpsDot) headerGpsDot.className = 'gps-status-dot';
+          } else if (currentGps.error) {
+            headerGpsPill.className = 'gps-status-pill error';
+            if (headerGpsLabel) headerGpsLabel.textContent = 'GPS OFF';
+            if (headerGpsDot) headerGpsDot.className = 'gps-status-dot pulse';
+          } else {
+            headerGpsPill.className = 'gps-status-pill acquiring';
+            if (headerGpsLabel) headerGpsLabel.textContent = 'GPS...';
+            if (headerGpsDot) headerGpsDot.className = 'gps-status-dot pulse';
+          }
+        }
+
+        // Synchronize Dedicated GPS Modal if open or referenced
+        if (gpsModalStatusBadge && gpsModalStatusText) {
+          if (currentGps.locked) {
+            gpsModalStatusBadge.style.background = '#dcfce7';
+            gpsModalStatusBadge.style.color = '#15803d';
+            gpsModalStatusBadge.style.border = '1px solid #86efac';
+            gpsModalStatusText.textContent = `GPS Locked (±${currentGps.accuracy || 10}m)`;
+            if (gpsModalStatusDot) gpsModalStatusDot.className = 'status-dot';
+            if (gpsModalCoordsText) gpsModalCoordsText.textContent = `${currentGps.lat.toFixed(5)}° N, ${currentGps.lng.toFixed(5)}° E`;
+            if (gpsModalAccuracyText) gpsModalAccuracyText.textContent = `High accuracy mode (±${currentGps.accuracy || 10}m)`;
+            if (gpsModalTimestampText) gpsModalTimestampText.textContent = currentGps.timestamp ? new Date(currentGps.timestamp).toLocaleTimeString() : 'Active Lock';
+            if (gpsModalMapsLink) {
+              gpsModalMapsLink.href = `https://www.google.com/maps?q=${currentGps.lat},${currentGps.lng}`;
+              gpsModalMapsLink.style.display = 'inline-flex';
+            }
+          } else if (currentGps.error) {
+            gpsModalStatusBadge.style.background = '#fee2e2';
+            gpsModalStatusBadge.style.color = '#dc2626';
+            gpsModalStatusBadge.style.border = '1px solid #fca5a5';
+            gpsModalStatusText.textContent = 'Phone GPS is OFF';
+            if (gpsModalStatusDot) gpsModalStatusDot.className = 'status-dot pulse';
+            if (gpsModalCoordsText) gpsModalCoordsText.textContent = `${currentGps.lat ? currentGps.lat.toFixed(4) + '° N (Est)' : 'Signal Off'}`;
+            if (gpsModalAccuracyText) gpsModalAccuracyText.textContent = 'Turn on GPS quick setting';
+            if (gpsModalTimestampText) gpsModalTimestampText.textContent = 'Error: ' + currentGps.error;
+            if (gpsModalMapsLink) gpsModalMapsLink.style.display = 'none';
+          } else {
+            gpsModalStatusBadge.style.background = '#fef3c7';
+            gpsModalStatusBadge.style.color = '#b45309';
+            gpsModalStatusBadge.style.border = '1px solid #fcd34d';
+            gpsModalStatusText.textContent = 'Acquiring satellite lock...';
+            if (gpsModalStatusDot) gpsModalStatusDot.className = 'status-dot pulse';
+            if (gpsModalCoordsText) gpsModalCoordsText.textContent = 'Locating satellites...';
+            if (gpsModalAccuracyText) gpsModalAccuracyText.textContent = 'Requesting device satellite fix';
+            if (gpsModalTimestampText) gpsModalTimestampText.textContent = 'In progress...';
+            if (gpsModalMapsLink) gpsModalMapsLink.style.display = 'none';
+          }
+        }
+      }
+
+      function openGpsInfoModal() {
+        if (!gpsInfoModal) return;
+        updateGpsUI();
+        gpsInfoModal.style.display = 'flex';
+        vibrate(30);
+      }
+
+      function closeGpsInfoModal() {
+        if (!gpsInfoModal) return;
+        gpsInfoModal.style.display = 'none';
+      }
+
       // Geolocation Implementation
       function initGPS() {
         gpsBadge.className = 'gps-badge acquiring';
         gpsStatusLabel.textContent = 'Acquiring GPS...';
         gpsCoordsDisplay.textContent = 'Requesting device satellite lock...';
         gpsAccuracyText.textContent = 'High Accuracy Mode';
+        updateGpsUI();
 
         if (!navigator.geolocation) {
           onGpsError({ code: 0, message: 'Geolocation is not supported by your browser' });
@@ -5490,6 +6231,20 @@ function jsonResponse(obj) {
         }
       }
 
+      function openGpsOffModal() {
+        if (gpsOffModal) {
+          gpsOffModal.style.display = 'flex';
+          vibrate(40);
+        }
+        updateGpsUI();
+      }
+
+      function closeGpsOffModal() {
+        if (gpsOffModal) {
+          gpsOffModal.style.display = 'none';
+        }
+      }
+
       function onGpsSuccess(pos, notify = true) {
         const coords = pos.coords;
         currentGps.lat = coords.latitude;
@@ -5504,6 +6259,10 @@ function jsonResponse(obj) {
         gpsAccuracyText.textContent = `Accurate to ±${currentGps.accuracy} meters`;
         gpsCoordsDisplay.textContent = `${coords.latitude.toFixed(5)}° N, ${coords.longitude.toFixed(5)}° E`;
 
+        if (gpsOffBannerStrip) gpsOffBannerStrip.style.display = 'none';
+        closeGpsOffModal();
+        updateGpsUI();
+
         if (notify) {
           vibrate(25);
         }
@@ -5511,7 +6270,7 @@ function jsonResponse(obj) {
 
       function onGpsError(err) {
         currentGps.locked = false;
-        currentGps.error = err.message || 'GPS Signal Timeout';
+        currentGps.error = err ? (err.message || 'GPS Signal Timeout') : 'GPS Signal Off';
 
         // Provide robust fallback so executive in basement clinics or lifts is never blocked
         if (!currentGps.lat) {
@@ -5521,14 +6280,22 @@ function jsonResponse(obj) {
         }
 
         gpsBadge.className = 'gps-badge error';
-        gpsStatusLabel.textContent = 'GPS Signal Weak (±25m)';
-        gpsAccuracyText.textContent = 'Using Cell/Network triangulation';
+        gpsStatusLabel.textContent = 'Phone GPS is OFF';
+        gpsAccuracyText.textContent = 'Turn on GPS and tap retry';
         gpsCoordsDisplay.textContent = `${currentGps.lat.toFixed(4)}° N, ${currentGps.lng.toFixed(4)}° E (Est)`;
+
+        if (gpsOffBannerStrip) gpsOffBannerStrip.style.display = 'flex';
+        updateGpsUI();
+        openGpsOffModal();
       }
 
       // Quick 1-Tap "Reached Clinic" action
       function handleQuickReached() {
         vibrate(50);
+        if (!currentGps.locked) {
+          openGpsOffModal();
+          showToast('⚠️ Phone GPS is off! Please turn GPS on and tap Retry.', 'error');
+        }
         const nowTimeStr = getNowTimeStr();
         activeVisit.isActive = true;
         activeVisit.reachedTimestamp = Date.now();
@@ -5547,7 +6314,13 @@ function jsonResponse(obj) {
         leftTimeInput.value = '';
         updateDurationDisplay();
 
-        showToast(`📍 Reached Clinic logged at ${format12h(nowTimeStr)}! In-time locked.`, 'success');
+        showToast(`📍 Reached Doctor Clinic logged at ${format12h(nowTimeStr)}! In-time locked.`, 'success');
+
+        setTimeout(() => {
+          if (clinicLocationDetails) {
+            clinicLocationDetails.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        }, 120);
       }
 
       // Inline "Depart Clinic" button in active banner
@@ -5828,8 +6601,7 @@ function jsonResponse(obj) {
 
       // Update UI (Timeline & Metrics - No shifts or punches)
       function updateUI() {
-        const todayStr = new Date().toDateString();
-        const todayActivities = activities.filter(a => a.date_str === todayStr || !a.date_str);
+        const todayActivities = activities.filter(isTodayActivity);
 
         // Metrics (Doctor calls only)
         const metCount = todayActivities.filter(a => a.met_status === 'Met Doctor').length;
@@ -5956,11 +6728,42 @@ function jsonResponse(obj) {
           .replace(/'/g, '&#039;');
       }
 
+      // Check if an activity belongs to today (supporting toDateString, ISO strings, timestamps, and legacy records)
+      function isTodayActivity(a) {
+        if (!a) return false;
+        const now = new Date();
+        const todayStr = now.toDateString();
+        const todayIso = now.toISOString().slice(0, 10);
+        if (!a.date_str) {
+          if (a.timestamp) {
+            try {
+              const d = new Date(a.timestamp);
+              return !isNaN(d.getTime()) && d.toDateString() === todayStr;
+            } catch (e) {}
+          }
+          return true; // Treat un-dated activities as today's so they can be viewed and cleared
+        }
+        if (a.date_str === todayStr) return true;
+        if (typeof a.date_str === 'string') {
+          if (a.date_str === todayIso || a.date_str.startsWith(todayIso)) return true;
+          try {
+            const d = new Date(a.date_str);
+            if (!isNaN(d.getTime()) && d.toDateString() === todayStr) return true;
+          } catch (e) {}
+        }
+        if (a.timestamp) {
+          try {
+            const d = new Date(a.timestamp);
+            if (!isNaN(d.getTime()) && d.toDateString() === todayStr) return true;
+          } catch (e) {}
+        }
+        return false;
+      }
+
       // Export Daily Call Report (CSV) with Arrival / Departure Time Logs
       function exportDcrCsv() {
         vibrate(30);
-        const todayStr = new Date().toDateString();
-        const todayList = activities.filter(a => a.date_str === todayStr || !a.date_str);
+        const todayList = activities.filter(isTodayActivity);
 
         if (todayList.length === 0) {
           showToast('No doctor calls recorded today to export', 'normal');
@@ -6022,17 +6825,52 @@ function jsonResponse(obj) {
         showToast('Daily Call Report (CSV) downloaded!', 'success');
       }
 
-      // Clear Today's History
+      // Perform actual clearing of today's activities & active session
+      function performClearToday() {
+        vibrate(40);
+        const prevCount = activities.length;
+        activities = activities.filter(a => !isTodayActivity(a));
+        // Fallback: If no activities matched isTodayActivity due to date string variations, clear all activities
+        if (activities.length === prevCount && prevCount > 0) {
+          activities = [];
+        }
+        saveActivities();
+
+        // Reset active clinic visit session
+        activeVisit = {
+          isActive: false,
+          reachedTimestamp: null,
+          reachedTimeStr: null,
+          reachedCoords: null,
+          facilityName: '',
+          doctorCount: 0
+        };
+        saveActiveVisit();
+
+        // Reset arrival and departure input fields
+        if (reachedTimeInput) reachedTimeInput.value = '';
+        if (leftTimeInput) leftTimeInput.value = '';
+        updateDurationDisplay();
+
+        // Clear legacy local storage keys
+        try {
+          localStorage.removeItem('clariti_activities_v2');
+          localStorage.removeItem('soorya_activities_v2');
+          localStorage.removeItem('clariti_active_visit_v2');
+          localStorage.removeItem('soorya_active_visit_v2');
+        } catch (e) {}
+
+        updateUI();
+        showToast("Today's doctor call history cleared successfully", 'success');
+      }
+
+      // Clear Today's History (Opens in-app modal instead of blocked window.confirm)
       function clearTodayHistory() {
-        if (confirm("Are you sure you want to clear today's doctor call logs?")) {
-          vibrate(40);
-          const todayStr = new Date().toDateString();
-          activities = activities.filter(a => a.date_str && a.date_str !== todayStr);
-          saveActivities();
-          activeVisit = { isActive: false, reachedTimestamp: null, reachedTimeStr: null, reachedCoords: null, doctorName: '' };
-          saveActiveVisit();
-          updateUI();
-          showToast("Today's doctor call history cleared", 'normal');
+        vibrate(30);
+        if (clearHistoryModal) {
+          clearHistoryModal.classList.add('show');
+        } else {
+          performClearToday();
         }
       }
 
@@ -6099,12 +6937,39 @@ function jsonResponse(obj) {
 
       // Event Listeners Setup
       function setupEventListeners() {
+        // Top Right Corner GPS Pill & Dedicated Modal
+        if (headerGpsPill) {
+          headerGpsPill.addEventListener('click', () => {
+            openGpsInfoModal();
+          });
+        }
+        if (closeGpsInfoModalBtn) {
+          closeGpsInfoModalBtn.addEventListener('click', closeGpsInfoModal);
+        }
+        if (gpsModalDismissBtn) {
+          gpsModalDismissBtn.addEventListener('click', closeGpsInfoModal);
+        }
+        if (gpsInfoModal) {
+          gpsInfoModal.addEventListener('click', (e) => {
+            if (e.target === gpsInfoModal) closeGpsInfoModal();
+          });
+        }
+        if (gpsModalRefreshBtn) {
+          gpsModalRefreshBtn.addEventListener('click', () => {
+            vibrate(35);
+            showToast('Refreshing satellite GPS lock...', 'normal');
+            initGPS();
+          });
+        }
+
         // GPS Refresh
-        refreshGpsBtn.addEventListener('click', () => {
-          vibrate(30);
-          initGPS();
-          showToast('Refreshing satellite GPS lock...', 'normal');
-        });
+        if (refreshGpsBtn) {
+          refreshGpsBtn.addEventListener('click', () => {
+            vibrate(30);
+            initGPS();
+            showToast('Refreshing satellite GPS lock...', 'normal');
+          });
+        }
 
         // Quick Reached Arrival Button in Top Card
         if (quickReachedBtn) {
@@ -6180,9 +7045,14 @@ function jsonResponse(obj) {
             renderDoctorDropdown(doctorNameInput.value);
           });
           doctorNameInput.addEventListener('input', () => {
-            if (clearDoctorBtn) clearDoctorBtn.style.display = doctorNameInput.value ? 'flex' : 'none';
-            if (selectedDoctor && selectedDoctor.name.toLowerCase() !== doctorNameInput.value.trim().toLowerCase()) {
+            const val = doctorNameInput.value.trim();
+            if (clearDoctorBtn) clearDoctorBtn.style.display = val ? 'flex' : 'none';
+            if (selectedDoctor && selectedDoctor.name.toLowerCase() !== val.toLowerCase()) {
               clearSelectedDoctor();
+            }
+            if (doctorCallDetailsSection) {
+              const hasDoctor = !!(selectedDoctor || val.length > 0);
+              doctorCallDetailsSection.style.display = hasDoctor ? 'block' : 'none';
             }
             renderDoctorDropdown(doctorNameInput.value);
           });
@@ -6279,9 +7149,9 @@ function jsonResponse(obj) {
         // Setup 24h OP Schedule UI Listeners
         setupOpScheduleEventListeners();
 
-        // Normal uppercase forcing for Add Doctor form entry points
+        // Normal uppercase forcing for Add Doctor form entry points (exclude phone number)
         if (addDoctorForm) {
-          addDoctorForm.querySelectorAll('input[type="text"], input[type="tel"]').forEach(input => {
+          addDoctorForm.querySelectorAll('input[type="text"]').forEach(input => {
             input.addEventListener('input', () => forceUppercaseInput(input));
           });
         }
@@ -6291,6 +7161,58 @@ function jsonResponse(obj) {
           newDocName.addEventListener('input', () => {
             if (/^(DR\.?|DR)\s+/i.test(newDocName.value)) {
               newDocName.value = newDocName.value.replace(/^(DR\.?|DR)\s+/i, '');
+            }
+          });
+        }
+
+        // Auto-correct Doctor Contact Number: force exactly 10 digits without spaces, auto-strip +91 prefix
+        if (newDocPhone) {
+          // Block spaces and non-digit characters on typing
+          newDocPhone.addEventListener('keydown', (e) => {
+            // Allow navigation and system control keys
+            if (
+              e.key === 'Backspace' ||
+              e.key === 'Delete' ||
+              e.key === 'Tab' ||
+              e.key === 'Escape' ||
+              e.key === 'Enter' ||
+              e.key === 'ArrowLeft' ||
+              e.key === 'ArrowRight' ||
+              e.key === 'ArrowUp' ||
+              e.key === 'ArrowDown' ||
+              e.key === 'Home' ||
+              e.key === 'End' ||
+              e.ctrlKey ||
+              e.metaKey
+            ) {
+              return;
+            }
+            // Explicitly block space
+            if (e.key === ' ' || e.code === 'Space') {
+              e.preventDefault();
+              return;
+            }
+            // Block non-digits
+            if (!/^[0-9]$/.test(e.key)) {
+              e.preventDefault();
+              return;
+            }
+          });
+
+          // Handle paste: auto-clean pasted number (auto-strips +91, spaces, dashes, leading 0)
+          newDocPhone.addEventListener('paste', (e) => {
+            e.preventDefault();
+            const pastedText = (e.clipboardData || window.clipboardData)?.getData('text') || '';
+            const cleaned = sanitize10DigitPhone(pastedText);
+            newDocPhone.value = cleaned;
+            newDocPhone.dispatchEvent(new Event('input', { bubbles: true }));
+          });
+
+          // Handle input: auto-correct in real-time to at most 10 valid digits without space
+          newDocPhone.addEventListener('input', () => {
+            const cleaned = sanitize10DigitPhone(newDocPhone.value);
+            if (newDocPhone.value !== cleaned) {
+              newDocPhone.value = cleaned;
             }
           });
         }
@@ -6305,7 +7227,13 @@ function jsonResponse(obj) {
             rawName = rawName.replace(/^(DR\.?|DR)\s+/i, '').trim();
             const clinic = newDocClinic.value.trim().toUpperCase();
             const dept = newDocDept ? newDocDept.value.trim().toUpperCase() : 'General Medicine';
-            const phone = newDocPhone ? newDocPhone.value.trim().toUpperCase() : '';
+            const rawPhone = newDocPhone ? sanitize10DigitPhone(newDocPhone.value) : '';
+            if (rawPhone && rawPhone.length !== 10) {
+              showToast('Doctor Contact Number must be exactly 10 digits', 'error');
+              newDocPhone.focus();
+              return;
+            }
+            const phone = rawPhone;
             const opTimings = getOpScheduleString();
             const bestTime = newDocBestTime ? newDocBestTime.value.trim().toUpperCase() : '';
             const lat = parseFloat(newDocLat.value) || null;
@@ -6539,6 +7467,164 @@ function jsonResponse(obj) {
         // Export and Clear History
         exportDcrBtn.addEventListener('click', exportDcrCsv);
         clearHistoryBtn.addEventListener('click', clearTodayHistory);
+
+        // Clear Today Confirmation Modal listeners
+        if (cancelClearTodayBtn && clearHistoryModal) {
+          cancelClearTodayBtn.addEventListener('click', () => {
+            clearHistoryModal.classList.remove('show');
+          });
+        }
+
+        if (confirmClearTodayBtn) {
+          confirmClearTodayBtn.addEventListener('click', () => {
+            if (clearHistoryModal) {
+              clearHistoryModal.classList.remove('show');
+            }
+            performClearToday();
+          });
+        }
+
+        if (clearHistoryModal) {
+          clearHistoryModal.addEventListener('click', (e) => {
+            if (e.target === clearHistoryModal) {
+              clearHistoryModal.classList.remove('show');
+            }
+          });
+        }
+
+        // Quick "New Doctor / Clinic" button next to Directory in call log
+        if (addNewDocQuickPillBtn) {
+          addNewDocQuickPillBtn.addEventListener('click', () => {
+            vibrate(25);
+            if (facilityNameInput && facilityNameInput.value.trim()) {
+              newDocClinic.value = facilityNameInput.value.trim().toUpperCase();
+            }
+            if (doctorNameInput && doctorNameInput.value.trim()) {
+              newDocName.value = doctorNameInput.value.replace(/^(DR\.?|DR)\s+/i, '').trim().toUpperCase();
+            }
+            openDoctorDirectoryModal('tab-add');
+          });
+        }
+
+        // Add Best Time Slot Button
+        if (addBestTimeSlotBtn) {
+          addBestTimeSlotBtn.addEventListener('click', () => {
+            vibrate(20);
+            if (bestTimeSlotsContainer) {
+              bestTimeSlotsContainer.appendChild(createBestTimeSlotRow('MON - SAT', '14:00', '15:00'));
+              syncBestTimeHiddenInput();
+            }
+          });
+        }
+
+        // Add Doctor Department Dropdown & Other Specialty Input
+        if (newDocDeptSelect) {
+          newDocDeptSelect.addEventListener('change', () => {
+            if (newDocDeptSelect.value === 'OTHERS') {
+              if (newDocDeptOtherWrap) newDocDeptOtherWrap.style.display = 'block';
+              if (newDocDeptOther) {
+                newDocDeptOther.focus();
+                if (newDocDept) newDocDept.value = newDocDeptOther.value.trim().toUpperCase();
+              }
+            } else {
+              if (newDocDeptOtherWrap) newDocDeptOtherWrap.style.display = 'none';
+              if (newDocDept) newDocDept.value = newDocDeptSelect.value;
+            }
+          });
+        }
+        if (newDocDeptOther) {
+          newDocDeptOther.addEventListener('input', () => {
+            forceUppercaseInput(newDocDeptOther);
+            if (newDocDept) newDocDept.value = newDocDeptOther.value.trim().toUpperCase();
+          });
+        }
+
+        // Settings Protected Fields Edit Pills
+        if (editRepNameBtn && settingsRepName) {
+          editRepNameBtn.addEventListener('click', () => {
+            vibrate(20);
+            if (settingsRepName.readOnly) {
+              settingsRepName.readOnly = false;
+              settingsRepName.style.background = '#ffffff';
+              settingsRepName.style.cursor = 'text';
+              settingsRepName.focus();
+              editRepNameBtn.textContent = '🔒 Lock';
+            } else {
+              settingsRepName.readOnly = true;
+              settingsRepName.style.background = '#f1f5f9';
+              settingsRepName.style.cursor = 'not-allowed';
+              editRepNameBtn.textContent = '✏️ Edit';
+            }
+          });
+        }
+
+        if (editRepIdBtn && settingsRepId) {
+          editRepIdBtn.addEventListener('click', () => {
+            vibrate(20);
+            if (settingsRepId.readOnly) {
+              settingsRepId.readOnly = false;
+              settingsRepId.style.background = '#ffffff';
+              settingsRepId.style.cursor = 'text';
+              settingsRepId.focus();
+              editRepIdBtn.textContent = '🔒 Lock';
+            } else {
+              settingsRepId.readOnly = true;
+              settingsRepId.style.background = '#f1f5f9';
+              settingsRepId.style.cursor = 'not-allowed';
+              editRepIdBtn.textContent = '✏️ Edit';
+            }
+          });
+        }
+
+        if (editWebhookUrlBtn && webhookUrlInput) {
+          editWebhookUrlBtn.addEventListener('click', () => {
+            vibrate(20);
+            if (webhookUrlInput.readOnly) {
+              webhookUrlInput.readOnly = false;
+              webhookUrlInput.style.background = '#ffffff';
+              webhookUrlInput.style.cursor = 'text';
+              webhookUrlInput.focus();
+              editWebhookUrlBtn.textContent = '🔒 Lock';
+            } else {
+              webhookUrlInput.readOnly = true;
+              webhookUrlInput.style.background = '#f1f5f9';
+              webhookUrlInput.style.cursor = 'not-allowed';
+              editWebhookUrlBtn.textContent = '✏️ Change URL';
+            }
+          });
+        }
+
+        // GPS Off Modal & Prompt Retry Listeners
+        if (retryGpsFromModalBtn) {
+          retryGpsFromModalBtn.addEventListener('click', () => {
+            vibrate(30);
+            closeGpsOffModal();
+            initGPS();
+            showToast('Retrying GPS... please ensure phone GPS is ON', 'normal');
+          });
+        }
+
+        if (dismissGpsOffModalBtn) {
+          dismissGpsOffModalBtn.addEventListener('click', () => {
+            closeGpsOffModal();
+          });
+        }
+
+        if (gpsOffStripRetryBtn) {
+          gpsOffStripRetryBtn.addEventListener('click', () => {
+            vibrate(30);
+            initGPS();
+            showToast('Retrying GPS... please ensure phone GPS is ON', 'normal');
+          });
+        }
+
+        if (gpsOffModal) {
+          gpsOffModal.addEventListener('click', (e) => {
+            if (e.target === gpsOffModal) {
+              closeGpsOffModal();
+            }
+          });
+        }
       }
 
       // Start App
