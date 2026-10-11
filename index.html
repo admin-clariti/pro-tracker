@@ -108,26 +108,16 @@
     }
 
     .brand-icon {
-      width: 44px;
-      height: 44px;
+      width: 42px;
+      height: 42px;
       background: #ffffff;
-      border: 1.5px solid rgba(80, 184, 115, 0.4);
+      border: 1.5px solid rgba(80, 184, 115, 0.35);
       border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(80, 184, 115, 0.2);
       flex-shrink: 0;
-      padding: 4px;
-      box-sizing: border-box;
-      overflow: hidden;
-    }
-
-    .brand-logo-img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      display: block;
     }
 
     .brand-title-wrap {
@@ -3036,8 +3026,11 @@
       <div class="header-brand-row">
         <div class="brand-group">
           <div class="brand-icon" title="Clariti Scanworld">
-            <!-- Clariti Full Logo Uncropped -->
-            <img src="/clariti-logo.svg" alt="Clariti Scanworld" class="brand-logo-img" />
+            <!-- Clariti Logo -->
+            <svg width="28" height="28" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M 35.355 0 A 35.355 35.355 0 0 1 0 35.355 L 0 70.711 A 70.711 70.711 0 0 0 70.711 0 Z" fill="#50B873"/>
+              <path d="M 64.645 100 A 35.355 35.355 0 0 1 100 64.645 L 100 29.289 A 70.711 70.711 0 0 0 29.289 100 Z" fill="#50B873"/>
+            </svg>
           </div>
           <div class="brand-title-wrap">
             <h1 class="app-title">Clariti Scanworld Tracker</h1>
@@ -3695,8 +3688,8 @@
  * Clariti Scaworld Tracker - Google Sheets Integration
  * 
  * Doctor Master Sheet: Tab Doctor List
- *   Fetches and syncs doctor details across Columns B to O
- *   Col B: Doctor Name
+ *   Fetches and syncs doctor details across Columns C to O
+ *   Col C: Doctor Name
  *   Col D: Speciality
  *   Col E: Clinic Name
  *   Col H: OP Days Time
@@ -3738,25 +3731,88 @@ function getCallsSpreadsheet() {
   return SpreadsheetApp.getActiveSpreadsheet();
 }
 
+// Ensure the spreadsheet has at least minCols columns (guarantees Column Z / Col 26 exists)
+function ensureMinColumns(sheet, minCols) {
+  try {
+    var maxCols = sheet.getMaxColumns();
+    if (maxCols < minCols) {
+      sheet.insertColumnsAfter(maxCols, minCols - maxCols);
+    }
+  } catch (e) {}
+}
+
+// Resilient sheet resolver: Searches exact name, aliases, or any sheet with doctor rows
 function getDoctorSheet(overrideName) {
   var ss = getDoctorSpreadsheet();
   var name = overrideName || DOCTOR_SHEET_NAME;
-  var sheet = ss.getSheetByName(name);
-  if (!sheet) {
-    var allSheets = ss.getSheets();
-    for (var s = 0; s &lt; allSheets.length; s++) {
-      if (allSheets[s].getName().trim().toLowerCase() === name.trim().toLowerCase()) {
+  var sheet = null;
+
+  // 1. Direct name lookup
+  if (name) sheet = ss.getSheetByName(name);
+  if (sheet) {
+    ensureMinColumns(sheet, 26);
+    return sheet;
+  }
+
+  var allSheets = ss.getSheets();
+  var target = (name || "").trim().toLowerCase();
+
+  // 2. Case-insensitive exact match for requested or standard aliases
+  var aliases = [
+    target,
+    "doctor list", "doctors list", "doctors", "doctor",
+    "doctor directory", "doctors directory", "doctor master", "doctors master",
+    "sheet1"
+  ];
+  for (var a = 0; a < aliases.length; a++) {
+    for (var s = 0; s < allSheets.length; s++) {
+      if (allSheets[s].getName().trim().toLowerCase() === aliases[a]) {
         sheet = allSheets[s];
-        break;
+        ensureMinColumns(sheet, 26);
+        return sheet;
       }
     }
   }
-  if (!sheet) {
-    sheet = ss.insertSheet(name);
+
+  // 3. Any sheet containing "doc" in tab name (excluding visit data)
+  for (var s = 0; s < allSheets.length; s++) {
+    var sName = allSheets[s].getName().trim().toLowerCase();
+    if (sName.indexOf("doc") !== -1 && sName !== (CALLS_SHEET_NAME || "").toLowerCase()) {
+      sheet = allSheets[s];
+      ensureMinColumns(sheet, 26);
+      return sheet;
+    }
   }
+
+  // 4. Any sheet with "Doctor" in its header row
+  for (var s = 0; s < allSheets.length; s++) {
+    if (allSheets[s].getLastRow() > 1 && allSheets[s].getName().toLowerCase() !== (CALLS_SHEET_NAME || "").toLowerCase()) {
+      var hRow = allSheets[s].getRange(1, 1, 1, Math.min(allSheets[s].getLastColumn(), 15)).getValues()[0];
+      for (var h = 0; h < hRow.length; h++) {
+        if ((hRow[h] || "").toString().toLowerCase().indexOf("doctor") !== -1) {
+          sheet = allSheets[s];
+          ensureMinColumns(sheet, 26);
+          return sheet;
+        }
+      }
+    }
+  }
+
+  // 5. Fallback to first sheet if it has rows (> 1) and is not the calls sheet
+  for (var s = 0; s < allSheets.length; s++) {
+    if (allSheets[s].getLastRow() > 1 && allSheets[s].getName().toLowerCase() !== (CALLS_SHEET_NAME || "").toLowerCase()) {
+      sheet = allSheets[s];
+      ensureMinColumns(sheet, 26);
+      return sheet;
+    }
+  }
+
+  // 6. Only insert new empty sheet if no sheets have data
+  sheet = ss.insertSheet(name || DOCTOR_SHEET_NAME);
+  ensureMinColumns(sheet, 26);
   if (sheet.getLastRow() === 0) {
     sheet.appendRow([
-      "S.No", "Doctor Name", "Qualification", "Speciality",
+      "S.No", "Qualification", "Doctor Name", "Speciality",
       "Clinic / Hospital", "Area", "City", "OP Timings",
       "Best Time", "Latitude", "Longitude", "Google Maps URL",
       "Email", "Alternate Phone", "Contact Number",
@@ -3777,7 +3833,7 @@ function getCallSheet(overrideName) {
   var sheet = ss.getSheetByName(name);
   if (!sheet) {
     var allSheets = ss.getSheets();
-    for (var s = 0; s &lt; allSheets.length; s++) {
+    for (var s = 0; s < allSheets.length; s++) {
       if (allSheets[s].getName().trim().toLowerCase() === name.trim().toLowerCase()) {
         sheet = allSheets[s];
         break;
@@ -3823,24 +3879,32 @@ function doPost(e) {
 function handleRequest(data) {
   var action = data.action || (data.test ? 'test' : 'log_visit');
 
-  // 1. Fetch Doctors from Doctor Master Sheet (Col B is Name, Col Z is Priority) & Count Visits from Visit Data
+  // 1. Fetch Doctors from Doctor Master Sheet & Count Visits from Visit Data
   if (action === 'get_doctors') {
     try {
-      var docSheet = getDoctorSheet();
-      var maxRow = Math.min(docSheet.getLastRow(), 999);
-      if (maxRow &lt; 2) {
-        return jsonResponse({ status: "success", count: 0, doctors: [] });
+      var docSheet = getDoctorSheet(data.doctor_sheet_name);
+      ensureMinColumns(docSheet, 26);
+      var maxRow = Math.min(docSheet.getLastRow(), 2000);
+      if (maxRow < 2) {
+        return jsonResponse({ status: "success", count: 0, doctors: [], sheet_name: docSheet.getName() });
       }
 
-      // Read Visit Data sheet to aggregate visits per doctor for current calendar month (Item 6 & 11)
+      // Ensure Column Z (Col 26) has header "Priority"
+      var zHeaderCell = docSheet.getRange(1, 26);
+      var currentZHeader = (zHeaderCell.getValue() || "").toString().trim();
+      if (!currentZHeader) {
+        zHeaderCell.setValue("Priority").setFontWeight("bold");
+      }
+
+      // Read Visit Data sheet to aggregate visits per doctor for current calendar month
       var visitCounts = {};
       try {
         var callSheet = getCallSheet(data.calls_sheet_name || CALLS_SHEET_NAME);
         var lastCallRow = callSheet.getLastRow();
-        if (lastCallRow &gt;= 2) {
+        if (lastCallRow >= 2) {
           var callVals = callSheet.getRange(2, 1, lastCallRow - 1, 8).getValues();
           var curMonthPrefix = Utilities.formatDate(new Date(), Session.getScriptTimeZone() || "GMT", "yyyy-MM");
-          for (var v = 0; v &lt; callVals.length; v++) {
+          for (var v = 0; v < callVals.length; v++) {
             var callDateRaw = callVals[v][0];
             var callDoc = (callVals[v][4] || "").toString().trim().replace(/^(DR\.?|DR)\s+/i, "").toLowerCase();
             if (!callDoc) continue;
@@ -3857,38 +3921,103 @@ function handleRequest(data) {
 
       var lastCol = Math.max(docSheet.getLastColumn(), 26);
       var numRows = maxRow - 1;
-      // Read starting from Column 1 (Col A) so column index 1 corresponds strictly to Column B
+
+      // Dynamic Header Mapping: Doctor Name is strictly Column C (index 2)
+      var headerRow = docSheet.getRange(1, 1, 1, lastCol).getValues()[0];
+      var colMap = {
+        name: 2, // Strictly Column C (0-based index 2, 1-based Col 3)
+        speciality: -1,
+        clinic: -1,
+        opTimings: -1,
+        bestTime: -1,
+        lat: -1,
+        lng: -1,
+        mapUrl: -1,
+        phone: -1,
+        priority: 25 // Strictly Column Z (0-based index 25, 1-based Col 26)
+      };
+
+      for (var c = 0; c < headerRow.length; c++) {
+        var hText = (headerRow[c] || "").toString().trim().toLowerCase();
+        if (!hText) continue;
+        // Never map Column A (c = 0) or Column B (c = 1) for Doctor Name!
+        // Col A is S.No/ID, Col B is Qualification. Doctor Name is strictly in Col C (c = 2)
+        if (c >= 2 && (hText === "doctor name" || hText === "dr name" || hText === "name of doctor" || (c === 2 && (hText.indexOf("doctor") !== -1 || hText === "name")))) {
+          colMap.name = c;
+        } else if (colMap.speciality === -1 && (hText.indexOf("special") !== -1 || hText.indexOf("dept") !== -1 || (c !== 1 && hText.indexOf("qualification") !== -1))) {
+          colMap.speciality = c;
+        } else if (colMap.clinic === -1 && (hText.indexOf("clinic") !== -1 || hText.indexOf("hospital") !== -1 || hText.indexOf("facility") !== -1)) {
+          colMap.clinic = c;
+        } else if (colMap.opTimings === -1 && (hText.indexOf("timing") !== -1 || hText.indexOf("op") !== -1 || hText.indexOf("hours") !== -1)) {
+          colMap.opTimings = c;
+        } else if (colMap.bestTime === -1 && (hText.indexOf("best") !== -1 || hText.indexOf("meet") !== -1)) {
+          colMap.bestTime = c;
+        } else if (colMap.lat === -1 && (hText === "latitude" || hText === "lat")) {
+          colMap.lat = c;
+        } else if (colMap.lng === -1 && (hText === "longitude" || hText === "long" || hText === "lng")) {
+          colMap.lng = c;
+        } else if (colMap.mapUrl === -1 && (hText.indexOf("map") !== -1 || hText.indexOf("link") !== -1)) {
+          colMap.mapUrl = c;
+        } else if (colMap.phone === -1 && (hText.indexOf("phone") !== -1 || hText.indexOf("contact") !== -1 || hText.indexOf("mobile") !== -1)) {
+          colMap.phone = c;
+        } else if (hText.indexOf("priority") !== -1) {
+          colMap.priority = c;
+        }
+      }
+
+      // Strict fallbacks: Doctor Name is Column C (2), Priority is Column Z (25)
+      if (colMap.name === -1 || colMap.name < 2) colMap.name = 2; // Col C (index 2: Doctor Name)
+      if (colMap.speciality === -1) colMap.speciality = 3; // Col D (index 3)
+      if (colMap.clinic === -1) colMap.clinic = 4; // Col E (index 4)
+      if (colMap.opTimings === -1) colMap.opTimings = 7; // Col H (index 7)
+      if (colMap.bestTime === -1) colMap.bestTime = 8; // Col I (index 8)
+      if (colMap.lat === -1) colMap.lat = 9; // Col J (index 9)
+      if (colMap.lng === -1) colMap.lng = 10; // Col K (index 10)
+      if (colMap.mapUrl === -1) colMap.mapUrl = 11; // Col L (index 11)
+      if (colMap.phone === -1) colMap.phone = 14; // Col O (index 14)
+      if (colMap.priority === -1) colMap.priority = 25; // Col Z (index 25 / Col 26)
+
       var values = docSheet.getRange(2, 1, numRows, lastCol).getValues();
+
+      // Ensure & backfill Column Z priority for existing sheet rows if empty
+      var priorityRange = docSheet.getRange(2, 26, numRows, 1);
+      var priorityVals = priorityRange.getValues();
+      var needBackfill = false;
+      for (var p = 0; p < priorityVals.length; p++) {
+        var existingP = (priorityVals[p][0] || "").toString().trim();
+        if (!existingP) {
+          priorityVals[p][0] = "Moderate";
+          needBackfill = true;
+        }
+      }
+      if (needBackfill) {
+        priorityRange.setValues(priorityVals);
+      }
+
       var doctors = [];
 
-      for (var i = 0; i &lt; values.length; i++) {
+      for (var i = 0; i < values.length; i++) {
         var row = values[i];
-        // Col B (column 2, index 1) is strictly Doctor Name (without DR prefix)
-        var rawName = (row[1] || "").toString().trim();
-        if (!rawName) continue;
-        var name = rawName.replace(/^(DR\.?|DR)\s+/i, "");
 
-        // Col D is index 3 (or Col C index 2 if Col D is blank)
-        var speciality = (row[3] || row[2] || "").toString().trim();
-        // Col E is index 4
-        var clinic = (row[4] || "").toString().trim();
-        // Col H is index 7
-        var opTimings = (row[7] || "").toString().trim();
-        // Col I is index 8
-        var bestTime = (row[8] || "").toString().trim();
-        // Col J is index 9
-        var lat = (row[9] !== "" && !isNaN(row[9])) ? Number(row[9]) : null;
-        // Col K is index 10
-        var lng = (row[10] !== "" && !isNaN(row[10])) ? Number(row[10]) : null;
-        // Col L is index 11
-        var locationLink = (row[11] || "").toString().trim();
+        // Doctor Name is strictly from Column C (index 2, NEVER Column A or B)
+        var rawName = (row[colMap.name] || (colMap.name !== 2 ? row[2] : "") || "").toString().trim();
+        if (!rawName) continue; // Skip empty rows, never read Column A
+
+        var name = rawName.replace(/^(DR\.?|DR)\s+/i, "").trim();
+        var speciality = (row[colMap.speciality] || "").toString().trim();
+        var clinic = (row[colMap.clinic] || "").toString().trim();
+        var opTimings = (row[colMap.opTimings] || "").toString().trim();
+        var bestTime = (row[colMap.bestTime] || "").toString().trim();
+
+        var lat = (row[colMap.lat] !== "" && !isNaN(row[colMap.lat])) ? Number(row[colMap.lat]) : null;
+        var lng = (row[colMap.lng] !== "" && !isNaN(row[colMap.lng])) ? Number(row[colMap.lng]) : null;
+        var locationLink = (row[colMap.mapUrl] || "").toString().trim();
         if (!locationLink && lat && lng) {
           locationLink = "https://www.google.com/maps?q=" + lat + "," + lng;
         }
-        // Col O is index 14
-        var contactNumber = (row[14] || "").toString().trim();
-        // Col Z is index 25 (Column 26: Priority: High / Moderate / Low)
-        var priorityVal = (row[25] || "").toString().trim() || "Moderate";
+
+        var contactNumber = (row[colMap.phone] || "").toString().trim();
+        var priorityVal = (priorityVals[i] && priorityVals[i][0]) ? priorityVals[i][0].toString().trim() : ((row[colMap.priority] || "").toString().trim() || "Moderate");
 
         var cleanLookup = name.trim().toLowerCase();
         var monthVisits = visitCounts[cleanLookup] !== undefined ? visitCounts[cleanLookup] : 0;
@@ -3910,29 +4039,45 @@ function handleRequest(data) {
         });
       }
 
-      return jsonResponse({ status: "success", count: doctors.length, doctors: doctors });
+      return jsonResponse({
+        status: "success",
+        count: doctors.length,
+        doctors: doctors,
+        sheet_name: docSheet.getName()
+      });
     } catch (err) {
       return jsonResponse({ status: "error", message: err.toString() });
     }
   }
 
-  // 2. Add New Doctor (Doctor Name in Column B without DR prefix)
+  // 2. Add New Doctor (Doctor Name strictly in Column C, Priority strictly in Column Z)
   if (action === 'add_doctor') {
     try {
       var docSheet = getDoctorSheet();
+      ensureMinColumns(docSheet, 26);
       var newRow = docSheet.getLastRow() + 1;
+
+      // Ensure Column Z has header "Priority"
+      var zHeader = docSheet.getRange(1, 26).getValue();
+      if (!zHeader || zHeader.toString().trim() === "") {
+        docSheet.getRange(1, 26).setValue("Priority").setFontWeight("bold");
+      }
 
       var lat = (data.latitude !== undefined && data.latitude !== "") ? data.latitude : "";
       var lng = (data.longitude !== undefined && data.longitude !== "") ? data.longitude : "";
       var locationLink = (lat && lng) ? ("https://www.google.com/maps?q=" + lat + "," + lng) : (data.location_link || "");
 
       // Col A (1): S.No
-      if (newRow &gt;= 2) {
+      if (newRow >= 2) {
         docSheet.getRange(newRow, 1).setValue(newRow - 1);
       }
-      // Col B (2): Doctor Name (Strictly Column B, without DR prefix)
+      // Col B (2): Qualification
+      if (data.qualification) {
+        docSheet.getRange(newRow, 2).setValue(data.qualification);
+      }
+      // Col C (3): Doctor Name (Strictly Column C, without DR prefix)
       var cleanDocName = (data.doctor_name || data.name || "").toString().trim().replace(/^(DR\.?|DR)\s+/i, "");
-      docSheet.getRange(newRow, 2).setValue(cleanDocName);
+      docSheet.getRange(newRow, 3).setValue(cleanDocName);
       // Col D (4): Speciality / Department
       docSheet.getRange(newRow, 4).setValue(data.speciality || data.department || "");
       // Col E (5): Clinic Name
@@ -3949,12 +4094,13 @@ function handleRequest(data) {
       docSheet.getRange(newRow, 12).setValue(locationLink);
       // Col O (15): Contact Number
       docSheet.getRange(newRow, 15).setValue(data.contact_number || data.phone || "");
-      // Col Z (26): Priority (High / Moderate / Low)
-      docSheet.getRange(newRow, 26).setValue(data.priority || "Moderate");
+      // Col Z (26): Priority (High / Moderate / Low) - ALWAYS written to Column Z
+      var priorityVal = data.priority || "Moderate";
+      docSheet.getRange(newRow, 26).setValue(priorityVal);
 
       return jsonResponse({
         status: "success",
-        message: "Doctor added successfully at row " + newRow + " in Column B",
+        message: "Doctor added successfully at row " + newRow + " with Name in Column C and Priority (" + priorityVal + ") in Column Z",
         sheet_row: newRow
       });
     } catch (err) {
@@ -3962,23 +4108,30 @@ function handleRequest(data) {
     }
   }
 
-  // 3. Edit Existing Doctor (Doctor Name in Column B without DR prefix)
+  // 3. Edit Existing Doctor (Doctor Name strictly in Column C, Priority strictly in Column Z)
   if (action === 'edit_doctor') {
     try {
       var docSheet = getDoctorSheet();
+      ensureMinColumns(docSheet, 26);
       var targetRow = null;
 
-      if (data.sheet_row && Number(data.sheet_row) &gt;= 2) {
+      // Ensure Column Z has header "Priority"
+      var zHeader = docSheet.getRange(1, 26).getValue();
+      if (!zHeader || zHeader.toString().trim() === "") {
+        docSheet.getRange(1, 26).setValue("Priority").setFontWeight("bold");
+      }
+
+      if (data.sheet_row && Number(data.sheet_row) >= 2) {
         targetRow = Number(data.sheet_row);
       } else {
         var lastRow = docSheet.getLastRow();
-        if (lastRow &gt;= 2) {
-          // Strictly search Column B (Col 2) for the doctor name
-          var names = docSheet.getRange(2, 2, lastRow - 1, 1).getValues();
+        if (lastRow >= 2) {
+          // Strictly search Column C (Col 3) for the doctor name
+          var names = docSheet.getRange(2, 3, lastRow - 1, 1).getValues();
           var searchName = (data.original_name || data.doctor_name || data.name || "").toString().trim().replace(/^(DR\.?|DR)\s+/i, "").toLowerCase();
-          for (var r = 0; r &lt; names.length; r++) {
-            var colB = (names[r][0] || "").toString().trim().replace(/^(DR\.?|DR)\s+/i, "").toLowerCase();
-            if (colB === searchName) {
+          for (var r = 0; r < names.length; r++) {
+            var colC = (names[r][0] || "").toString().trim().replace(/^(DR\.?|DR)\s+/i, "").toLowerCase();
+            if (colC === searchName) {
               targetRow = r + 2;
               break;
             }
@@ -3991,9 +4144,9 @@ function handleRequest(data) {
         docSheet.getRange(targetRow, 1).setValue(targetRow - 1);
       }
 
-      // Col B (2): Doctor Name (Strictly Column B, without DR prefix)
+      // Col C (3): Doctor Name (Strictly Column C, without DR prefix)
       var cleanDocName = (data.doctor_name || data.name || "").toString().trim().replace(/^(DR\.?|DR)\s+/i, "");
-      if (cleanDocName) docSheet.getRange(targetRow, 2).setValue(cleanDocName);
+      if (cleanDocName) docSheet.getRange(targetRow, 3).setValue(cleanDocName);
       // Col D (4): Speciality / Department
       if (data.speciality || data.department !== undefined) docSheet.getRange(targetRow, 4).setValue(data.speciality || data.department || "");
       // Col E (5): Clinic Name
@@ -4020,14 +4173,13 @@ function handleRequest(data) {
         docSheet.getRange(targetRow, 15).setValue(data.contact_number || data.phone || "");
       }
 
-      // Col Z (26): Priority (High / Moderate / Low)
-      if (data.priority !== undefined) {
-        docSheet.getRange(targetRow, 26).setValue(data.priority || "Moderate");
-      }
+      // Col Z (26): Priority (High / Moderate / Low) - ALWAYS written to Column Z
+      var editPriority = data.priority || "Moderate";
+      docSheet.getRange(targetRow, 26).setValue(editPriority);
 
       return jsonResponse({
         status: "success",
-        message: "Doctor updated successfully at row " + targetRow + " in Column B",
+        message: "Doctor updated successfully at row " + targetRow + " with Name in Column C and Priority in Column Z",
         sheet_row: targetRow
       });
     } catch (err) {
@@ -4127,7 +4279,7 @@ function jsonResponse(obj) {
 }</div>
             <button type="button" id="copyScriptBtn" class="secondary-btn" style="padding: 4px 8px; font-size: 0.70rem;">Copy Code</button>
             <p style="margin-top: 6px;">3. Click <strong>Deploy &gt; Manage deployments</strong> (or <strong>New deployment</strong>)</p>
-            <p style="margin-top: 2px;">4. Click <strong>Edit (pencil icon) &gt; Version: New version &gt; Deploy</strong> so Google Sheets runs the updated script (Doctor Name strictly in <strong>Column B</strong>).</p>
+            <p style="margin-top: 2px;">4. Click <strong>Edit (pencil icon) &gt; Version: New version &gt; Deploy</strong> so Google Sheets runs the updated script (Doctor Name strictly in <strong>Column C</strong> and Priority in <strong>Column Z</strong>).</p>
             <p style="margin-top: 2px;">5. Ensure <em>Execute as:</em> <strong>Me</strong> and <em>Who has access:</em> <strong>Anyone</strong>.</p>
             <p style="margin-top: 2px;">6. Copy Web app URL and paste into the Webhook URL field below.</p>
           </div>
@@ -4584,7 +4736,7 @@ function jsonResponse(obj) {
 
     <!-- GPS Off Prompt Modal -->
     <div id="gpsOffModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="gpsOffTitle" style="display: none;">
-      <div class="modal-sheet" style="max-width: 400px; padding: 20px; border-radius: 20px 20px 0 0; text-align: center;">
+      <div class="modal-sheet" style="max-width: 400px; padding: 20px; border-radius: 20px; text-align: center;">
         <div style="width: 52px; height: 52px; border-radius: 50%; background: #fee2e2; color: #dc2626; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10" />
@@ -5178,6 +5330,12 @@ function jsonResponse(obj) {
             }).map(d => {
               if (d.clinic && (d.clinic.toLowerCase() === 'undefined' || d.clinic.toLowerCase() === 'null')) {
                 d.clinic = '';
+              }
+              if (!d.priority) {
+                d.priority = 'Moderate';
+              }
+              if (d.name) {
+                d.name = d.name.replace(/^(DR\.?|DR)\s+/i, '').trim();
               }
               return d;
             });
@@ -7580,14 +7738,31 @@ function jsonResponse(obj) {
 
       // Sync All Doctors from Google Sheet
       async function syncDoctorsFromSheet(silent = false) {
-        const url = settings.webhookUrl || (webhookUrlInput ? webhookUrlInput.value.trim() : '');
-        if (!url || !url.startsWith('http')) {
+        let rawUrl = (settings.webhookUrl || (webhookUrlInput ? webhookUrlInput.value : '')).trim();
+        if (!rawUrl || !rawUrl.startsWith('http')) {
           if (!silent) {
             showToast('Please configure Google Apps Script Web App URL in Settings first', 'error');
             settingsModal.classList.add('show');
           }
           return;
         }
+
+        // Detect if user pasted Google Sheet Spreadsheet URL instead of Web App URL
+        if (rawUrl.includes('docs.google.com/spreadsheets')) {
+          showToast('Please use the Apps Script Web App URL (ending in /exec), not the Google Spreadsheet link.', 'error');
+          if (!silent) settingsModal.classList.add('show');
+          return;
+        }
+
+        // Auto-fix /dev to /exec if found
+        if (rawUrl.endsWith('/dev') || rawUrl.includes('/dev?')) {
+          rawUrl = rawUrl.replace('/dev', '/exec');
+          settings.webhookUrl = rawUrl;
+          if (webhookUrlInput) webhookUrlInput.value = rawUrl;
+          try { localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings)); } catch (e) {}
+        }
+
+        const url = rawUrl.replace(/\/+$/, '');
 
         if (dirSyncGsheetBtn) {
           dirSyncGsheetBtn.disabled = true;
@@ -7608,48 +7783,85 @@ function jsonResponse(obj) {
 
         try {
           let fetched = null;
-          // Try POST first
+          let fetchErrorMsg = '';
+
+          // 1. Try GET first (standard, fast, follows 302 redirects cleanly with CORS)
           try {
-            const resp = await fetch(url, {
-              method: 'POST',
-              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-              body: JSON.stringify({
-                action: 'get_doctors',
-                doctor_sheet_name: 'Doctor List',
-                calls_sheet_name: 'Visit Data'
-              })
+            const getUrl = url + (url.includes('?') ? '&' : '?') + 
+              'action=get_doctors&doctor_sheet_name=' + encodeURIComponent('Doctor List') + 
+              '&_t=' + Date.now();
+            const resp = await fetch(getUrl, {
+              method: 'GET',
+              headers: { 'Accept': 'application/json' },
+              cache: 'no-store'
             });
             if (resp.ok) {
               const res = await resp.json();
               if (res && res.status === 'success' && Array.isArray(res.doctors)) {
                 fetched = res.doctors;
+              } else if (res && res.status === 'error') {
+                fetchErrorMsg = res.message || 'Google Sheet returned error';
               }
+            } else {
+              fetchErrorMsg = `HTTP ${resp.status} ${resp.statusText}`;
             }
-          } catch (e) {
-            console.warn('POST get_doctors fallback to GET', e);
+          } catch (eGet) {
+            console.warn('GET get_doctors error, trying POST fallback:', eGet);
+            fetchErrorMsg = eGet.message || 'Network error on GET';
           }
 
-          // Fallback to GET
+          // 2. Fallback to POST if GET didn't return doctors
           if (!fetched) {
-            const getUrl = url + (url.includes('?') ? '&' : '?') + 'action=get_doctors&doctor_sheet_name=' + encodeURIComponent('Doctor List');
-            const resp = await fetch(getUrl);
-            if (resp.ok) {
-              const res = await resp.json();
-              if (res && res.status === 'success' && Array.isArray(res.doctors)) {
-                fetched = res.doctors;
+            try {
+              const resp = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({
+                  action: 'get_doctors',
+                  doctor_sheet_name: 'Doctor List',
+                  calls_sheet_name: 'Visit Data',
+                  _t: Date.now()
+                })
+              });
+              if (resp.ok) {
+                const res = await resp.json();
+                if (res && res.status === 'success' && Array.isArray(res.doctors)) {
+                  fetched = res.doctors;
+                } else if (res && res.status === 'error') {
+                  fetchErrorMsg = res.message || fetchErrorMsg;
+                }
               }
+            } catch (ePost) {
+              console.warn('POST get_doctors fallback error:', ePost);
+              fetchErrorMsg = ePost.message || fetchErrorMsg;
             }
           }
 
           if (Array.isArray(fetched)) {
+            if (fetched.length === 0) {
+              if (doctors.length > 0) {
+                showToast('Google Sheet connected, but 0 doctors found in sheet. Preserved your local doctors.', 'warning');
+                return;
+              }
+              showToast('Google Sheet connected, but 0 doctors found in sheet.', 'normal');
+              return;
+            }
+
             const previousCount = doctors.length;
             // Mirror Google Sheet list: Map fetched doctors
             doctors = fetched.map(sheetDoc => {
               let clinic = (sheetDoc.clinic || '').trim();
               if (clinic.toLowerCase() === 'undefined' || clinic.toLowerCase() === 'null') clinic = '';
+              let priority = (sheetDoc.priority || '').trim();
+              if (!priority || (priority !== 'High' && priority !== 'Moderate' && priority !== 'Low')) {
+                priority = 'Moderate';
+              }
+              const cleanName = (sheetDoc.name || '').replace(/^(DR\.?|DR)\s+/i, '').trim();
               return {
                 ...sheetDoc,
+                name: cleanName,
                 clinic: clinic,
+                priority: priority,
                 id: sheetDoc.id || ('doc_row_' + sheetDoc.sheet_row) || ('doc_' + Date.now())
               };
             });
@@ -7657,6 +7869,10 @@ function jsonResponse(obj) {
             saveDoctors();
             updateHeaderDocCount();
             renderDirectoryList(dirSearchInput ? dirSearchInput.value : '');
+            if (doctorDropdownList) renderDoctorDropdown(doctorNameInput ? doctorNameInput.value : '');
+            renderVisitPlanning();
+            renderPendingVisits();
+            renderSuggestedDoctors();
 
             // If the selected doctor was deleted from Google Sheet, clear selection
             if (selectedDoctor) {
@@ -7679,7 +7895,8 @@ function jsonResponse(obj) {
             }
             showToast(msg, 'success');
           } else {
-            showToast('No doctors found in Google Sheet', 'normal');
+            const errDetail = fetchErrorMsg ? `: ${fetchErrorMsg}` : '. Please verify Web App deployment settings.';
+            showToast('Failed to sync doctors from Google Sheet' + errDetail, 'error');
           }
         } catch (err) {
           console.error('Error fetching doctors from Google Sheet:', err);
