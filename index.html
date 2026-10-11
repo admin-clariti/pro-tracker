@@ -108,19 +108,26 @@
     }
 
     .brand-icon {
-      width: 42px;
-      height: 42px;
+      width: 44px;
+      height: 44px;
       background: #ffffff;
-      border: 1.5px solid rgba(80, 184, 115, 0.35);
+      border: 1.5px solid rgba(80, 184, 115, 0.4);
       border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(80, 184, 115, 0.15);
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(80, 184, 115, 0.2);
       flex-shrink: 0;
-      padding: 2px;
+      padding: 4px;
       box-sizing: border-box;
       overflow: hidden;
+    }
+
+    .brand-logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
     }
 
     .brand-title-wrap {
@@ -2003,20 +2010,24 @@
       display: flex;
       border-bottom: 2px solid var(--slate-200);
       margin-bottom: 12px;
-      gap: 6px;
+      gap: 4px;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
-      align-items: center;
+      align-items: stretch;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .modal-tab-btn {
-      padding: 8px 10px;
+      flex: 1 1 0;
+      min-width: 0;
+      padding: 7px 4px;
       background: none;
       border: none;
       border-bottom: 3px solid transparent;
       margin-bottom: -2px;
-      font-size: 0.76rem;
+      font-size: 0.72rem;
       font-weight: 700;
       color: var(--slate-500);
       cursor: pointer;
@@ -2026,7 +2037,9 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 4px;
+      gap: 3px;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .modal-tab-btn.active {
@@ -2040,7 +2053,7 @@
       background: none;
       border: none;
       border-radius: 0;
-      padding: 9px 12px;
+      padding: 7px 4px;
       margin-bottom: -2px;
       font-weight: 700;
     }
@@ -2057,7 +2070,7 @@
       background: none;
       border: none;
       border-radius: 0;
-      padding: 9px 12px;
+      padding: 7px 4px;
       margin-bottom: -2px;
       font-weight: 700;
     }
@@ -2066,6 +2079,489 @@
       color: #b91c1c;
       background: rgba(220, 38, 38, 0.08);
       border-bottom-color: #dc2626;
+    }
+
+    /* Daily Calls Progress Bar Card */
+    .daily-target-card {
+      background: #ffffff;
+      border: 1.5px solid var(--slate-200);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .daily-target-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 7px;
+    }
+
+    .daily-target-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--slate-800);
+    }
+
+    .daily-target-badge {
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+      background: #f1f5f9;
+      color: var(--slate-700);
+      border: 1px solid var(--slate-200);
+      transition: all 0.2s ease;
+    }
+
+    .daily-target-badge.achieved {
+      background: #dcfce7;
+      color: #15803d;
+      border-color: #86efac;
+    }
+
+    .daily-target-track {
+      width: 100%;
+      height: 10px;
+      background: #e2e8f0;
+      border-radius: 9999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .daily-target-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ea580c 0%, #f59e0b 60%, #16a34a 100%);
+      border-radius: 9999px;
+      transition: width 0.4s ease;
+    }
+
+    .daily-target-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 5px;
+      font-size: 0.70rem;
+      color: var(--slate-500);
+      font-weight: 600;
+    }
+
+    /* 2-Second Congratulations Dialog */
+    .congrats-dialog-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(4px);
+      padding: 16px;
+    }
+
+    .congrats-dialog-box {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 24px 20px;
+      max-width: 360px;
+      width: 92%;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+      border: 2.5px solid #22c55e;
+      animation: congratsPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes congratsPop {
+      0% { transform: scale(0.6); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* Conclude Clinic Visit Confirmation Modal */
+    .conclude-confirm-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(3px);
+    }
+
+    .conclude-confirm-sheet {
+      background: #ffffff;
+      width: 100%;
+      max-width: 480px;
+      border-radius: 22px 22px 0 0;
+      padding: 22px 18px 26px;
+      box-shadow: 0 -10px 30px rgba(0,0,0,0.25);
+      text-align: center;
+      animation: slideUpSheet 0.25s ease-out;
+    }
+
+    @keyframes slideUpSheet {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    /* Pending Visits & Suggested Doctors Tabs Card */
+    .assistant-tabs-card {
+      background: #ffffff;
+      border: 1.5px solid var(--slate-200);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      margin-top: 14px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .assistant-tab-nav {
+      display: flex;
+      gap: 5px;
+      background: #f1f5f9;
+      padding: 3px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+    }
+
+    .assistant-tab-btn {
+      flex: 1;
+      padding: 8px 10px;
+      font-size: 0.77rem;
+      font-weight: 800;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      color: var(--slate-600);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .assistant-tab-btn.active {
+      background: #ffffff;
+      color: var(--slate-900);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+
+    /* Filter Bar for Suggested Doctors */
+    .suggested-filters-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: #f8fafc;
+      border: 1px solid var(--slate-200);
+      border-radius: 10px;
+      padding: 9px 10px;
+      margin-bottom: 12px;
+    }
+
+    .filter-row-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .filter-label-tiny {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--slate-500);
+      min-width: 65px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .filter-pill-btn {
+      padding: 3px 8px;
+      border-radius: var(--radius-pill);
+      font-size: 0.70rem;
+      font-weight: 700;
+      background: #ffffff;
+      border: 1px solid var(--slate-300);
+      color: var(--slate-700);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+    }
+
+    .filter-pill-btn.active {
+      background: #0284c7;
+      border-color: #0284c7;
+      color: #ffffff;
+    }
+
+    /* Doctor Assistant Cards */
+    .assistant-doc-card {
+      background: #ffffff;
+      border: 1.5px solid var(--slate-200);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      transition: all 0.15s ease;
+    }
+
+    .assistant-doc-card:hover {
+      border-color: #cbd5e1;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    .assistant-doc-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .assistant-doc-name {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--slate-900);
+    }
+
+    .assistant-doc-clinic {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--slate-600);
+    }
+
+    .assistant-doc-badges {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-wrap: wrap;
+      margin-top: 2px;
+    }
+
+    .assistant-doc-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      margin-top: 4px;
+      padding-top: 6px;
+      border-top: 1px dashed var(--slate-200);
+    }
+
+    /* Priority Badges */
+    .priority-badge-high {
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fca5a5;
+      font-size: 0.67rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    .priority-badge-moderate {
+      background: #fef3c7;
+      color: #b45309;
+      border: 1px solid #fcd34d;
+      font-size: 0.67rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    .priority-badge-low {
+      background: #e0f2fe;
+      color: #0369a1;
+      border: 1px solid #bae6fd;
+      font-size: 0.67rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    /* Visit Planning Section Card */
+    .visit-planning-card {
+      background: #ffffff;
+      border: 1.5px solid var(--slate-200);
+      border-radius: var(--radius);
+      padding: 14px;
+      margin-top: 14px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .plan-days-bar {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      scrollbar-width: none;
+      margin-bottom: 12px;
+    }
+
+    .plan-days-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .plan-day-pill {
+      padding: 6px 11px;
+      border: 1.5px solid var(--slate-200);
+      background: #f8fafc;
+      border-radius: 8px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--slate-700);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+    }
+
+    .plan-day-pill.active {
+      background: #0284c7;
+      border-color: #0284c7;
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
+    }
+
+    .planned-doc-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 9px 11px;
+      background: #f8fafc;
+      border: 1px solid var(--slate-200);
+      border-radius: 9px;
+      margin-bottom: 7px;
+    }
+
+    .planned-order-circle {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #0284c7;
+      color: #ffffff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .plan-actions-group {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .plan-reorder-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1.5px solid var(--slate-200);
+      background: #ffffff;
+      color: var(--slate-600);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+      padding: 0;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .plan-reorder-btn:hover:not(:disabled) {
+      background: #f1f5f9;
+      border-color: var(--slate-300);
+      color: var(--slate-900);
+    }
+
+    .plan-reorder-btn:active:not(:disabled) {
+      transform: scale(0.93);
+    }
+
+    .plan-reorder-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      background: #f8fafc;
+      border-color: var(--slate-200);
+    }
+
+    .plan-reorder-btn.remove-stop {
+      color: #ef4444;
+      border-color: #fecaca;
+      background: #fff5f5;
+    }
+
+    .plan-reorder-btn.remove-stop:hover {
+      background: #fee2e2;
+      border-color: #f87171;
+      color: #dc2626;
+    }
+
+    /* Centered Phone GPS is turned off modal (Requirement 10) */
+    #gpsOffModal {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(4px);
+      z-index: 99999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    #gpsOffModal .modal-sheet {
+      border-radius: 20px !important;
+      max-width: 400px;
+      width: 100%;
+      margin: auto;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
+      animation: zoomInModal 0.2s ease-out;
+      transform: none;
+      max-height: 90vh;
+    }
+
+    @keyframes zoomInModal {
+      from { opacity: 0; transform: scale(0.92); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .maps-route-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 11px 16px;
+      background: linear-gradient(135deg, #15803d 0%, #16a34a 100%);
+      color: #ffffff;
+      font-size: 0.84rem;
+      font-weight: 800;
+      border-radius: 10px;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
+      margin-top: 10px;
+      transition: all 0.15s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .maps-route-btn:active {
+      transform: scale(0.98);
     }
 
     .pill-btn-action {
@@ -2540,11 +3036,8 @@
       <div class="header-brand-row">
         <div class="brand-group">
           <div class="brand-icon" title="Clariti Scanworld">
-            <!-- Clariti Full Logo -->
-            <svg width="36" height="36" viewBox="-15 -15 130 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M 35.355 0 A 35.355 35.355 0 0 1 0 35.355 L 0 70.711 A 70.711 70.711 0 0 0 70.711 0 Z" fill="#21d07c"/>
-              <path d="M 64.645 100 A 35.355 35.355 0 0 1 100 64.645 L 100 29.289 A 70.711 70.711 0 0 0 29.289 100 Z" fill="#21d07c"/>
-            </svg>
+            <!-- Clariti Full Logo Uncropped -->
+            <img src="/clariti-logo.svg" alt="Clariti Scanworld" class="brand-logo-img" />
           </div>
           <div class="brand-title-wrap">
             <h1 class="app-title">Clariti Scanworld Tracker</h1>
@@ -2621,22 +3114,44 @@
         <button id="refreshGpsBtn" type="button">Refresh</button>
       </div>
 
-      <!-- Clinic Visit Time Tracking Card (Reached Clinic) -->
-      <section class="clinic-timer-card" aria-label="Clinic Time Logs">
+      <!-- Daily Calls Target Progress Bar Card (Target: 15 Daily Calls) -->
+      <section class="daily-target-card" id="dailyTargetCard" aria-label="Daily Doctor Visits Target Progress">
+        <div class="daily-target-header">
+          <div class="daily-target-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <circle cx="12" cy="12" r="6" />
+              <circle cx="12" cy="12" r="2" />
+            </svg>
+            <span>Daily Call Target: <strong id="dailyTargetCallsNum" style="color: var(--brand-orange);">0 / 15</strong> Calls</span>
+          </div>
+          <span id="dailyTargetPercentBadge" class="daily-target-badge">0% Completed</span>
+        </div>
+        <div class="daily-target-track" title="Target: 15 Doctor Calls per Day">
+          <div id="dailyTargetFill" class="daily-target-fill" style="width: 0%;"></div>
+        </div>
+        <div class="daily-target-footer">
+          <span id="dailyTargetRemainingText">15 calls remaining to achieve daily target</span>
+          <span id="dailyTargetStatusText" style="color: #0284c7; font-weight: 700;">Goal: 15 Calls</span>
+        </div>
+      </section>
+
+      <!-- Clinic Visit Time Tracking Card (Check in to Doctor Clinic) -->
+      <section class="clinic-timer-card" aria-label="Check in to Doctor Clinic">
         <div class="timer-card-header">
           <div class="timer-card-title">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10" />
               <polyline points="12 6 12 12 16 14" />
             </svg>
-            <span>Clinic Arrival Log</span>
+            <span>Check in to Doctor Clinic</span>
           </div>
           <span id="activeVisitPill" class="active-visit-pill">Ready for Next Call</span>
         </div>
 
         <div class="clinic-arrival-wrapper">
           <!-- Big 1-tap arrival stamp button -->
-          <button id="quickReachedBtn" class="time-stamp-btn btn-reached" type="button" title="1-Tap: Stamp arrival time at doctor clinic">
+          <button id="quickReachedBtn" class="time-stamp-btn btn-reached" type="button" title="1-Tap: Check in to Doctor Clinic">
             <div class="btn-stamp-icon">
               <!-- Map pin arrival -->
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -2645,7 +3160,7 @@
               </svg>
             </div>
             <div class="btn-stamp-text">
-              <span id="quickReachedTitle" class="time-stamp-title">📍 Reached Doctor Clinic</span>
+              <span id="quickReachedTitle" class="time-stamp-title">📍 Check in to Doctor Clinic</span>
               <span id="quickReachedSub" class="time-stamp-sub">Tap once upon arrival • Reveals visit details &amp; doctor call log</span>
             </div>
           </button>
@@ -2666,16 +3181,6 @@
 
         <!-- Visit Location Details: Revealed only after pressing Reached Doctor Clinic -->
         <div class="clinic-location-details" id="clinicLocationDetails" style="display: none;">
-          <!-- Visit Location Type -->
-          <div class="form-group" style="margin-bottom: 0;">
-            <label class="form-label" style="font-size: 0.78rem; margin-bottom: 5px;">Visit Location Type</label>
-            <div class="location-pills">
-              <button type="button" class="loc-pill" data-loc="Home">Home</button>
-              <button type="button" class="loc-pill active" data-loc="Clinic">Clinic</button>
-              <button type="button" class="loc-pill" data-loc="Hospital">Hospital</button>
-            </div>
-          </div>
-
           <!-- Hospital / Clinic Name Combobox with Smart Filter & Proximity -->
           <div class="form-group" style="margin-bottom: 0;">
             <div class="form-label-row">
@@ -2900,6 +3405,79 @@
         </form>
       </section>
 
+      <!-- Executive Pre-Check-in Assistant: Pending Visits & Suggested Doctors Tabs (Expands only when tapped) -->
+      <section class="assistant-tabs-card" id="preVisitAssistantCard" aria-label="Pending Visits and Suggested Doctors">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+          <div class="assistant-tab-nav" role="tablist" style="margin-bottom: 0; flex: 1;">
+            <button type="button" class="assistant-tab-btn active" id="btnTabPendingVisits" role="tab" aria-selected="true" aria-controls="panelPendingVisits">
+              <span>📋 Pending Visits</span>
+              <span id="pendingVisitsCountBadge" style="background: #ea580c; color: #fff; font-size: 0.68rem; padding: 1px 6px; border-radius: 10px; font-weight: 800;">0</span>
+            </button>
+            <button type="button" class="assistant-tab-btn" id="btnTabSuggestedDocs" role="tab" aria-selected="false" aria-controls="panelSuggestedDocs">
+              <span>💡 Suggested Doctors</span>
+              <span id="suggestedDocsCountBadge" style="background: #0284c7; color: #fff; font-size: 0.68rem; padding: 1px 6px; border-radius: 10px; font-weight: 800;">0</span>
+            </button>
+          </div>
+          <button type="button" id="toggleAssistantExpandBtn" class="pill-btn-action" style="font-size: 0.72rem; padding: 5px 10px; font-weight: 700; background: #f8fafc; border-color: var(--slate-300); color: var(--slate-700); cursor: pointer;" title="Tap to expand or collapse">
+            <span id="assistantExpandText">Expand</span> <span id="assistantExpandArrow">▼</span>
+          </button>
+        </div>
+
+        <!-- Collapsible Content: Expands ONLY when tapped (Requirement 5) -->
+        <div id="assistantExpandableContent" style="display: none; margin-top: 12px; border-top: 1px solid var(--slate-200); padding-top: 10px;">
+          <!-- Panel 1: Pending Visits (Doctors not visited in calendar month, sorted by priority High->Moderate->Low, then least visits first) -->
+          <div id="panelPendingVisits" role="tabpanel">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+              <span style="font-size: 0.72rem; color: var(--slate-600); font-weight: 700;">Doctors with 0 visits in present calendar month</span>
+              <span id="pendingMonthLabel" style="font-size: 0.70rem; color: #ea580c; font-weight: 800;"></span>
+            </div>
+            <div id="pendingVisitsList" style="max-height: 380px; overflow-y: auto;">
+              <!-- Populated dynamically via JS -->
+            </div>
+          </div>
+
+          <!-- Panel 2: Suggested Doctors (Nearby doctors with filters: proximity, priority, availability, sorted by monthly visits 0 first) -->
+          <div id="panelSuggestedDocs" role="tabpanel" style="display: none;">
+            <div class="suggested-filters-bar">
+              <!-- Proximity filter: 50m, 100m, 500m, 1000m -->
+              <div class="filter-row-group">
+                <span class="filter-label-tiny">Proximity:</span>
+                <button type="button" class="filter-pill-btn active" data-filter-proximity="all">All</button>
+                <button type="button" class="filter-pill-btn" data-filter-proximity="50">50m</button>
+                <button type="button" class="filter-pill-btn" data-filter-proximity="100">100m</button>
+                <button type="button" class="filter-pill-btn" data-filter-proximity="500">500m</button>
+                <button type="button" class="filter-pill-btn" data-filter-proximity="1000">1000m</button>
+              </div>
+              <!-- Priority filter: High, Moderate, Low -->
+              <div class="filter-row-group">
+                <span class="filter-label-tiny">Priority:</span>
+                <button type="button" class="filter-pill-btn active" data-filter-priority="all">All</button>
+                <button type="button" class="filter-pill-btn" data-filter-priority="High">High (4/mo)</button>
+                <button type="button" class="filter-pill-btn" data-filter-priority="Moderate">Moderate (2/mo)</button>
+                <button type="button" class="filter-pill-btn" data-filter-priority="Low">Low (1/mo)</button>
+              </div>
+              <!-- Availability filter: Now, 30m, 1 hour -->
+              <div class="filter-row-group">
+                <span class="filter-label-tiny">Status:</span>
+                <button type="button" class="filter-pill-btn active" data-filter-avail="all">All</button>
+                <button type="button" class="filter-pill-btn" data-filter-avail="now">Available Now</button>
+                <button type="button" class="filter-pill-btn" data-filter-avail="30">In 30 Mins</button>
+                <button type="button" class="filter-pill-btn" data-filter-avail="60">In 1 Hour</button>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+              <span id="suggestedStatusSummary" style="font-size: 0.72rem; color: var(--slate-600); font-weight: 700;">Sorted by visits (0 on top)</span>
+              <span id="suggestedGpsStatusHint" style="font-size: 0.68rem; color: #0284c7; font-weight: 700;">📍 Uses phone GPS</span>
+            </div>
+
+            <div id="suggestedDoctorsList" style="max-height: 380px; overflow-y: auto;">
+              <!-- Populated dynamically via JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- Today's Activity Timeline / History Section (Exclusively Doctor Calls & Clinic Logs - ALWAYS VISIBLE) -->
       <section class="timeline-section" id="historyCard" aria-label="Today's Doctor Call Logs">
         <div class="timeline-header-row">
@@ -2947,6 +3525,67 @@
         </div>
         <div style="text-align: center; margin-top: 6px; font-size: 0.70rem; color: var(--slate-500);">
           ⏰ Call logs automatically reset at midnight (12:00 AM) • Tap "Clear Today" anytime to reset manually
+        </div>
+      </section>
+
+      <!-- Visit Planning Section (Below Today's Call and Time Logs) -->
+      <section class="visit-planning-card" id="visitPlanningSection" aria-label="Weekly Visit Planning">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+          <div style="display: flex; align-items: center; gap: 7px;">
+            <span style="font-size: 1.15rem;">🗓️</span>
+            <h2 style="font-size: 0.95rem; font-weight: 800; color: var(--slate-900); margin: 0;">Visit Planning</h2>
+          </div>
+          <span style="font-size: 0.72rem; color: var(--slate-500); font-weight: 700;">Present Week</span>
+        </div>
+        <p style="font-size: 0.75rem; color: var(--slate-600); margin-bottom: 10px; line-height: 1.4;">
+          Select any upcoming day of the present week to organize doctors in order of visit for route &amp; timing planning.
+        </p>
+
+        <!-- Upcoming Days of Present Week Selector (Dropdown - Item 4) -->
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="planDaySelect" style="display: block; font-size: 0.74rem; font-weight: 800; color: var(--slate-700); margin-bottom: 4px;">
+            📅 Select Planning Day (Present Week):
+          </label>
+          <select id="planDaySelect" class="text-input" style="font-weight: 700; font-size: 0.85rem; padding: 9px 12px; border-radius: 9px; background: #ffffff; border: 1.5px solid var(--slate-300); color: var(--slate-900);">
+            <!-- Populated dynamically with upcoming week days -->
+          </select>
+          <div id="planDaysBar" class="plan-days-bar" style="display: none;"></div>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+          <div style="font-size: 0.78rem; font-weight: 800; color: var(--slate-800);">
+            Planned Sequence (<span id="plannedDocsCount">0</span> Doctors)
+          </div>
+          <button type="button" id="openAddPlannedDocBtn" class="pill-btn-action" style="font-size: 0.72rem; padding: 4px 9px; background: #0284c7; color: #fff; border-color: #0284c7; font-weight: 800;">
+            ➕ Add Doctor to Plan
+          </button>
+        </div>
+
+        <!-- Add Doctor to Planned Day Picker Drawer -->
+        <div id="addPlannedDocDrawer" style="display: none; background: #f0f9ff; border: 1.5px solid #bae6fd; border-radius: 10px; padding: 10px; margin-bottom: 12px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+            <span style="font-size: 0.76rem; font-weight: 800; color: #0369a1;">Select Doctor Available on <span id="addPlannedDayName"></span></span>
+            <button type="button" id="closeAddPlannedDocBtn" class="link-btn-text" style="font-size: 0.74rem; color: var(--slate-500);">✕ Close</button>
+          </div>
+          <div style="margin-bottom: 6px;">
+            <input type="text" id="plannedDocSearchInput" class="text-input" placeholder="🔍 Search available doctor..." style="font-size: 0.80rem; padding: 6px 9px;" />
+          </div>
+          <select id="plannedDocSelect" class="text-input" style="font-weight: 700; font-size: 0.82rem; margin-bottom: 8px;">
+            <option value="">-- Choose Doctor Available on this Day --</option>
+          </select>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" id="confirmAddPlannedDocBtn" class="primary-btn" style="flex: 1; padding: 8px; font-size: 0.78rem;">Add to Itinerary</button>
+          </div>
+        </div>
+
+        <!-- Planned Doctors Ordered List -->
+        <div id="plannedDocsList" style="min-height: 40px;">
+          <!-- Ordered doctor cards populated dynamically -->
+        </div>
+
+        <!-- Google Maps Multi-Stop Route Overview Link Container -->
+        <div id="planMapsOverviewWrap" style="margin-top: 10px;">
+          <!-- Populated dynamically when planned list has doctor coordinates -->
         </div>
       </section>
 
@@ -3066,6 +3705,7 @@
  *   Col K: GPS Longitude
  *   Col L: Location Link
  *   Col O: Contact Number
+ *   Col Z: Priority (High: Four visits per month, Moderate: Two visits per month, Low: One visit per month)
  *   Field executives can Add or Edit doctors, but cannot Delete.
  * 
  * Visit Call Logs Sheet: Tab Visit Data
@@ -3119,11 +3759,13 @@ function getDoctorSheet(overrideName) {
       "S.No", "Doctor Name", "Qualification", "Speciality",
       "Clinic / Hospital", "Area", "City", "OP Timings",
       "Best Time", "Latitude", "Longitude", "Google Maps URL",
-      "Email", "Alternate Phone", "Contact Number"
+      "Email", "Alternate Phone", "Contact Number",
+      "", "", "", "", "", "", "", "", "", "", "Priority"
     ]);
     sheet.setFrozenRows(1);
     try {
-      sheet.getRange(1, 1, 1, 15).setFontWeight("bold").setBackground("#e2e8f0");
+      sheet.getRange(1, 1, 1, 26).setFontWeight("bold").setBackground("#e2e8f0");
+      sheet.getRange(1, 26).setValue("Priority"); // Col Z (Col 26)
     } catch (e) {}
   }
   return sheet;
@@ -3181,7 +3823,7 @@ function doPost(e) {
 function handleRequest(data) {
   var action = data.action || (data.test ? 'test' : 'log_visit');
 
-  // 1. Fetch Doctors from Doctor Master Sheet (Column B is Doctor Name)
+  // 1. Fetch Doctors from Doctor Master Sheet (Col B is Name, Col Z is Priority) & Count Visits from Visit Data
   if (action === 'get_doctors') {
     try {
       var docSheet = getDoctorSheet();
@@ -3190,7 +3832,30 @@ function handleRequest(data) {
         return jsonResponse({ status: "success", count: 0, doctors: [] });
       }
 
-      var lastCol = Math.max(docSheet.getLastColumn(), 16);
+      // Read Visit Data sheet to aggregate visits per doctor for current calendar month (Item 6 & 11)
+      var visitCounts = {};
+      try {
+        var callSheet = getCallSheet(data.calls_sheet_name || CALLS_SHEET_NAME);
+        var lastCallRow = callSheet.getLastRow();
+        if (lastCallRow &gt;= 2) {
+          var callVals = callSheet.getRange(2, 1, lastCallRow - 1, 8).getValues();
+          var curMonthPrefix = Utilities.formatDate(new Date(), Session.getScriptTimeZone() || "GMT", "yyyy-MM");
+          for (var v = 0; v &lt; callVals.length; v++) {
+            var callDateRaw = callVals[v][0];
+            var callDoc = (callVals[v][4] || "").toString().trim().replace(/^(DR\.?|DR)\s+/i, "").toLowerCase();
+            if (!callDoc) continue;
+            var callDateStr = (callDateRaw instanceof Date)
+              ? Utilities.formatDate(callDateRaw, Session.getScriptTimeZone() || "GMT", "yyyy-MM")
+              : (callDateRaw || "").toString().slice(0, 7);
+            if (!visitCounts[callDoc]) visitCounts[callDoc] = 0;
+            if (callDateStr === curMonthPrefix) {
+              visitCounts[callDoc]++;
+            }
+          }
+        }
+      } catch (eVisits) {}
+
+      var lastCol = Math.max(docSheet.getLastColumn(), 26);
       var numRows = maxRow - 1;
       // Read starting from Column 1 (Col A) so column index 1 corresponds strictly to Column B
       var values = docSheet.getRange(2, 1, numRows, lastCol).getValues();
@@ -3222,6 +3887,11 @@ function handleRequest(data) {
         }
         // Col O is index 14
         var contactNumber = (row[14] || "").toString().trim();
+        // Col Z is index 25 (Column 26: Priority: High / Moderate / Low)
+        var priorityVal = (row[25] || "").toString().trim() || "Moderate";
+
+        var cleanLookup = name.trim().toLowerCase();
+        var monthVisits = visitCounts[cleanLookup] !== undefined ? visitCounts[cleanLookup] : 0;
 
         doctors.push({
           id: "doc_row_" + (i + 2),
@@ -3235,7 +3905,8 @@ function handleRequest(data) {
           longitude: lng,
           location_link: locationLink,
           phone: contactNumber,
-          location_type: clinic.toLowerCase().indexOf("hospital") !== -1 ? "Hospital" : "Clinic"
+          priority: priorityVal,
+          month_visits: monthVisits
         });
       }
 
@@ -3278,6 +3949,8 @@ function handleRequest(data) {
       docSheet.getRange(newRow, 12).setValue(locationLink);
       // Col O (15): Contact Number
       docSheet.getRange(newRow, 15).setValue(data.contact_number || data.phone || "");
+      // Col Z (26): Priority (High / Moderate / Low)
+      docSheet.getRange(newRow, 26).setValue(data.priority || "Moderate");
 
       return jsonResponse({
         status: "success",
@@ -3345,6 +4018,11 @@ function handleRequest(data) {
       // Col O (15): Contact Number
       if (data.contact_number !== undefined || data.phone !== undefined) {
         docSheet.getRange(targetRow, 15).setValue(data.contact_number || data.phone || "");
+      }
+
+      // Col Z (26): Priority (High / Moderate / Low)
+      if (data.priority !== undefined) {
+        docSheet.getRange(targetRow, 26).setValue(data.priority || "Moderate");
       }
 
       return jsonResponse({
@@ -3509,7 +4187,7 @@ function jsonResponse(obj) {
         <div class="modal-tab-bar">
           <button type="button" class="modal-tab-btn active" data-tab="tab-all-docs" id="tabBtnAllDocs">All Doctors (<span id="tabDocsCount">0</span>)</button>
           <button type="button" class="modal-tab-btn" data-tab="tab-add" id="tabBtnAdd">➕ Add Doctor</button>
-          <button type="button" id="dirSyncGsheetBtn" class="modal-tab-btn tab-action" title="Sync doctors list from Google Sheet">🔄 Sync Doctors</button>
+          <button type="button" id="dirSyncGsheetBtn" class="modal-tab-btn tab-action" title="Sync doctors list from Google Sheet">🔄 Sync</button>
           <button type="button" id="dirClearAndSyncBtn" class="modal-tab-btn tab-action tab-action-danger" title="Clear local doctors and re-sync from Google Sheet">🗑️ Clear &amp; Resync</button>
         </div>
 
@@ -3547,36 +4225,48 @@ function jsonResponse(obj) {
               <input type="text" id="newDocClinic" class="text-input" placeholder="e.g. Sanjoe Hospital / Taluk Hospital" required style="text-transform: uppercase;" />
             </div>
 
-            <div class="form-group">
-              <label class="form-label" for="newDocDeptSelect">Specialty / Department</label>
-              <select id="newDocDeptSelect" class="text-input" style="font-weight: 700;">
-                <option value="">-- SELECT SPECIALTY / DEPARTMENT --</option>
-                <option value="GENERAL MEDICINE">GENERAL MEDICINE</option>
-                <option value="CARDIOLOGY">CARDIOLOGY</option>
-                <option value="ORTHOPEDICS">ORTHOPEDICS</option>
-                <option value="PEDIATRICS">PEDIATRICS</option>
-                <option value="GYNECOLOGY &amp; OBSTETRICS">GYNECOLOGY &amp; OBSTETRICS</option>
-                <option value="DIABETOLOGY">DIABETOLOGY</option>
-                <option value="DERMATOLOGY">DERMATOLOGY</option>
-                <option value="NEUROLOGY">NEUROLOGY</option>
-                <option value="GASTROENTEROLOGY">GASTROENTEROLOGY</option>
-                <option value="GENERAL SURGERY">GENERAL SURGERY</option>
-                <option value="PULMONOLOGY / CHEST MEDICINE">PULMONOLOGY / CHEST MEDICINE</option>
-                <option value="ENT (EAR, NOSE, THROAT)">ENT (EAR, NOSE, THROAT)</option>
-                <option value="OPHTHALMOLOGY">OPHTHALMOLOGY</option>
-                <option value="NEPHROLOGY">NEPHROLOGY</option>
-                <option value="UROLOGY">UROLOGY</option>
-                <option value="PSYCHIATRY">PSYCHIATRY</option>
-                <option value="ONCOLOGY">ONCOLOGY</option>
-                <option value="RADIOLOGY">RADIOLOGY</option>
-                <option value="BAMS">BAMS</option>
-                <option value="BHMS">BHMS</option>
-                <option value="OTHERS">OTHERS (SPECIFY)</option>
-              </select>
-              <div id="newDocDeptOtherWrap" style="display: none; margin-top: 6px;">
-                <input type="text" id="newDocDeptOther" class="text-input" placeholder="TYPE SPECIALTY HERE (ALL CAPS)..." style="text-transform: uppercase;" />
+            <div class="form-group" style="position: relative;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                <label class="form-label" for="newDocDeptInput" style="margin-bottom: 0;">Specialty / Department *</label>
+                <button type="button" id="toggleAddDeptCustomBtn" class="link-btn-text" style="font-size: 0.70rem; color: #0284c7; font-weight: 700;">➕ Add Department</button>
+              </div>
+
+              <!-- Unified Search & Dropdown Combobox in the same bar (Requirement 8) -->
+              <div class="search-combobox-wrap" id="deptComboboxWrap">
+                <div class="combobox-input-inner">
+                  <input type="text" id="newDocDeptInput" class="text-input combobox-input" style="padding-left: 12px !important; text-transform: uppercase; font-weight: 700; font-size: 0.82rem;" placeholder="Search or type specialty / department..." autocomplete="off" />
+                  <button type="button" id="clearDeptBtn" class="combobox-clear-btn" style="display: none;" title="Clear specialty selection">&times;</button>
+                  <button type="button" id="deptDropdownToggleBtn" class="combobox-chevron-btn" title="Toggle Specialty List">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                  </button>
+                </div>
+                <div id="newDocDeptDropdownList" class="combobox-dropdown" style="display: none; max-height: 220px; overflow-y: auto;">
+                  <!-- Populated dynamically as user types or clicks, typing is possible while dropdown is open -->
+                </div>
+              </div>
+
+              <!-- Inline add custom department box -->
+              <div id="newDocDeptCustomBox" style="display: none; margin-top: 6px; background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 8px; padding: 8px;">
+                <div style="font-size: 0.72rem; font-weight: 800; color: #166534; margin-bottom: 4px;">➕ Add New Department to Dropdown</div>
+                <div style="display: flex; gap: 6px;">
+                  <input type="text" id="newDocCustomDeptInput" class="text-input" placeholder="e.g. PEDIATRIC CARDIOLOGY" style="text-transform: uppercase; font-size: 0.80rem; padding: 6px 8px; flex: 1;" />
+                  <button type="button" id="confirmAddDeptBtn" class="pill-btn-action" style="background: #16a34a; color: #ffffff; border-color: #16a34a; font-size: 0.72rem; padding: 6px 10px; font-weight: 800;">Add</button>
+                </div>
               </div>
               <input type="hidden" id="newDocDept" />
+            </div>
+
+            <!-- Priority Selector for Add New Doctor -->
+            <div class="form-group">
+              <label class="form-label" for="newDocPriority">Doctor Visit Priority *</label>
+              <select id="newDocPriority" class="text-input" style="font-weight: 700;">
+                <option value="High">High: Four visits per month</option>
+                <option value="Moderate" selected>Moderate: Two visits per month</option>
+                <option value="Low">Low: One visit per month</option>
+              </select>
+              <div style="font-size: 0.68rem; color: var(--slate-500); margin-top: 3px;">
+                Monthly visit frequency target • Synced with Column Z of Google Sheet
+              </div>
             </div>
 
             <div class="form-group">
@@ -3917,6 +4607,56 @@ function jsonResponse(obj) {
       </div>
     </div>
 
+    <!-- Conclude Clinic Visit "Are You Sure?" Modal -->
+    <div id="concludeConfirmModal" class="conclude-confirm-overlay" role="dialog" aria-modal="true" style="display: none;">
+      <div class="conclude-confirm-sheet">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #ffedd5; color: #ea580c; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
+        <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--slate-900); margin: 0 0 6px;">
+          Conclude Clinic Visit?
+        </h3>
+        <p style="font-size: 0.82rem; color: var(--slate-600); margin: 0 0 12px; line-height: 1.45;">
+          Please confirm this button was not pressed by mistake.<br>
+          Would you like to conclude this clinic visit now, or stay to detail another doctor at this clinic?
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 14px;">
+          <!-- Primary: Conclude visit -->
+          <button type="button" id="confirmConcludeVisitBtn" class="primary-btn" style="padding: 12px; font-weight: 800; font-size: 0.88rem; background: var(--brand-orange); border-color: var(--brand-orange); justify-content: center;">
+            🏁 Yes, Conclude Clinic Visit
+          </button>
+          <!-- Secondary: Stay and add another doctor -->
+          <button type="button" id="concludeStayAnotherBtn" class="secondary-btn" style="padding: 11px; font-weight: 800; font-size: 0.84rem; color: #0284c7; border-color: #bae6fd; background: #f0f9ff; justify-content: center;">
+            ➕ Submit &amp; Add Another Doctor in this Clinic
+          </button>
+          <!-- Cancel -->
+          <button type="button" id="cancelConcludeModalBtn" class="link-btn-text" style="padding: 8px; font-weight: 700; font-size: 0.80rem; color: var(--slate-500); text-align: center;">
+            ✕ Cancel (Keep Editing)
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2-Second Congratulations Dialog on Achieving 15 Daily Calls -->
+    <div id="congratsTargetModal" class="congrats-dialog-overlay" role="dialog" aria-modal="true" style="display: none;">
+      <div class="congrats-dialog-box">
+        <div style="font-size: 3rem; margin-bottom: 8px; line-height: 1;">🎉</div>
+        <h3 style="font-size: 1.25rem; font-weight: 900; color: #15803d; margin: 0 0 8px; line-height: 1.3;">
+          Congratulations!!
+        </h3>
+        <p style="font-size: 0.95rem; font-weight: 800; color: var(--slate-800); margin: 0 0 8px;">
+          Target visit number achieved!
+        </p>
+        <div style="display: inline-block; background: #dcfce7; color: #166534; font-size: 0.78rem; font-weight: 800; padding: 4px 12px; border-radius: 9999px; border: 1px solid #86efac;">
+          🎯 15 / 15 Daily Calls Completed
+        </div>
+      </div>
+    </div>
+
     <!-- Toast Notification Element -->
     <div id="toastNotification" class="toast" role="alert" aria-live="assertive">
       <span id="toastIcon"></span>
@@ -3935,7 +4675,9 @@ function jsonResponse(obj) {
         ACTIVITIES: 'clariti_scaworld_activities_v2',
         SETTINGS: 'clariti_scaworld_settings_v2',
         ACTIVE_VISIT: 'clariti_scaworld_active_visit_v2',
-        DOCTORS: 'clariti_scaworld_doctors_master_v2'
+        DOCTORS: 'clariti_scaworld_doctors_master_v2',
+        CUSTOM_DEPTS: 'clariti_custom_depts_v2',
+        PLANNED_VISITS: 'clariti_planned_visits_v2'
       };
 
       // State
@@ -3949,6 +4691,13 @@ function jsonResponse(obj) {
         timestamp: null,
         error: null
       };
+
+      // Pre-check-in Assistant & Planning State
+      let selectedPlanDateStr = null;
+      let suggestedFilterProximity = 'all'; // 'all' | '50' | '100' | '500' | '1000'
+      let suggestedFilterPriority = 'all';  // 'all' | 'High' | 'Moderate' | 'Low'
+      let suggestedFilterAvail = 'all';     // 'all' | 'now' | '30' | '60'
+      let celebrationShownToday = false;
 
       let settings = {
         webhookUrl: '',
@@ -4115,10 +4864,16 @@ function jsonResponse(obj) {
       const addDocFormHeader = document.getElementById('addDocFormHeader');
       const newDocName = document.getElementById('newDocName');
       const newDocClinic = document.getElementById('newDocClinic');
-      const newDocDeptSelect = document.getElementById('newDocDeptSelect');
-      const newDocDeptOtherWrap = document.getElementById('newDocDeptOtherWrap');
-      const newDocDeptOther = document.getElementById('newDocDeptOther');
+      const newDocDeptInput = document.getElementById('newDocDeptInput');
+      const newDocDeptDropdownList = document.getElementById('newDocDeptDropdownList');
+      const clearDeptBtn = document.getElementById('clearDeptBtn');
+      const deptDropdownToggleBtn = document.getElementById('deptDropdownToggleBtn');
+      const newDocDeptCustomBox = document.getElementById('newDocDeptCustomBox');
+      const newDocCustomDeptInput = document.getElementById('newDocCustomDeptInput');
+      const confirmAddDeptBtn = document.getElementById('confirmAddDeptBtn');
+      const toggleAddDeptCustomBtn = document.getElementById('toggleAddDeptCustomBtn');
       const newDocDept = document.getElementById('newDocDept');
+      const newDocPriority = document.getElementById('newDocPriority');
       const newDocPhone = document.getElementById('newDocPhone');
       const newDocBestTime = document.getElementById('newDocBestTime');
       const addBestTimeSlotBtn = document.getElementById('addBestTimeSlotBtn');
@@ -4128,6 +4883,52 @@ function jsonResponse(obj) {
       const newDocLockGpsBtn = document.getElementById('newDocLockGpsBtn');
       const saveDoctorBtnText = document.getElementById('saveDoctorBtnText');
       const cancelEditDocBtn = document.getElementById('cancelEditDocBtn');
+
+      // Daily Target Elements
+      const dailyTargetCard = document.getElementById('dailyTargetCard');
+      const dailyTargetCallsNum = document.getElementById('dailyTargetCallsNum');
+      const dailyTargetPercentBadge = document.getElementById('dailyTargetPercentBadge');
+      const dailyTargetFill = document.getElementById('dailyTargetFill');
+      const dailyTargetRemainingText = document.getElementById('dailyTargetRemainingText');
+      const congratsTargetModal = document.getElementById('congratsTargetModal');
+
+      // Conclude Visit Confirmation Modal Elements
+      const concludeConfirmModal = document.getElementById('concludeConfirmModal');
+      const confirmConcludeVisitBtn = document.getElementById('confirmConcludeVisitBtn');
+      const concludeStayAnotherBtn = document.getElementById('concludeStayAnotherBtn');
+      const cancelConcludeModalBtn = document.getElementById('cancelConcludeModalBtn');
+
+      // Assistant Tabs (Pending Visits & Suggested Doctors - Expandable)
+      const preVisitAssistantCard = document.getElementById('preVisitAssistantCard');
+      const btnTabPendingVisits = document.getElementById('btnTabPendingVisits');
+      const btnTabSuggestedDocs = document.getElementById('btnTabSuggestedDocs');
+      const toggleAssistantExpandBtn = document.getElementById('toggleAssistantExpandBtn');
+      const assistantExpandableContent = document.getElementById('assistantExpandableContent');
+      const assistantExpandText = document.getElementById('assistantExpandText');
+      const assistantExpandArrow = document.getElementById('assistantExpandArrow');
+      const panelPendingVisits = document.getElementById('panelPendingVisits');
+      const panelSuggestedDocs = document.getElementById('panelSuggestedDocs');
+      const pendingVisitsList = document.getElementById('pendingVisitsList');
+      const suggestedDoctorsList = document.getElementById('suggestedDoctorsList');
+      const pendingVisitsCountBadge = document.getElementById('pendingVisitsCountBadge');
+      const suggestedDocsCountBadge = document.getElementById('suggestedDocsCountBadge');
+      const pendingMonthLabel = document.getElementById('pendingMonthLabel');
+      const suggestedStatusSummary = document.getElementById('suggestedStatusSummary');
+
+      // Visit Planning Elements
+      const visitPlanningSection = document.getElementById('visitPlanningSection');
+      const planDaySelect = document.getElementById('planDaySelect');
+      const planDaysBar = document.getElementById('planDaysBar');
+      const plannedDocsList = document.getElementById('plannedDocsList');
+      const plannedDocsCount = document.getElementById('plannedDocsCount');
+      const planMapsOverviewWrap = document.getElementById('planMapsOverviewWrap');
+      const openAddPlannedDocBtn = document.getElementById('openAddPlannedDocBtn');
+      const addPlannedDocDrawer = document.getElementById('addPlannedDocDrawer');
+      const closeAddPlannedDocBtn = document.getElementById('closeAddPlannedDocBtn');
+      const plannedDocSelect = document.getElementById('plannedDocSelect');
+      const plannedDocSearchInput = document.getElementById('plannedDocSearchInput');
+      const confirmAddPlannedDocBtn = document.getElementById('confirmAddPlannedDocBtn');
+      const addPlannedDayName = document.getElementById('addPlannedDayName');
 
       const commonOpSlot = document.getElementById('commonOpSlot');
       const commonOpSlotTitle = document.getElementById('commonOpSlotTitle');
@@ -4153,13 +4954,13 @@ function jsonResponse(obj) {
       // Initialize Application
       function init() {
         loadSettings();
-        // Clear all existing doctors and trigger a fresh sync from Google Sheet
-        clearAllDoctors(true);
+        loadDoctors();
         loadActivities();
         loadActiveVisit();
         setupEventListeners();
         updateDateLabel();
         initDefaultTimes();
+        populateAddDocDeptSelect();
         updateUI();
         initGPS();
 
@@ -4665,7 +5466,29 @@ function jsonResponse(obj) {
 
         if (selectedClinic) {
           // 1. Clinic is selected: Doctors tagged to this clinic come FIRST!
-          const clinicDocs = filtered.filter(d => (d.clinic || '').toLowerCase().includes(selectedClinic));
+          let clinicDocs = filtered.filter(d => (d.clinic || '').toLowerCase().includes(selectedClinic));
+
+          // Hide the names of the doctors who have been met already today (Requirement 7)
+          const metDocIdsToday = new Set(
+            activities
+              .filter(a => isTodayActivity(a) && (a.met_status === 'Met Doctor' || a.met_status === 'Met'))
+              .map(a => a.doctor_id)
+              .filter(Boolean)
+          );
+          const metDocNamesToday = new Set(
+            activities
+              .filter(a => isTodayActivity(a) && (a.met_status === 'Met Doctor' || a.met_status === 'Met'))
+              .map(a => (a.doctor_name || '').replace(/^(DR\.?|DR)\s+/i, '').trim().toLowerCase())
+              .filter(Boolean)
+          );
+
+          clinicDocs = clinicDocs.filter(d => {
+            if (d.id && metDocIdsToday.has(d.id)) return false;
+            const cName = (d.name || '').replace(/^(DR\.?|DR)\s+/i, '').trim().toLowerCase();
+            if (metDocNamesToday.has(cName)) return false;
+            return true;
+          });
+
           const clinicIds = new Set(clinicDocs.map(d => d.id));
 
           // Sort clinic doctors: GPS closest first, then alphabetical
@@ -5128,51 +5951,970 @@ function jsonResponse(obj) {
         syncBestTimeHiddenInput();
       }
 
-      // Add Doctor Department Dropdown Helper
-      function getAddDocDeptValue() {
-        const select = document.getElementById('newDocDeptSelect');
-        const otherInput = document.getElementById('newDocDeptOther');
-        if (!select) return '';
-        if (select.value === 'OTHERS') {
-          return (otherInput ? otherInput.value.trim().toUpperCase() : '') || 'OTHERS';
+      // ==========================================
+      // DEPARTMENT LIST & SEARCH MANAGEMENT
+      // ==========================================
+      const BASE_DEPARTMENTS = [
+        "GENERAL MEDICINE",
+        "CARDIOLOGY",
+        "ORTHOPEDICS",
+        "PEDIATRICS",
+        "GYNECOLOGY & OBSTETRICS",
+        "DIABETOLOGY",
+        "DERMATOLOGY",
+        "NEUROLOGY",
+        "GASTROENTEROLOGY",
+        "GENERAL SURGERY",
+        "PULMONOLOGY / CHEST MEDICINE",
+        "ENT (EAR, NOSE, THROAT)",
+        "OPHTHALMOLOGY",
+        "NEPHROLOGY",
+        "UROLOGY",
+        "PSYCHIATRY",
+        "ONCOLOGY",
+        "RADIOLOGY",
+        "ENDOCRINOLOGY",
+        "RHEUMATOLOGY",
+        "BAMS",
+        "BHMS",
+        "DENTISTRY"
+      ];
+
+      function getCustomDepartments() {
+        try {
+          const stored = localStorage.getItem(STORAGE_KEYS.CUSTOM_DEPTS);
+          return stored ? JSON.parse(stored) : [];
+        } catch (e) {
+          return [];
         }
-        return select.value.trim().toUpperCase();
+      }
+
+      function saveCustomDepartment(newDept) {
+        if (!newDept) return;
+        const clean = newDept.trim().toUpperCase();
+        if (!clean) return;
+        const customs = getCustomDepartments();
+        if (!BASE_DEPARTMENTS.includes(clean) && !customs.includes(clean)) {
+          customs.push(clean);
+          try {
+            localStorage.setItem(STORAGE_KEYS.CUSTOM_DEPTS, JSON.stringify(customs));
+          } catch (e) {
+            console.warn('Error saving custom department', e);
+          }
+        }
+      }
+
+      function getAllDepartments() {
+        const customs = getCustomDepartments();
+        const set = new Set([...BASE_DEPARTMENTS, ...customs]);
+        return Array.from(set).sort((a, b) => a.localeCompare(b));
+      }
+
+      function renderDeptDropdown(searchQuery = '') {
+        const listEl = document.getElementById('newDocDeptDropdownList');
+        const inputEl = document.getElementById('newDocDeptInput');
+        const clearBtn = document.getElementById('clearDeptBtn');
+        if (!listEl || !inputEl) return;
+
+        const allDepts = getAllDepartments();
+        const query = (searchQuery !== undefined ? searchQuery : inputEl.value).trim().toUpperCase();
+        const filtered = query 
+          ? allDepts.filter(d => d.includes(query))
+          : allDepts;
+
+        if (clearBtn) clearBtn.style.display = inputEl.value ? 'flex' : 'none';
+
+        if (filtered.length === 0) {
+          listEl.innerHTML = `
+            <div class="dropdown-empty-state">No specialty found matching "${escapeHtml(query)}".</div>
+            <div style="padding: 6px 10px;">
+              <button type="button" class="pill-btn-action" id="useCustomDeptDirectBtn" style="width: 100%; justify-content: center; padding: 6px 10px; font-weight: 800; background: #f0fdf4; border-color: #86efac; color: #166534;">
+                ➕ Use "${escapeHtml(query)}" as Specialty
+              </button>
+            </div>
+          `;
+          const customBtn = document.getElementById('useCustomDeptDirectBtn');
+          if (customBtn) {
+            customBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              setAddDocDeptValue(query);
+              closeDeptDropdown();
+            });
+          }
+        } else {
+          const curVal = (newDocDept ? newDocDept.value : inputEl.value).trim().toUpperCase();
+          listEl.innerHTML = filtered.map(dept => `
+            <div class="dropdown-item ${dept === curVal ? 'selected' : ''}" data-dept="${escapeHtml(dept)}">
+              <span class="dropdown-item-name" style="font-weight: 700; font-size: 0.82rem;">${escapeHtml(dept)}</span>
+            </div>
+          `).join('');
+
+          listEl.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', () => {
+              const val = item.getAttribute('data-dept');
+              setAddDocDeptValue(val);
+              closeDeptDropdown();
+            });
+          });
+        }
+        listEl.style.display = 'block';
+      }
+
+      function closeDeptDropdown() {
+        const listEl = document.getElementById('newDocDeptDropdownList');
+        if (listEl) listEl.style.display = 'none';
+      }
+
+      // Backward compatible helper for any calls
+      function populateAddDocDeptSelect(searchQuery = '', selectedVal = '') {
+        if (selectedVal) {
+          setAddDocDeptValue(selectedVal);
+        } else {
+          renderDeptDropdown(searchQuery);
+        }
+      }
+
+      function getAddDocDeptValue() {
+        const hidden = document.getElementById('newDocDept');
+        const input = document.getElementById('newDocDeptInput');
+        return (hidden && hidden.value) ? hidden.value.trim().toUpperCase() : (input ? input.value.trim().toUpperCase() : '');
       }
 
       function setAddDocDeptValue(dept) {
-        const select = document.getElementById('newDocDeptSelect');
-        const otherWrap = document.getElementById('newDocDeptOtherWrap');
-        const otherInput = document.getElementById('newDocDeptOther');
+        const input = document.getElementById('newDocDeptInput');
         const hidden = document.getElementById('newDocDept');
-        if (!select) return;
-
+        const clearBtn = document.getElementById('clearDeptBtn');
         const val = (dept || '').trim().toUpperCase();
-        if (!val) {
-          select.value = '';
-          if (otherWrap) otherWrap.style.display = 'none';
-          if (otherInput) otherInput.value = '';
-          if (hidden) hidden.value = '';
-          return;
+        if (val) {
+          saveCustomDepartment(val);
+        }
+        if (input) input.value = val;
+        if (hidden) hidden.value = val;
+        if (clearBtn) clearBtn.style.display = val ? 'flex' : 'none';
+      }
+
+      // ==========================================
+      // CALENDAR MONTH VISITS & AVAILABILITY
+      // ==========================================
+      function getDoctorMonthVisits(doc) {
+        if (!doc) return 0;
+        // 1. Visits pulled from Visit Data Google Sheet (Item 6 & 11)
+        const sheetVisits = Number(doc.month_visits || 0);
+
+        // 2. Plus any visits logged today in the current local session
+        const now = new Date();
+        const curY = now.getFullYear();
+        const curM = now.getMonth();
+        const docId = String(doc.id || '');
+        const cleanName = (doc.name || '').replace(/^(DR\.?|DR)\s+/i, '').trim().toLowerCase();
+
+        const todayVisits = activities.filter(act => {
+          if (!isTodayActivity(act)) return false;
+          if (act.met_status !== 'Met Doctor' && act.met_status !== 'Met') return false;
+          if (docId && act.doctor_id && String(act.doctor_id) === docId) return true;
+          const actName = (act.doctor_name || '').replace(/^(DR\.?|DR)\s+/i, '').trim().toLowerCase();
+          return actName && actName === cleanName;
+        }).length;
+
+        return sheetVisits + todayVisits;
+      }
+
+      function getDoctorPriority(doc) {
+        const p = (doc && doc.priority) ? String(doc.priority).trim() : 'Moderate';
+        if (/high/i.test(p)) return 'High';
+        if (/low/i.test(p)) return 'Low';
+        return 'Moderate';
+      }
+
+      function getPriorityWeight(doc) {
+        const p = getDoctorPriority(doc);
+        if (p === 'High') return 1;
+        if (p === 'Moderate') return 2;
+        return 3; // Low
+      }
+
+      function getDistanceInMeters(lat1, lon1, lat2, lon2) {
+        if (!lat1 || !lon1 || !lat2 || !lon2) return null;
+        const R = 6371e3; // Earth radius in meters
+        const phi1 = lat1 * Math.PI / 180;
+        const phi2 = lat2 * Math.PI / 180;
+        const deltaPhi = (lat2 - lat1) * Math.PI / 180;
+        const deltaLambda = (lon2 - lon1) * Math.PI / 180;
+
+        const a = Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) +
+                  Math.cos(phi1) * Math.cos(phi2) *
+                  Math.sin(deltaLambda / 2) * Math.sin(deltaLambda / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return Math.round(R * c);
+      }
+
+      function getDoctorAvailability(doc, targetDate = new Date()) {
+        const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const dayCode = dayNames[targetDate.getDay()];
+        const opStr = (doc.op_timings || '').trim();
+
+        if (!opStr) {
+          return { availableOnDay: true, status: 'Flexible Schedule', isNow: true, inMins: 0, nextSlot: null };
         }
 
-        let match = false;
-        for (let i = 0; i < select.options.length; i++) {
-          if (select.options[i].value === val) {
-            select.selectedIndex = i;
-            match = true;
-            break;
+        const dayRegex = new RegExp(`${dayCode}:\\s*([^|;]+)`, 'i');
+        const match = opStr.match(dayRegex);
+        let slots = [];
+
+        if (match) {
+          const slotsStr = match[1].trim();
+          if (/closed/i.test(slotsStr)) {
+            return { availableOnDay: false, status: 'Closed Today', isNow: false, inMins: 9999, nextSlot: null };
+          }
+          const parts = slotsStr.split(',');
+          parts.forEach(p => {
+            const tm = p.trim().match(/(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})/);
+            if (tm) slots.push({ start: tm[1], end: tm[2] });
+          });
+        } else {
+          if (dayCode !== 'Sun' && /mon\s*-\s*(fri|sat)/i.test(opStr)) {
+            if (dayCode === 'Sat' && /mon\s*-\s*fri/i.test(opStr)) {
+              return { availableOnDay: false, status: 'Closed Today', isNow: false, inMins: 9999, nextSlot: null };
+            }
+            const timeMatches = opStr.matchAll(/(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})/g);
+            for (const tm of timeMatches) {
+              slots.push({ start: tm[1], end: tm[2] });
+            }
+          } else {
+            const anyDayMatch = /(mon|tue|wed|thu|fri|sat|sun):/i.test(opStr);
+            if (anyDayMatch) {
+              return { availableOnDay: false, status: 'Closed on ' + dayCode, isNow: false, inMins: 9999, nextSlot: null };
+            } else {
+              const timeMatches = opStr.matchAll(/(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})/g);
+              for (const tm of timeMatches) {
+                slots.push({ start: tm[1], end: tm[2] });
+              }
+            }
           }
         }
 
-        if (match) {
-          if (otherWrap) otherWrap.style.display = 'none';
-          if (otherInput) otherInput.value = '';
-        } else {
-          select.value = 'OTHERS';
-          if (otherWrap) otherWrap.style.display = 'block';
-          if (otherInput) otherInput.value = val;
+        if (slots.length === 0) {
+          return { availableOnDay: true, status: 'Available', isNow: true, inMins: 0, nextSlot: null };
         }
-        if (hidden) hidden.value = val;
+
+        const curMinutes = targetDate.getHours() * 60 + targetDate.getMinutes();
+        let isNow = false;
+        let minDiff = 9999;
+        let activeSlot = null;
+        let upcomingSlot = null;
+
+        for (const slot of slots) {
+          const [sh, sm] = slot.start.split(':').map(Number);
+          const [eh, em] = slot.end.split(':').map(Number);
+          const sMin = sh * 60 + sm;
+          const eMin = eh * 60 + em;
+
+          if (curMinutes >= sMin && curMinutes <= eMin) {
+            isNow = true;
+            activeSlot = slot;
+            minDiff = 0;
+            break;
+          } else if (sMin > curMinutes) {
+            const diff = sMin - curMinutes;
+            if (diff < minDiff) {
+              minDiff = diff;
+              upcomingSlot = slot;
+            }
+          }
+        }
+
+        if (isNow && activeSlot) {
+          return {
+            availableOnDay: true,
+            status: `Open Now (${format12h(activeSlot.start)} - ${format12h(activeSlot.end)})`,
+            isNow: true,
+            inMins: 0,
+            nextSlot: activeSlot
+          };
+        }
+
+        if (upcomingSlot) {
+          return {
+            availableOnDay: true,
+            status: `Starts in ${minDiff}m (${format12h(upcomingSlot.start)})`,
+            isNow: false,
+            inMins: minDiff,
+            nextSlot: upcomingSlot
+          };
+        }
+
+        return {
+          availableOnDay: true,
+          status: 'OP Hours Finished Today',
+          isNow: false,
+          inMins: 9999,
+          nextSlot: null
+        };
+      }
+
+      // ==========================================
+      // DAILY TARGET PROGRESS & CELEBRATION
+      // ==========================================
+      function updateDailyTargetProgress(previousCount = null) {
+        const todayActivities = activities.filter(isTodayActivity);
+        const count = todayActivities.length;
+        const target = 15;
+        const percent = Math.min(100, Math.round((count / target) * 100));
+
+        if (dailyTargetCallsNum) {
+          dailyTargetCallsNum.textContent = `${count} / ${target}`;
+        }
+        if (dailyTargetFill) {
+          dailyTargetFill.style.width = `${percent}%`;
+          if (count >= target) {
+            dailyTargetFill.style.background = 'linear-gradient(90deg, #16a34a, #22c55e)';
+          } else {
+            dailyTargetFill.style.background = 'linear-gradient(90deg, var(--brand-orange), #f59e0b)';
+          }
+        }
+        if (dailyTargetPercentBadge) {
+          if (count >= target) {
+            dailyTargetPercentBadge.textContent = '🎯 Target Achieved!';
+            dailyTargetPercentBadge.style.background = '#dcfce7';
+            dailyTargetPercentBadge.style.color = '#15803d';
+            dailyTargetPercentBadge.style.borderColor = '#86efac';
+          } else {
+            dailyTargetPercentBadge.textContent = `${percent}% Completed`;
+            dailyTargetPercentBadge.style.background = '#ffedd5';
+            dailyTargetPercentBadge.style.color = '#c2410c';
+            dailyTargetPercentBadge.style.borderColor = '#fed7aa';
+          }
+        }
+        if (dailyTargetRemainingText) {
+          if (count >= target) {
+            dailyTargetRemainingText.textContent = `Target achieved! Excellent work today! 🎉`;
+          } else {
+            const rem = target - count;
+            dailyTargetRemainingText.textContent = `${rem} call${rem === 1 ? '' : 's'} remaining to achieve daily target`;
+          }
+        }
+
+        // 2-Second Congratulations Dialog when target of 15 is achieved
+        if (previousCount !== null && previousCount < target && count >= target && !celebrationShownToday) {
+          celebrationShownToday = true;
+          showCongratulationsDialog();
+        }
+      }
+
+      function showCongratulationsDialog() {
+        if (!congratsTargetModal) return;
+        congratsTargetModal.style.display = 'flex';
+        vibrate([100, 50, 150]);
+        setTimeout(() => {
+          if (congratsTargetModal) {
+            congratsTargetModal.style.display = 'none';
+          }
+        }, 2000);
+      }
+
+      // Conclude Clinic Visit Prompt
+      function promptConcludeVisitConfirmation() {
+        const doctorName = doctorNameInput.value.trim();
+        if (!doctorName) {
+          showToast('Please enter Doctor Name', 'error');
+          doctorNameInput.focus();
+          return;
+        }
+        if (concludeConfirmModal) {
+          concludeConfirmModal.style.display = 'flex';
+          vibrate(25);
+        } else {
+          submitDoctorCall(true);
+        }
+      }
+
+      // ==========================================
+      // PENDING VISITS TAB (Item 11)
+      // ==========================================
+      function renderPendingVisits() {
+        if (!pendingVisitsList) return;
+        const now = new Date();
+        const monthName = now.toLocaleString('default', { month: 'long', year: 'numeric' });
+        if (pendingMonthLabel) {
+          pendingMonthLabel.textContent = monthName;
+        }
+
+        // Doctors who have 0 visits in the current calendar month
+        let list = doctors.filter(doc => getDoctorMonthVisits(doc) === 0);
+
+        // Sort: Priority (High -> Moderate -> Low), then in same priority, least visits (0 first), then doctor name
+        list.sort((a, b) => {
+          const wA = getPriorityWeight(a);
+          const wB = getPriorityWeight(b);
+          if (wA !== wB) return wA - wB; // High=1, Moderate=2, Low=3
+
+          const vA = getDoctorMonthVisits(a);
+          const vB = getDoctorMonthVisits(b);
+          if (vA !== vB) return vA - vB;
+
+          return (a.name || '').localeCompare(b.name || '');
+        });
+
+        if (pendingVisitsCountBadge) {
+          pendingVisitsCountBadge.textContent = list.length;
+        }
+
+        if (list.length === 0) {
+          pendingVisitsList.innerHTML = `
+            <div style="text-align: center; padding: 24px 12px; color: var(--slate-600);">
+              <div style="font-size: 2rem; margin-bottom: 6px;">🎉</div>
+              <div style="font-weight: 800; color: #15803d; font-size: 0.90rem;">All Doctors Visited in ${monthName}!</div>
+              <div style="font-size: 0.74rem; color: var(--slate-500); margin-top: 4px;">Zero unvisited doctors remaining for this calendar month.</div>
+            </div>
+          `;
+          return;
+        }
+
+        pendingVisitsList.innerHTML = list.map(doc => {
+          const priority = getDoctorPriority(doc);
+          const priorityClass = `priority-badge-${priority.toLowerCase()}`;
+          const priorityTarget = priority === 'High' ? '4 visits/mo' : (priority === 'Low' ? '1 visit/mo' : '2 visits/mo');
+          const cleanClinic = (doc.clinic && doc.clinic.toLowerCase() !== 'undefined') ? doc.clinic : 'Clinic';
+          const opDisplay = doc.op_timings ? `<span style="font-size: 0.70rem; color: var(--slate-600);">⏰ ${escapeHtml(doc.op_timings)}</span>` : '';
+          const bestDisplay = doc.best_time_to_meet ? `<span style="font-size: 0.70rem; color: #b45309; font-weight: 700;">⭐ Best: ${escapeHtml(doc.best_time_to_meet)}</span>` : '';
+
+          return `
+            <div class="assistant-doc-card" data-doc-id="${escapeHtml(doc.id)}">
+              <div class="assistant-doc-top">
+                <div>
+                  <div class="assistant-doc-name">DR. ${escapeHtml((doc.name || '').replace(/^(DR\.?|DR)\s+/i, ''))}</div>
+                  <div class="assistant-doc-clinic">🏥 ${escapeHtml(cleanClinic)}</div>
+                </div>
+                <span class="${priorityClass}">Priority: ${priority} (${priorityTarget})</span>
+              </div>
+              <div class="assistant-doc-badges">
+                ${doc.department ? `<span class="dept-badge">${escapeHtml(doc.department)}</span>` : ''}
+                <span style="background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; font-size: 0.67rem; font-weight: 800; padding: 1px 6px; border-radius: 6px;">0 Visits in ${monthName}</span>
+              </div>
+              ${opDisplay || bestDisplay ? `<div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 2px;">${opDisplay}${bestDisplay}</div>` : ''}
+              <div class="assistant-doc-bottom">
+                <span style="font-size: 0.70rem; color: var(--slate-500);">Target: ${priorityTarget}</span>
+                <button type="button" class="action-pill-btn select-for-visit-btn" data-doc-id="${escapeHtml(doc.id)}" style="background: #fff7ed; border-color: #fdba74; color: #ea580c;">
+                  📍 Select for Visit
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        pendingVisitsList.querySelectorAll('.select-for-visit-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const docId = btn.getAttribute('data-doc-id');
+            const doc = doctors.find(d => d.id === docId);
+            if (doc) {
+              quickSelectDoctorForVisit(doc);
+            }
+          });
+        });
+      }
+
+      // ==========================================
+      // SUGGESTED DOCTORS TAB (Item 8)
+      // ==========================================
+      function renderSuggestedDoctors() {
+        if (!suggestedDoctorsList) return;
+        const now = new Date();
+        const hasGps = currentGps.locked && currentGps.lat && currentGps.lng;
+
+        // Calculate metadata for all doctors: distance, availability, month visits, priority
+        let list = doctors.map(doc => {
+          const dist = (hasGps && doc.latitude && doc.longitude) 
+            ? getDistanceInMeters(currentGps.lat, currentGps.lng, doc.latitude, doc.longitude)
+            : null;
+          const avail = getDoctorAvailability(doc, now);
+          const monthVisits = getDoctorMonthVisits(doc);
+          const priority = getDoctorPriority(doc);
+
+          return {
+            doc,
+            dist,
+            avail,
+            monthVisits,
+            priority
+          };
+        });
+
+        // 1. Proximity Filter
+        if (suggestedFilterProximity !== 'all') {
+          const maxDist = Number(suggestedFilterProximity);
+          list = list.filter(item => item.dist !== null && item.dist <= maxDist);
+        }
+
+        // 2. Priority Filter
+        if (suggestedFilterPriority !== 'all') {
+          list = list.filter(item => item.priority.toLowerCase() === suggestedFilterPriority.toLowerCase());
+        }
+
+        // 3. Availability Filter
+        if (suggestedFilterAvail === 'now') {
+          list = list.filter(item => item.avail.isNow);
+        } else if (suggestedFilterAvail === '30') {
+          list = list.filter(item => item.avail.isNow || (item.avail.inMins <= 30));
+        } else if (suggestedFilterAvail === '60') {
+          list = list.filter(item => item.avail.isNow || (item.avail.inMins <= 60));
+        }
+
+        // 4. Sort: Number of visits in the calendar month (0 comes on top, 4 or more comes last)
+        list.sort((a, b) => {
+          if (a.monthVisits !== b.monthVisits) {
+            return a.monthVisits - b.monthVisits; // 0 first, 1, 2, 3, 4+ last
+          }
+          // Secondary sort: proximity (closer first)
+          if (a.dist !== null && b.dist !== null) {
+            return a.dist - b.dist;
+          }
+          if (a.dist !== null) return -1;
+          if (b.dist !== null) return 1;
+
+          // Tertiary sort: Priority
+          const pA = getPriorityWeight(a.doc);
+          const pB = getPriorityWeight(b.doc);
+          if (pA !== pB) return pA - pB;
+
+          return (a.doc.name || '').localeCompare(b.doc.name || '');
+        });
+
+        if (suggestedDocsCountBadge) {
+          suggestedDocsCountBadge.textContent = list.length;
+        }
+
+        if (suggestedStatusSummary) {
+          const filterDesc = [];
+          if (suggestedFilterProximity !== 'all') filterDesc.push(`within ${suggestedFilterProximity}m`);
+          if (suggestedFilterPriority !== 'all') filterDesc.push(`${suggestedFilterPriority} Priority`);
+          if (suggestedFilterAvail !== 'all') filterDesc.push(suggestedFilterAvail === 'now' ? 'Open Now' : `Within ${suggestedFilterAvail}m`);
+          suggestedStatusSummary.textContent = filterDesc.length > 0 
+            ? `Filtered (${filterDesc.join(', ')}) • 0 visits on top`
+            : `Showing nearby doctors • 0 visits on top`;
+        }
+
+        if (list.length === 0) {
+          let emptyMsg = 'No doctors match current filters.';
+          if (suggestedFilterProximity !== 'all' && !hasGps) {
+            emptyMsg = 'Turn on GPS or select "All" proximity to view doctors without tagged distance.';
+          }
+          suggestedDoctorsList.innerHTML = `
+            <div style="text-align: center; padding: 24px 12px; color: var(--slate-600);">
+              <div style="font-size: 1.8rem; margin-bottom: 6px;">🔍</div>
+              <div style="font-weight: 800; font-size: 0.88rem; color: var(--slate-800);">${emptyMsg}</div>
+              <div style="font-size: 0.74rem; color: var(--slate-500); margin-top: 4px;">Try selecting "All" or resetting filter options above.</div>
+            </div>
+          `;
+          return;
+        }
+
+        suggestedDoctorsList.innerHTML = list.map(({ doc, dist, avail, monthVisits, priority }) => {
+          const cleanClinic = (doc.clinic && doc.clinic.toLowerCase() !== 'undefined') ? doc.clinic : 'Clinic';
+          const priorityClass = `priority-badge-${priority.toLowerCase()}`;
+          const distBadge = dist !== null 
+            ? `<span style="background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; font-size: 0.67rem; font-weight: 800; padding: 1px 6px; border-radius: 6px;">📍 ${dist < 1000 ? dist + 'm' : (dist/1000).toFixed(1) + 'km'} away</span>`
+            : `<span style="background: #f1f5f9; color: var(--slate-500); font-size: 0.67rem; padding: 1px 6px; border-radius: 6px;">📍 No GPS tagged</span>`;
+          
+          const availBadge = avail.isNow
+            ? `<span style="background: #dcfce7; color: #166534; border: 1px solid #86efac; font-size: 0.67rem; font-weight: 800; padding: 1px 6px; border-radius: 6px;">🟢 ${escapeHtml(avail.status)}</span>`
+            : `<span style="background: #fef3c7; color: #92400e; border: 1px solid #fde68a; font-size: 0.67rem; font-weight: 700; padding: 1px 6px; border-radius: 6px;">⏳ ${escapeHtml(avail.status)}</span>`;
+
+          const visitsBadge = monthVisits === 0
+            ? `<span style="background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; font-size: 0.67rem; font-weight: 800; padding: 1px 6px; border-radius: 6px;">0 visits this month (Top Priority)</span>`
+            : `<span style="background: #f8fafc; color: var(--slate-600); border: 1px solid var(--slate-300); font-size: 0.67rem; font-weight: 700; padding: 1px 6px; border-radius: 6px;">${monthVisits} visits this month</span>`;
+
+          return `
+            <div class="assistant-doc-card" data-doc-id="${escapeHtml(doc.id)}">
+              <div class="assistant-doc-top">
+                <div>
+                  <div class="assistant-doc-name">DR. ${escapeHtml((doc.name || '').replace(/^(DR\.?|DR)\s+/i, ''))}</div>
+                  <div class="assistant-doc-clinic">🏥 ${escapeHtml(cleanClinic)}</div>
+                </div>
+                <span class="${priorityClass}">Priority: ${priority}</span>
+              </div>
+              <div class="assistant-doc-badges">
+                ${distBadge}
+                ${availBadge}
+                ${visitsBadge}
+                ${doc.department ? `<span class="dept-badge">${escapeHtml(doc.department)}</span>` : ''}
+              </div>
+              <div class="assistant-doc-bottom">
+                <span style="font-size: 0.70rem; color: var(--slate-500);">
+                  ${doc.best_time_to_meet ? `⭐ Best: ${escapeHtml(doc.best_time_to_meet)}` : (doc.op_timings ? `⏰ ${escapeHtml(doc.op_timings)}` : 'Flexible')}
+                </span>
+                <button type="button" class="action-pill-btn select-for-visit-btn" data-doc-id="${escapeHtml(doc.id)}" style="background: #f0fdf4; border-color: #86efac; color: #166534;">
+                  📍 Select / Check in
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        suggestedDoctorsList.querySelectorAll('.select-for-visit-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const docId = btn.getAttribute('data-doc-id');
+            const doc = doctors.find(d => d.id === docId);
+            if (doc) {
+              quickSelectDoctorForVisit(doc);
+            }
+          });
+        });
+      }
+
+      function quickSelectDoctorForVisit(doc) {
+        vibrate(30);
+        selectDoctor(doc);
+        if (doc.clinic && facilityNameInput) {
+          facilityNameInput.value = doc.clinic;
+          activeVisit.facilityName = doc.clinic;
+        }
+        showToast(`Selected Dr. ${doc.name} for clinic visit!`, 'success');
+        const targetElement = document.querySelector('.clinic-timer-card') || doctorCallCard;
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+
+      // ==========================================
+      // VISIT PLANNING TAB (Item 9)
+      // ==========================================
+      function getPresentWeekDays() {
+        const today = new Date();
+        const curDayIndex = today.getDay(); // 0: Sun, 1: Mon, ... 6: Sat
+        const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const fullDayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        
+        // Present week: generate upcoming days from today through the week (minimum 7 days)
+        const days = [];
+        const count = curDayIndex === 0 ? 7 : (8 - curDayIndex);
+        for (let i = 0; i < count; i++) {
+          const d = new Date(today);
+          d.setDate(today.getDate() + i);
+          const yyyy = d.getFullYear();
+          const mm = String(d.getMonth() + 1).padStart(2, '0');
+          const dd = String(d.getDate()).padStart(2, '0');
+          const key = `${yyyy}-${mm}-${dd}`;
+          const isToday = i === 0;
+          const isTomorrow = i === 1;
+          const dayShort = dayNames[d.getDay()];
+          const label = isToday ? `Today (${dayShort})` : (isTomorrow ? `Tomorrow (${dayShort})` : `${dayShort}, ${d.getDate()} ${d.toLocaleString('default', { month: 'short' })}`);
+          days.push({
+            key,
+            date: d,
+            dayName: dayShort,
+            fullDayName: fullDayNames[d.getDay()],
+            label,
+            isToday
+          });
+        }
+        return days;
+      }
+
+      function loadAllPlannedVisits() {
+        try {
+          const stored = localStorage.getItem(STORAGE_KEYS.PLANNED_VISITS);
+          return stored ? JSON.parse(stored) : {};
+        } catch (e) {
+          return {};
+        }
+      }
+
+      function saveAllPlannedVisits(allPlans) {
+        try {
+          localStorage.setItem(STORAGE_KEYS.PLANNED_VISITS, JSON.stringify(allPlans));
+        } catch (e) {
+          console.warn('Error saving planned visits', e);
+        }
+      }
+
+      function getPlannedVisitsForDay(dayKey) {
+        const allPlans = loadAllPlannedVisits();
+        return Array.isArray(allPlans[dayKey]) ? allPlans[dayKey] : [];
+      }
+
+      function setPlannedVisitsForDay(dayKey, list) {
+        const allPlans = loadAllPlannedVisits();
+        allPlans[dayKey] = list;
+        saveAllPlannedVisits(allPlans);
+      }
+
+      // Clariti Diagnostics LLP Starting Location (Requirement 3)
+      const CLARITI_START_LAT = 10.1150083;
+      const CLARITI_START_LNG = 76.4812533;
+      const CLARITI_START_ORIGIN = `${CLARITI_START_LAT},${CLARITI_START_LNG}`;
+
+      function generatePlanMapsUrl(plannedList) {
+        const validCoords = (plannedList || [])
+          .map(item => {
+            const doc = doctors.find(d => d.id === item.docId) || item;
+            return {
+              name: doc.name,
+              clinic: doc.clinic,
+              lat: Number(doc.latitude),
+              lng: Number(doc.longitude)
+            };
+          })
+          .filter(c => c.lat && c.lng && !isNaN(c.lat) && !isNaN(c.lng));
+
+        if (validCoords.length === 0) return null;
+
+        // Origin is strictly Clariti Diagnostics LLP (10.1150083, 76.4812533)
+        const origin = CLARITI_START_ORIGIN;
+
+        if (validCoords.length === 1) {
+          const destination = `${validCoords[0].lat},${validCoords[0].lng}`;
+          const url = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&travelmode=driving`;
+          return {
+            count: 1,
+            url
+          };
+        }
+
+        // Destination is the final planned doctor stop
+        const destination = `${validCoords[validCoords.length - 1].lat},${validCoords[validCoords.length - 1].lng}`;
+        // Intermediate stops (waypoints)
+        let waypoints = '';
+        if (validCoords.length > 1) {
+          const mid = validCoords.slice(0, validCoords.length - 1);
+          waypoints = mid.map(m => `${m.lat},${m.lng}`).join('|');
+        }
+
+        let url = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`;
+        if (waypoints) {
+          url += `&waypoints=${encodeURIComponent(waypoints)}`;
+        }
+        url += '&travelmode=driving';
+
+        return {
+          count: validCoords.length,
+          url
+        };
+      }
+
+      function populateAvailablePlannedDoctors(searchQuery = '') {
+        if (!plannedDocSelect) return;
+        const weekDays = getPresentWeekDays();
+        const activeDayObj = weekDays.find(w => w.key === selectedPlanDateStr) || weekDays[0];
+        const targetDate = activeDayObj.date || new Date();
+
+        // Doctors available on this day
+        let available = doctors.filter(doc => {
+          const avail = getDoctorAvailability(doc, targetDate);
+          return avail.availableOnDay;
+        });
+
+        const query = (searchQuery || '').trim().toLowerCase();
+        if (query) {
+          available = available.filter(doc => 
+            (doc.name && doc.name.toLowerCase().includes(query)) ||
+            (doc.clinic && doc.clinic.toLowerCase().includes(query)) ||
+            (doc.department && doc.department.toLowerCase().includes(query))
+          );
+        }
+
+        plannedDocSelect.innerHTML = `<option value="">-- Choose Doctor Available on ${activeDayObj.dayName} (${available.length} Available) --</option>`;
+
+        available.forEach(doc => {
+          const opt = document.createElement('option');
+          opt.value = doc.id;
+          const cleanClinic = (doc.clinic && doc.clinic.toLowerCase() !== 'undefined') ? doc.clinic : 'Clinic';
+          const opInfo = doc.op_timings ? ` • OP: ${doc.op_timings}` : '';
+          opt.textContent = `DR. ${(doc.name || '').replace(/^(DR\.?|DR)\s+/i, '')} (${cleanClinic})${opInfo}`;
+          plannedDocSelect.appendChild(opt);
+        });
+      }
+
+      function renderVisitPlanning() {
+        if (!planDaysBar && !planDaySelect) return;
+        const weekDays = getPresentWeekDays();
+        if (!selectedPlanDateStr || !weekDays.some(w => w.key === selectedPlanDateStr)) {
+          selectedPlanDateStr = weekDays[0].key;
+        }
+
+        // Render Day Selection Dropdown (Requirement 4)
+        if (planDaySelect) {
+          planDaySelect.innerHTML = weekDays.map(w => {
+            const planList = getPlannedVisitsForDay(w.key);
+            const badge = planList.length > 0 ? ` (${planList.length} planned)` : ` (0 planned)`;
+            return `<option value="${w.key}" ${w.key === selectedPlanDateStr ? 'selected' : ''}>${escapeHtml(w.label)}${badge}</option>`;
+          }).join('');
+
+          if (!planDaySelect.hasAttribute('data-change-bound')) {
+            planDaySelect.setAttribute('data-change-bound', 'true');
+            planDaySelect.addEventListener('change', () => {
+              vibrate(20);
+              selectedPlanDateStr = planDaySelect.value;
+              renderVisitPlanning();
+            });
+          }
+        }
+
+        // Render Day selection pills (kept synchronized)
+        if (planDaysBar) {
+          planDaysBar.innerHTML = weekDays.map(w => {
+            const isActive = w.key === selectedPlanDateStr;
+            const planList = getPlannedVisitsForDay(w.key);
+            const badge = planList.length > 0 ? ` (${planList.length})` : '';
+            return `
+              <button type="button" class="plan-day-pill ${isActive ? 'active' : ''}" data-day-key="${w.key}">
+                ${escapeHtml(w.label)}${badge}
+              </button>
+            `;
+          }).join('');
+
+          planDaysBar.querySelectorAll('.plan-day-pill').forEach(btn => {
+            btn.addEventListener('click', () => {
+              vibrate(20);
+              selectedPlanDateStr = btn.getAttribute('data-day-key');
+              if (planDaySelect) planDaySelect.value = selectedPlanDateStr;
+              renderVisitPlanning();
+            });
+          });
+        }
+
+        const activeDayObj = weekDays.find(w => w.key === selectedPlanDateStr) || weekDays[0];
+        if (addPlannedDayName) {
+          addPlannedDayName.textContent = activeDayObj.label;
+        }
+
+        const plannedList = getPlannedVisitsForDay(selectedPlanDateStr);
+        if (plannedDocsCount) {
+          plannedDocsCount.textContent = plannedList.length;
+        }
+
+        // Render Planned sequence list
+        if (plannedList.length === 0) {
+          plannedDocsList.innerHTML = `
+            <div style="background: #f8fafc; border: 1.5px dashed var(--slate-300); border-radius: 10px; padding: 20px 14px; text-align: center; color: var(--slate-600);">
+              <div style="font-size: 1.6rem; margin-bottom: 6px;">📝</div>
+              <div style="font-weight: 800; font-size: 0.85rem; color: var(--slate-800);">No Doctor Visits Planned for ${activeDayObj.label}</div>
+              <div style="font-size: 0.74rem; color: var(--slate-500); margin-top: 4px;">Tap <strong>"➕ Add Doctor to Plan"</strong> above to organize your visit sequence &amp; route.</div>
+            </div>
+          `;
+        } else {
+          plannedDocsList.innerHTML = plannedList.map((item, index) => {
+            const doc = doctors.find(d => d.id === item.docId) || item;
+            const cleanClinic = (doc.clinic && doc.clinic.toLowerCase() !== 'undefined') ? doc.clinic : 'Clinic';
+            const hasGps = !!(doc.latitude && doc.longitude);
+            const gpsLabel = hasGps ? `📍 GPS Marked` : `📍 No GPS`;
+            const isFirst = index === 0;
+            const isLast = index === plannedList.length - 1;
+
+            return `
+              <div class="planned-doc-item" data-plan-index="${index}">
+                <div style="display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0;">
+                  <div class="planned-order-circle">${index + 1}</div>
+                  <div style="min-width: 0;">
+                    <div style="font-size: 0.84rem; font-weight: 800; color: var(--slate-900); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                      DR. ${escapeHtml((doc.name || '').replace(/^(DR\.?|DR)\s+/i, ''))}
+                    </div>
+                    <div style="font-size: 0.72rem; color: var(--slate-600); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                      🏥 ${escapeHtml(cleanClinic)} ${doc.department ? `• ${escapeHtml(doc.department)}` : ''}
+                    </div>
+                    <div style="display: flex; gap: 6px; align-items: center; margin-top: 2px;">
+                      <span style="font-size: 0.67rem; font-weight: 700; color: ${hasGps ? '#047857' : 'var(--slate-400)'};">${gpsLabel}</span>
+                      ${doc.best_time_to_meet ? `<span style="font-size: 0.67rem; color: #b45309; font-weight: 700;">⭐ ${escapeHtml(doc.best_time_to_meet)}</span>` : ''}
+                    </div>
+                  </div>
+                </div>
+                <!-- Sleek app-aesthetic rearrange arrows and remove buttons (Requirement 2) -->
+                <div class="plan-actions-group">
+                  <button type="button" class="plan-reorder-btn move-up" data-index="${index}" ${isFirst ? 'disabled style="opacity:0.3;cursor:not-allowed;"' : ''} title="Move Earlier in Route">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                  </button>
+                  <button type="button" class="plan-reorder-btn move-down" data-index="${index}" ${isLast ? 'disabled style="opacity:0.3;cursor:not-allowed;"' : ''} title="Move Later in Route">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                  </button>
+                  <button type="button" class="plan-reorder-btn remove-stop" data-index="${index}" title="Remove Doctor from Plan">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            `;
+          }).join('');
+
+          plannedDocsList.querySelectorAll('.move-up').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              const idx = Number(btn.getAttribute('data-index'));
+              if (idx > 0) {
+                const list = getPlannedVisitsForDay(selectedPlanDateStr);
+                const temp = list[idx];
+                list[idx] = list[idx - 1];
+                list[idx - 1] = temp;
+                setPlannedVisitsForDay(selectedPlanDateStr, list);
+                renderVisitPlanning();
+              }
+            });
+          });
+
+          plannedDocsList.querySelectorAll('.move-down').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              const idx = Number(btn.getAttribute('data-index'));
+              const list = getPlannedVisitsForDay(selectedPlanDateStr);
+              if (idx < list.length - 1) {
+                const temp = list[idx];
+                list[idx] = list[idx + 1];
+                list[idx + 1] = temp;
+                setPlannedVisitsForDay(selectedPlanDateStr, list);
+                renderVisitPlanning();
+              }
+            });
+          });
+
+          plannedDocsList.querySelectorAll('.remove-stop').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              const idx = Number(btn.getAttribute('data-index'));
+              const list = getPlannedVisitsForDay(selectedPlanDateStr);
+              list.splice(idx, 1);
+              setPlannedVisitsForDay(selectedPlanDateStr, list);
+              renderVisitPlanning();
+              showToast('Doctor removed from planned route', 'normal');
+            });
+          });
+        }
+
+        // Google Maps Overview Link Generation (Requirement 3: Starting from Clariti Diagnostics LLP)
+        const mapsData = generatePlanMapsUrl(plannedList);
+        if (planMapsOverviewWrap) {
+          if (mapsData) {
+            planMapsOverviewWrap.innerHTML = `
+              <div style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 10px; padding: 12px; text-align: center;">
+                <div style="font-size: 0.78rem; font-weight: 800; color: #166534; margin-bottom: 4px;">
+                  🗺️ Route Starting from Clariti Diagnostics LLP (10.1150083, 76.4812533)
+                </div>
+                <div style="font-size: 0.72rem; color: #15803d; margin-bottom: 8px;">
+                  ${mapsData.count} Doctor Stop${mapsData.count > 1 ? 's' : ''} in sequential visit order
+                </div>
+                <a href="${mapsData.url}" target="_blank" rel="noopener noreferrer" class="primary-btn" style="display: inline-flex; width: 100%; justify-content: center; padding: 10px 14px; background: #16a34a; border-color: #16a34a; color: #ffffff; font-weight: 800; font-size: 0.85rem; text-decoration: none;">
+                  🚀 Open Google Maps Multi-Doctor Route Overview
+                </a>
+                <div style="font-size: 0.68rem; color: #15803d; margin-top: 6px;">
+                  Starts from Clariti Diagnostics LLP and sequences all doctors in planned route order.
+                </div>
+              </div>
+            `;
+          } else if (plannedList.length > 0) {
+            planMapsOverviewWrap.innerHTML = `
+              <div style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 8px 10px; font-size: 0.72rem; color: #92400e; text-align: center;">
+                ℹ️ None of the planned doctors currently have GPS coordinates. Edit doctors in the Master Directory to tag GPS and generate Google Maps route.
+              </div>
+            `;
+          } else {
+            planMapsOverviewWrap.innerHTML = '';
+          }
+        }
       }
 
       function getOpScheduleString() {
@@ -5574,6 +7316,7 @@ function jsonResponse(obj) {
         newDocName.value = cleanName;
         newDocClinic.value = (doc.clinic && doc.clinic.toLowerCase() !== 'undefined' ? doc.clinic : '').toUpperCase();
         setAddDocDeptValue(doc.department || '');
+        if (newDocPriority) newDocPriority.value = getDoctorPriority(doc);
         if (newDocPhone) newDocPhone.value = sanitize10DigitPhone(doc.phone || '');
         setOpScheduleFromString(doc.op_timings || '');
         setBestTimeSlotsFromString(doc.best_time_to_meet || '');
@@ -5597,6 +7340,7 @@ function jsonResponse(obj) {
         setOpScheduleFromString('');
         setBestTimeSlotsFromString('');
         setAddDocDeptValue('');
+        if (newDocPriority) newDocPriority.value = 'Moderate';
         if (newDocName) newDocName.value = '';
         if (commonOpSlot) commonOpSlot.style.display = 'none';
         if (addDocFormHeader) addDocFormHeader.textContent = '➕ Add New Doctor';
@@ -5725,6 +7469,9 @@ function jsonResponse(obj) {
           ` : '';
 
           const clinicNameClean = (d.clinic && d.clinic.toLowerCase() !== 'undefined' && d.clinic.toLowerCase() !== 'null') ? d.clinic : 'Clinic';
+          const priority = getDoctorPriority(d);
+          const priorityClass = `priority-badge-${priority.toLowerCase()}`;
+          const priorityLabel = priority === 'High' ? 'High (4/mo)' : (priority === 'Low' ? 'Low (1/mo)' : 'Moderate (2/mo)');
 
           return `
             <div class="dir-doctor-card" data-doc-id="${escapeHtml(d.id)}">
@@ -5733,6 +7480,7 @@ function jsonResponse(obj) {
                 <div class="dir-doc-details">
                   ${d.department ? `<span class="dept-badge">${escapeHtml(d.department)}</span>` : ''}
                   <span>🏥 ${escapeHtml(clinicNameClean)}</span>
+                  <span class="${priorityClass}">⭐ ${priorityLabel}</span>
                 </div>
                 ${bestDisplay ? `
                   <div class="dir-doc-details" style="margin-top: 2px;">
@@ -5744,9 +7492,6 @@ function jsonResponse(obj) {
                 ${linkDisplay}
               </div>
               <div class="dir-doc-actions">
-                <button type="button" class="${gpsIconClass}" data-action="tag-gps" title="${gpsTitle}">
-                  ${hasGps ? '📍 GPS' : '📌 Tag GPS'}
-                </button>
                 <button type="button" class="mini-icon-btn" data-action="edit" title="Edit Doctor Details">
                   ✏️ Edit
                 </button>
@@ -5758,15 +7503,6 @@ function jsonResponse(obj) {
         dirDoctorsList.querySelectorAll('.dir-doctor-card').forEach(card => {
           const docId = card.getAttribute('data-doc-id');
           const doc = doctors.find(d => d.id === docId);
-
-          const gpsBtn = card.querySelector('[data-action="tag-gps"]');
-          if (gpsBtn) {
-            gpsBtn.addEventListener('click', (e) => {
-              e.stopPropagation();
-              tagCurrentGpsToDoctor(docId);
-              renderDirectoryList(dirSearchInput ? dirSearchInput.value : '');
-            });
-          }
 
           const editBtn = card.querySelector('[data-action="edit"]');
           if (editBtn) {
@@ -5818,7 +7554,8 @@ function jsonResponse(obj) {
             best_time_to_meet: doc.best_time_to_meet || '',
             latitude: doc.latitude || '',
             longitude: doc.longitude || '',
-            location_link: autoMapLink
+            location_link: autoMapLink,
+            priority: doc.priority || getDoctorPriority(doc) || 'Moderate'
           };
 
           const resp = await fetch(url, {
@@ -5950,11 +7687,11 @@ function jsonResponse(obj) {
         } finally {
           if (dirSyncGsheetBtn) {
             dirSyncGsheetBtn.disabled = false;
-            dirSyncGsheetBtn.textContent = '🔄 Sync Doctors';
+            dirSyncGsheetBtn.textContent = '🔄 Sync';
           }
           if (dirClearAndSyncBtn) {
             dirClearAndSyncBtn.disabled = false;
-            dirClearAndSyncBtn.textContent = '🗑️ Clear & Re-Sync';
+            dirClearAndSyncBtn.textContent = '🗑️ Clear & Sync';
           }
           if (settingsSyncDoctorsBtn) {
             settingsSyncDoctorsBtn.disabled = false;
@@ -6104,7 +7841,7 @@ function jsonResponse(obj) {
           activeVisitPill.textContent = 'Ready for Next Call';
           activeVisitPill.className = 'active-visit-pill';
           if (quickReachedBtn) quickReachedBtn.classList.remove('arrived-state');
-          if (quickReachedTitle) quickReachedTitle.textContent = '📍 Reached Doctor Clinic';
+          if (quickReachedTitle) quickReachedTitle.textContent = '📍 Check in to Doctor Clinic';
           if (quickReachedSub) quickReachedSub.textContent = 'Tap once upon arrival • Reveals visit details & doctor call log';
           if (activeSessionDocsCount) activeSessionDocsCount.style.display = 'none';
           activeSessionBanner.className = 'active-session-banner';
@@ -6262,6 +7999,7 @@ function jsonResponse(obj) {
         if (gpsOffBannerStrip) gpsOffBannerStrip.style.display = 'none';
         closeGpsOffModal();
         updateGpsUI();
+        renderSuggestedDoctors();
 
         if (notify) {
           vibrate(25);
@@ -6492,8 +8230,10 @@ function jsonResponse(obj) {
           record.synced = syncResult.success && !syncResult.localOnly;
 
           // Save locally
+          const prevCallsCount = activities.filter(isTodayActivity).length;
           activities.unshift(record);
           saveActivities();
+          updateDailyTargetProgress(prevCallsCount);
 
           if (concludeClinic) {
             // Conclude Clinic Session
@@ -6637,6 +8377,10 @@ function jsonResponse(obj) {
         }
 
         renderTimeline(filtered);
+        updateDailyTargetProgress();
+        renderPendingVisits();
+        renderSuggestedDoctors();
+        renderVisitPlanning();
       }
 
       // Render Timeline (Doctor Calls & Clinic In/Out Time Logs)
@@ -7256,12 +9000,15 @@ function jsonResponse(obj) {
             const originalName = addDoctorForm.getAttribute('data-original-name') || name;
             let targetDoc = null;
 
+            const priorityVal = newDocPriority ? newDocPriority.value : 'Moderate';
+
             if (editId) {
               targetDoc = doctors.find(d => d.id === editId);
               if (targetDoc) {
                 targetDoc.name = name;
                 targetDoc.clinic = clinic;
                 targetDoc.department = dept;
+                targetDoc.priority = priorityVal;
                 targetDoc.phone = phone;
                 targetDoc.op_timings = opTimings;
                 targetDoc.best_time_to_meet = bestTime;
@@ -7280,6 +9027,7 @@ function jsonResponse(obj) {
                 name: name,
                 clinic: clinic,
                 department: dept || 'General Medicine',
+                priority: priorityVal,
                 phone: phone,
                 location_type: clinic.toLowerCase().includes('hospital') ? 'Hospital' : 'Clinic',
                 op_timings: opTimings,
@@ -7448,19 +9196,45 @@ function jsonResponse(obj) {
           });
         }
 
-        // Single or Final Doctor: "Submit Call & Conclude Clinic Visit"
+        // Single or Final Doctor: "Submit Call & Conclude Clinic Visit" (Prompt confirmation)
         if (submitCallBtn) {
           submitCallBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            submitDoctorCall(true); // conclude clinic visit
+            promptConcludeVisitConfirmation();
           });
         }
 
-        // Form Enter Key Trigger
+        // Form Enter Key Trigger (Prompt confirmation)
         if (doctorCallForm) {
           doctorCallForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            promptConcludeVisitConfirmation();
+          });
+        }
+
+        // Conclude Clinic Visit "Are You Sure?" Modal Actions
+        if (confirmConcludeVisitBtn) {
+          confirmConcludeVisitBtn.addEventListener('click', () => {
+            if (concludeConfirmModal) concludeConfirmModal.style.display = 'none';
             submitDoctorCall(true);
+          });
+        }
+        if (concludeStayAnotherBtn) {
+          concludeStayAnotherBtn.addEventListener('click', () => {
+            if (concludeConfirmModal) concludeConfirmModal.style.display = 'none';
+            submitDoctorCall(false);
+          });
+        }
+        if (cancelConcludeModalBtn) {
+          cancelConcludeModalBtn.addEventListener('click', () => {
+            if (concludeConfirmModal) concludeConfirmModal.style.display = 'none';
+          });
+        }
+        if (concludeConfirmModal) {
+          concludeConfirmModal.addEventListener('click', (e) => {
+            if (e.target === concludeConfirmModal) {
+              concludeConfirmModal.style.display = 'none';
+            }
           });
         }
 
@@ -7517,25 +9291,231 @@ function jsonResponse(obj) {
           });
         }
 
-        // Add Doctor Department Dropdown & Other Specialty Input
-        if (newDocDeptSelect) {
-          newDocDeptSelect.addEventListener('change', () => {
-            if (newDocDeptSelect.value === 'OTHERS') {
-              if (newDocDeptOtherWrap) newDocDeptOtherWrap.style.display = 'block';
-              if (newDocDeptOther) {
-                newDocDeptOther.focus();
-                if (newDocDept) newDocDept.value = newDocDeptOther.value.trim().toUpperCase();
-              }
-            } else {
-              if (newDocDeptOtherWrap) newDocDeptOtherWrap.style.display = 'none';
-              if (newDocDept) newDocDept.value = newDocDeptSelect.value;
+        // Add Doctor Department Dropdown: Search and Inline Custom Department Addition (Requirement 8)
+        if (toggleAddDeptCustomBtn && newDocDeptCustomBox) {
+          toggleAddDeptCustomBtn.addEventListener('click', () => {
+            vibrate(20);
+            const isHidden = newDocDeptCustomBox.style.display === 'none' || !newDocDeptCustomBox.style.display;
+            newDocDeptCustomBox.style.display = isHidden ? 'block' : 'none';
+            if (isHidden && newDocCustomDeptInput) {
+              newDocCustomDeptInput.focus();
             }
           });
         }
-        if (newDocDeptOther) {
-          newDocDeptOther.addEventListener('input', () => {
-            forceUppercaseInput(newDocDeptOther);
-            if (newDocDept) newDocDept.value = newDocDeptOther.value.trim().toUpperCase();
+
+        function handleAddCustomDepartment() {
+          if (!newDocCustomDeptInput) return;
+          const val = newDocCustomDeptInput.value.trim().toUpperCase();
+          if (!val) {
+            showToast('Please enter department name', 'error');
+            newDocCustomDeptInput.focus();
+            return;
+          }
+          vibrate(25);
+          saveCustomDepartment(val);
+          setAddDocDeptValue(val);
+          closeDeptDropdown();
+          newDocCustomDeptInput.value = '';
+          if (newDocDeptCustomBox) newDocDeptCustomBox.style.display = 'none';
+          showToast(`Department "${val}" added!`, 'success');
+        }
+
+        if (confirmAddDeptBtn) {
+          confirmAddDeptBtn.addEventListener('click', handleAddCustomDepartment);
+        }
+        if (newDocCustomDeptInput) {
+          newDocCustomDeptInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              handleAddCustomDepartment();
+            }
+          });
+        }
+
+        // Unified Specialty / Department Combobox Events (Requirement 8)
+        if (newDocDeptInput) {
+          newDocDeptInput.addEventListener('focus', () => {
+            renderDeptDropdown(newDocDeptInput.value);
+          });
+          newDocDeptInput.addEventListener('input', () => {
+            if (newDocDept) newDocDept.value = newDocDeptInput.value.trim().toUpperCase();
+            if (clearDeptBtn) clearDeptBtn.style.display = newDocDeptInput.value ? 'flex' : 'none';
+            renderDeptDropdown(newDocDeptInput.value);
+          });
+        }
+        if (deptDropdownToggleBtn) {
+          deptDropdownToggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (newDocDeptDropdownList && newDocDeptDropdownList.style.display === 'block') {
+              closeDeptDropdown();
+            } else {
+              renderDeptDropdown(newDocDeptInput ? newDocDeptInput.value : '');
+            }
+          });
+        }
+        if (clearDeptBtn) {
+          clearDeptBtn.addEventListener('click', () => {
+            setAddDocDeptValue('');
+            renderDeptDropdown('');
+            closeDeptDropdown();
+          });
+        }
+
+        document.addEventListener('click', (e) => {
+          if (!e.target.closest('#deptComboboxWrap') && !e.target.closest('#newDocDeptCustomBox')) {
+            closeDeptDropdown();
+          }
+        });
+
+        // Assistant Tabs (Pending Visits & Suggested Doctors - Expand only when tapped, Requirement 5)
+        let isAssistantExpanded = false;
+        function toggleAssistantAccordion(forceState = null) {
+          isAssistantExpanded = (forceState !== null) ? forceState : !isAssistantExpanded;
+          if (assistantExpandableContent) {
+            assistantExpandableContent.style.display = isAssistantExpanded ? 'block' : 'none';
+          }
+          if (assistantExpandText) {
+            assistantExpandText.textContent = isAssistantExpanded ? 'Collapse' : 'Expand';
+          }
+          if (assistantExpandArrow) {
+            assistantExpandArrow.textContent = isAssistantExpanded ? '▲' : '▼';
+          }
+          if (isAssistantExpanded) {
+            if (btnTabPendingVisits && btnTabPendingVisits.classList.contains('active')) {
+              renderPendingVisits();
+            } else {
+              renderSuggestedDoctors();
+            }
+          }
+        }
+
+        if (toggleAssistantExpandBtn) {
+          toggleAssistantExpandBtn.addEventListener('click', () => {
+            vibrate(20);
+            toggleAssistantAccordion();
+          });
+        }
+
+        if (btnTabPendingVisits && btnTabSuggestedDocs) {
+          btnTabPendingVisits.addEventListener('click', () => {
+            vibrate(20);
+            const wasActive = btnTabPendingVisits.classList.contains('active');
+            btnTabPendingVisits.classList.add('active');
+            btnTabSuggestedDocs.classList.remove('active');
+            if (panelPendingVisits) panelPendingVisits.style.display = 'block';
+            if (panelSuggestedDocs) panelSuggestedDocs.style.display = 'none';
+
+            if (!isAssistantExpanded) {
+              toggleAssistantAccordion(true);
+            } else if (wasActive) {
+              toggleAssistantAccordion(false);
+            } else {
+              renderPendingVisits();
+            }
+          });
+
+          btnTabSuggestedDocs.addEventListener('click', () => {
+            vibrate(20);
+            const wasActive = btnTabSuggestedDocs.classList.contains('active');
+            btnTabSuggestedDocs.classList.add('active');
+            btnTabPendingVisits.classList.remove('active');
+            if (panelSuggestedDocs) panelSuggestedDocs.style.display = 'block';
+            if (panelPendingVisits) panelPendingVisits.style.display = 'none';
+
+            if (!isAssistantExpanded) {
+              toggleAssistantAccordion(true);
+            } else if (wasActive) {
+              toggleAssistantAccordion(false);
+            } else {
+              renderSuggestedDoctors();
+            }
+          });
+        }
+
+        // Suggested Doctors Filter Buttons
+        document.querySelectorAll('[data-filter-proximity]').forEach(btn => {
+          btn.addEventListener('click', function () {
+            vibrate(20);
+            document.querySelectorAll('[data-filter-proximity]').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            suggestedFilterProximity = this.getAttribute('data-filter-proximity');
+            renderSuggestedDoctors();
+          });
+        });
+
+        document.querySelectorAll('[data-filter-priority]').forEach(btn => {
+          btn.addEventListener('click', function () {
+            vibrate(20);
+            document.querySelectorAll('[data-filter-priority]').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            suggestedFilterPriority = this.getAttribute('data-filter-priority');
+            renderSuggestedDoctors();
+          });
+        });
+
+        document.querySelectorAll('[data-filter-avail]').forEach(btn => {
+          btn.addEventListener('click', function () {
+            vibrate(20);
+            document.querySelectorAll('[data-filter-avail]').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            suggestedFilterAvail = this.getAttribute('data-filter-avail');
+            renderSuggestedDoctors();
+          });
+        });
+
+        // Visit Planning Controls (Item 9)
+        if (openAddPlannedDocBtn) {
+          openAddPlannedDocBtn.addEventListener('click', () => {
+            vibrate(20);
+            if (addPlannedDocDrawer) {
+              const isClosed = addPlannedDocDrawer.style.display === 'none' || !addPlannedDocDrawer.style.display;
+              addPlannedDocDrawer.style.display = isClosed ? 'block' : 'none';
+              if (isClosed) {
+                if (plannedDocSearchInput) plannedDocSearchInput.value = '';
+                populateAvailablePlannedDoctors('');
+              }
+            }
+          });
+        }
+
+        if (closeAddPlannedDocBtn) {
+          closeAddPlannedDocBtn.addEventListener('click', () => {
+            if (addPlannedDocDrawer) addPlannedDocDrawer.style.display = 'none';
+          });
+        }
+
+        if (plannedDocSearchInput) {
+          plannedDocSearchInput.addEventListener('input', () => {
+            populateAvailablePlannedDoctors(plannedDocSearchInput.value);
+          });
+        }
+
+        if (confirmAddPlannedDocBtn) {
+          confirmAddPlannedDocBtn.addEventListener('click', () => {
+            vibrate(25);
+            const docId = plannedDocSelect ? plannedDocSelect.value : '';
+            if (!docId) {
+              showToast('Please select a doctor to add to itinerary', 'error');
+              return;
+            }
+            const doc = doctors.find(d => d.id === docId);
+            if (!doc) return;
+
+            const currentPlan = getPlannedVisitsForDay(selectedPlanDateStr);
+            currentPlan.push({
+              docId: doc.id,
+              name: doc.name,
+              clinic: doc.clinic,
+              department: doc.department,
+              latitude: doc.latitude,
+              longitude: doc.longitude,
+              op_timings: doc.op_timings,
+              best_time_to_meet: doc.best_time_to_meet
+            });
+            setPlannedVisitsForDay(selectedPlanDateStr, currentPlan);
+            if (addPlannedDocDrawer) addPlannedDocDrawer.style.display = 'none';
+            renderVisitPlanning();
+            showToast(`Dr. ${doc.name} added to route!`, 'success');
           });
         }
 
